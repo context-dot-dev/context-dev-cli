@@ -10,8 +10,8 @@ import (
 	"os"
 	"slices"
 
+	"github.com/context-dot-dev/context-dev-cli/pkg/cmd"
 	"github.com/context-dot-dev/context-go-sdk"
-	"github.com/stainless-sdks/context.dev-cli/pkg/cmd"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
