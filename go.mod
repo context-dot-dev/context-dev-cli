@@ -1,4 +1,4 @@
-module github.com/stainless-sdks/context.dev-cli
+module github.com/context-dot-dev/context-dev-cli
 
 go 1.25
 

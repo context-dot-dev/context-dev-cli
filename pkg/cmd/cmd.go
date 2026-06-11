@@ -12,8 +12,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/stainless-sdks/context.dev-cli/internal/autocomplete"
-	"github.com/stainless-sdks/context.dev-cli/internal/requestflag"
+	"github.com/context-dot-dev/context-dev-cli/internal/autocomplete"
+	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
 	docs "github.com/urfave/cli-docs/v3"
 	"github.com/urfave/cli/v3"
 )
