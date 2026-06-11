@@ -5,8 +5,8 @@ package cmd
 import (
 	"testing"
 
-	"github.com/stainless-sdks/context.dev-cli/internal/mocktest"
-	"github.com/stainless-sdks/context.dev-cli/internal/requestflag"
+	"github.com/context-dot-dev/context-dev-cli/internal/mocktest"
+	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
 )
 
 func TestAIAIQuery(t *testing.T) {

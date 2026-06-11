@@ -16,11 +16,11 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/context-dot-dev/context-dev-cli/internal/apiform"
+	"github.com/context-dot-dev/context-dev-cli/internal/apiquery"
+	"github.com/context-dot-dev/context-dev-cli/internal/debugmiddleware"
+	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
 	"github.com/context-dot-dev/context-go-sdk/option"
-	"github.com/stainless-sdks/context.dev-cli/internal/apiform"
-	"github.com/stainless-sdks/context.dev-cli/internal/apiquery"
-	"github.com/stainless-sdks/context.dev-cli/internal/debugmiddleware"
-	"github.com/stainless-sdks/context.dev-cli/internal/requestflag"
 
 	"github.com/goccy/go-yaml"
 	"github.com/urfave/cli/v3"

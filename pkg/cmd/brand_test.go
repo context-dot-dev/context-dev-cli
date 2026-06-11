@@ -5,7 +5,7 @@ package cmd
 import (
 	"testing"
 
-	"github.com/stainless-sdks/context.dev-cli/internal/mocktest"
+	"github.com/context-dot-dev/context-dev-cli/internal/mocktest"
 )
 
 func TestBrandRetrieve(t *testing.T) {
