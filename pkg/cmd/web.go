@@ -242,6 +242,11 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 			QueryPath: "page",
 		},
 		&requestflag.Flag[int64]{
+			Name:      "scroll-offset",
+			Usage:     "Optional vertical scroll offset in pixels for capturing a long page in viewport-sized chunks. When provided, the full page is captured once and the returned image is the viewport-sized slice that begins at this Y offset (e.g. request scrollOffset=0, then 1080, then 2160 to walk a 1920x1080 landing page top to bottom). The final slice may be shorter than the viewport height. Takes precedence over fullScreenshot. Max: 100000.",
+			QueryPath: "scrollOffset",
+		},
+		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
 			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
 			QueryPath: "timeoutMS",
