@@ -188,10 +188,12 @@ func TestWebSearch(t *testing.T) {
 			"--api-key", "string",
 			"web", "search",
 			"--query", "x",
+			"--country", "af",
 			"--exclude-domain", "string",
 			"--freshness", "last_24_hours",
 			"--include-domain", "string",
 			"--markdown-options", "{enabled: true, includeFrames: true, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutMS: 1000, useMainContentOnly: true, waitForMs: 0}",
+			"--num-results", "10",
 			"--query-fanout=true",
 			"--timeout-ms", "1000",
 		)
@@ -207,6 +209,7 @@ func TestWebSearch(t *testing.T) {
 			"--api-key", "string",
 			"web", "search",
 			"--query", "x",
+			"--country", "af",
 			"--exclude-domain", "string",
 			"--freshness", "last_24_hours",
 			"--include-domain", "string",
@@ -220,6 +223,7 @@ func TestWebSearch(t *testing.T) {
 			"--markdown-options.timeout-ms", "1000",
 			"--markdown-options.use-main-content-only=true",
 			"--markdown-options.wait-for-ms", "0",
+			"--num-results", "10",
 			"--query-fanout=true",
 			"--timeout-ms", "1000",
 		)
@@ -229,6 +233,7 @@ func TestWebSearch(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"query: x\n" +
+			"country: af\n" +
 			"excludeDomains:\n" +
 			"  - string\n" +
 			"freshness: last_24_hours\n" +
@@ -248,6 +253,7 @@ func TestWebSearch(t *testing.T) {
 			"  timeoutMS: 1000\n" +
 			"  useMainContentOnly: true\n" +
 			"  waitForMs: 0\n" +
+			"numResults: 10\n" +
 			"queryFanout: true\n" +
 			"timeoutMS: 1000\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(

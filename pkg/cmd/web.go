@@ -293,9 +293,14 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "query",
-			Usage:    "Natural-language search query.",
+			Usage:    "Search query. Accepts natural language as well as Google-style search operators such as `site:`, `-site:`, `inurl:`, `intitle:`, quoted phrases, and `OR`.",
 			Required: true,
 			BodyPath: "query",
+		},
+		&requestflag.Flag[string]{
+			Name:     "country",
+			Usage:    "Two-letter ISO 3166-1 alpha-2 country code to localize results to a specific country (maps to Google's `gl` parameter). Example: \"us\", \"gb\", \"de\".",
+			BodyPath: "country",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "exclude-domain",
@@ -316,6 +321,12 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Name:     "markdown-options",
 			Usage:    "Inline Markdown scraping for each result. Set `enabled: true` to activate.",
 			BodyPath: "markdownOptions",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "num-results",
+			Usage:    "Number of results to request and return (10–100). Defaults to 10.",
+			Default:  10,
+			BodyPath: "numResults",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "query-fanout",
