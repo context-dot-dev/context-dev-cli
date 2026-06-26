@@ -141,6 +141,7 @@ func TestWebScreenshot(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"web", "screenshot",
+			"--country", "de",
 			"--direct-url", "https://example.com",
 			"--domain", "domain",
 			"--full-screenshot", "true",
@@ -163,6 +164,7 @@ func TestWebScreenshot(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"web", "screenshot",
+			"--country", "de",
 			"--direct-url", "https://example.com",
 			"--domain", "domain",
 			"--full-screenshot", "true",
@@ -264,6 +266,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-crawl-md",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--follow-subdomains=true",
 			"--include-frames=true",
@@ -293,6 +296,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-crawl-md",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--follow-subdomains=true",
 			"--include-frames=true",
@@ -318,6 +322,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"url: https://example.com\n" +
+			"country: de\n" +
 			"excludeSelectors:\n" +
 			"  - string\n" +
 			"followSubdomains: true\n" +
@@ -355,6 +360,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-html",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--headers", "{foo: J!}",
 			"--include-frames=true",
@@ -377,6 +383,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-html",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--headers", "{foo: J!}",
 			"--include-frames=true",
@@ -438,6 +445,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-md",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--headers", "{foo: J!}",
 			"--include-frames=true",
@@ -463,6 +471,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-md",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--headers", "{foo: J!}",
 			"--include-frames=true",
