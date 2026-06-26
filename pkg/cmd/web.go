@@ -210,6 +210,11 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
+			Name:      "country",
+			Usage:     "Two-letter ISO 3166-1 alpha-2 country code for the website request location. When provided, Context.dev fetches the target page from that country.",
+			QueryPath: "country",
+		},
+		&requestflag.Flag[string]{
 			Name:      "direct-url",
 			Usage:     "A specific URL to screenshot directly, bypassing domain resolution (e.g., 'https://example.com/pricing'). When provided, the screenshot is taken of this exact URL. You must provide either 'domain' or 'directUrl', but not both.",
 			QueryPath: "directUrl",
@@ -391,6 +396,11 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "url",
 		},
+		&requestflag.Flag[string]{
+			Name:     "country",
+			Usage:    "Two-letter ISO 3166-1 alpha-2 country code identifying a supported Context.dev residential proxy exit location. Must be one of Context.dev's supported countries. When provided, Context.dev fetches the target page from that country.",
+			BodyPath: "country",
+		},
 		&requestflag.Flag[[]string]{
 			Name:     "exclude-selector",
 			Usage:    `CSS selectors to remove before each crawled page is converted to Markdown. Applied after includeSelectors. Exclusion takes precedence: an element matching both is removed. Examples: "nav", "footer", ".ad-banner", "[aria-hidden=true]".`,
@@ -514,6 +524,11 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Full URL to scrape (must include http:// or https:// protocol)",
 			Required:  true,
 			QueryPath: "url",
+		},
+		&requestflag.Flag[string]{
+			Name:      "country",
+			Usage:     "Two-letter ISO 3166-1 alpha-2 country code for the website request location. When provided, Context.dev fetches the target page from that country.",
+			QueryPath: "country",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "exclude-selector",
@@ -662,6 +677,11 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Full URL to scrape into LLM usable Markdown (must include http:// or https:// protocol)",
 			Required:  true,
 			QueryPath: "url",
+		},
+		&requestflag.Flag[string]{
+			Name:      "country",
+			Usage:     "Two-letter ISO 3166-1 alpha-2 country code for the website request location. When provided, Context.dev fetches the target page from that country.",
+			QueryPath: "country",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "exclude-selector",
