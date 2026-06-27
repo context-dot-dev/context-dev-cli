@@ -126,6 +126,7 @@ func TestWebExtractStyleguide(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"web", "extract-styleguide",
+			"--color-scheme", "light",
 			"--direct-url", "https://example.com",
 			"--domain", "domain",
 			"--max-age-ms", "86400000",
@@ -141,6 +142,8 @@ func TestWebScreenshot(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"web", "screenshot",
+			"--color-scheme", "light",
+			"--country", "de",
 			"--direct-url", "https://example.com",
 			"--domain", "domain",
 			"--full-screenshot", "true",
@@ -163,6 +166,8 @@ func TestWebScreenshot(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"web", "screenshot",
+			"--color-scheme", "light",
+			"--country", "de",
 			"--direct-url", "https://example.com",
 			"--domain", "domain",
 			"--full-screenshot", "true",
@@ -186,10 +191,12 @@ func TestWebSearch(t *testing.T) {
 			"--api-key", "string",
 			"web", "search",
 			"--query", "x",
+			"--country", "af",
 			"--exclude-domain", "string",
 			"--freshness", "last_24_hours",
 			"--include-domain", "string",
 			"--markdown-options", "{enabled: true, includeFrames: true, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutMS: 1000, useMainContentOnly: true, waitForMs: 0}",
+			"--num-results", "10",
 			"--query-fanout=true",
 			"--timeout-ms", "1000",
 		)
@@ -205,6 +212,7 @@ func TestWebSearch(t *testing.T) {
 			"--api-key", "string",
 			"web", "search",
 			"--query", "x",
+			"--country", "af",
 			"--exclude-domain", "string",
 			"--freshness", "last_24_hours",
 			"--include-domain", "string",
@@ -218,6 +226,7 @@ func TestWebSearch(t *testing.T) {
 			"--markdown-options.timeout-ms", "1000",
 			"--markdown-options.use-main-content-only=true",
 			"--markdown-options.wait-for-ms", "0",
+			"--num-results", "10",
 			"--query-fanout=true",
 			"--timeout-ms", "1000",
 		)
@@ -227,6 +236,7 @@ func TestWebSearch(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"query: x\n" +
+			"country: af\n" +
 			"excludeDomains:\n" +
 			"  - string\n" +
 			"freshness: last_24_hours\n" +
@@ -246,6 +256,7 @@ func TestWebSearch(t *testing.T) {
 			"  timeoutMS: 1000\n" +
 			"  useMainContentOnly: true\n" +
 			"  waitForMs: 0\n" +
+			"numResults: 10\n" +
 			"queryFanout: true\n" +
 			"timeoutMS: 1000\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
@@ -264,6 +275,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-crawl-md",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--follow-subdomains=true",
 			"--include-frames=true",
@@ -293,6 +305,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-crawl-md",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--follow-subdomains=true",
 			"--include-frames=true",
@@ -318,6 +331,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"url: https://example.com\n" +
+			"country: de\n" +
 			"excludeSelectors:\n" +
 			"  - string\n" +
 			"followSubdomains: true\n" +
@@ -355,6 +369,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-html",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--headers", "{foo: J!}",
 			"--include-frames=true",
@@ -377,6 +392,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-html",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--headers", "{foo: J!}",
 			"--include-frames=true",
@@ -438,6 +454,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-md",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--headers", "{foo: J!}",
 			"--include-frames=true",
@@ -463,6 +480,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-md",
 			"--url", "https://example.com",
+			"--country", "de",
 			"--exclude-selector", "string",
 			"--headers", "{foo: J!}",
 			"--include-frames=true",

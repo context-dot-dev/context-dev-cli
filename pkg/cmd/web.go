@@ -179,6 +179,11 @@ var webExtractStyleguide = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
+			Name:      "color-scheme",
+			Usage:     "Optional browser color scheme to emulate for websites that respond to prefers-color-scheme. This value is part of the styleguide cache key.",
+			QueryPath: "colorScheme",
+		},
+		&requestflag.Flag[string]{
 			Name:      "direct-url",
 			Usage:     "A specific URL to fetch the styleguide from directly, bypassing domain resolution (e.g., 'https://example.com/design-system'). When provided, the styleguide is extracted from this exact URL. You must provide either 'domain' or 'directUrl', but not both.",
 			QueryPath: "directUrl",
@@ -209,6 +214,16 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 	Usage:   "Capture a screenshot of a website.",
 	Suggest: true,
 	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "color-scheme",
+			Usage:     "Optional parameter to choose the site's visual theme in the screenshot. Use 'light' or 'dark' when the site offers both appearances.",
+			QueryPath: "colorScheme",
+		},
+		&requestflag.Flag[string]{
+			Name:      "country",
+			Usage:     "Two-letter ISO 3166-1 alpha-2 country code for the website request location. When provided, Context.dev fetches the target page from that country.",
+			QueryPath: "country",
+		},
 		&requestflag.Flag[string]{
 			Name:      "direct-url",
 			Usage:     "A specific URL to screenshot directly, bypassing domain resolution (e.g., 'https://example.com/pricing'). When provided, the screenshot is taken of this exact URL. You must provide either 'domain' or 'directUrl', but not both.",
@@ -288,9 +303,14 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "query",
-			Usage:    "Natural-language search query.",
+			Usage:    "Search query. Accepts natural language as well as Google-style search operators such as `site:`, `-site:`, `inurl:`, `intitle:`, quoted phrases, and `OR`.",
 			Required: true,
 			BodyPath: "query",
+		},
+		&requestflag.Flag[string]{
+			Name:     "country",
+			Usage:    "Two-letter ISO 3166-1 alpha-2 country code to localize results to a specific country (maps to Google's `gl` parameter). Example: \"us\", \"gb\", \"de\".",
+			BodyPath: "country",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "exclude-domain",
@@ -311,6 +331,12 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Name:     "markdown-options",
 			Usage:    "Inline Markdown scraping for each result. Set `enabled: true` to activate.",
 			BodyPath: "markdownOptions",
+		},
+		&requestflag.Flag[int64]{
+			Name:     "num-results",
+			Usage:    "Number of results to request and return (10–100). Defaults to 10.",
+			Default:  10,
+			BodyPath: "numResults",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "query-fanout",
@@ -390,6 +416,11 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "The starting URL for the crawl (must include http:// or https:// protocol)",
 			Required: true,
 			BodyPath: "url",
+		},
+		&requestflag.Flag[string]{
+			Name:     "country",
+			Usage:    "Two-letter ISO 3166-1 alpha-2 country code identifying a supported Context.dev residential proxy exit location. Must be one of Context.dev's supported countries. When provided, Context.dev fetches the target page from that country.",
+			BodyPath: "country",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "exclude-selector",
@@ -514,6 +545,11 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Full URL to scrape (must include http:// or https:// protocol)",
 			Required:  true,
 			QueryPath: "url",
+		},
+		&requestflag.Flag[string]{
+			Name:      "country",
+			Usage:     "Two-letter ISO 3166-1 alpha-2 country code for the website request location. When provided, Context.dev fetches the target page from that country.",
+			QueryPath: "country",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "exclude-selector",
@@ -662,6 +698,11 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Full URL to scrape into LLM usable Markdown (must include http:// or https:// protocol)",
 			Required:  true,
 			QueryPath: "url",
+		},
+		&requestflag.Flag[string]{
+			Name:      "country",
+			Usage:     "Two-letter ISO 3166-1 alpha-2 country code for the website request location. When provided, Context.dev fetches the target page from that country.",
+			QueryPath: "country",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "exclude-selector",
