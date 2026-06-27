@@ -126,6 +126,7 @@ func TestWebExtractStyleguide(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"web", "extract-styleguide",
+			"--color-scheme", "light",
 			"--direct-url", "https://example.com",
 			"--domain", "domain",
 			"--max-age-ms", "86400000",
