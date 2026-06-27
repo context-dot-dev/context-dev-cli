@@ -210,6 +210,11 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
+			Name:      "color-scheme",
+			Usage:     "Optional parameter to choose the site's visual theme in the screenshot. Use 'light' or 'dark' when the site offers both appearances.",
+			QueryPath: "colorScheme",
+		},
+		&requestflag.Flag[string]{
 			Name:      "country",
 			Usage:     "Two-letter ISO 3166-1 alpha-2 country code for the website request location. When provided, Context.dev fetches the target page from that country.",
 			QueryPath: "country",
