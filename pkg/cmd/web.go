@@ -179,6 +179,11 @@ var webExtractStyleguide = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
+			Name:      "color-scheme",
+			Usage:     "Optional browser color scheme to emulate for websites that respond to prefers-color-scheme. This value is part of the styleguide cache key.",
+			QueryPath: "colorScheme",
+		},
+		&requestflag.Flag[string]{
 			Name:      "direct-url",
 			Usage:     "A specific URL to fetch the styleguide from directly, bypassing domain resolution (e.g., 'https://example.com/design-system'). When provided, the styleguide is extracted from this exact URL. You must provide either 'domain' or 'directUrl', but not both.",
 			QueryPath: "directUrl",
