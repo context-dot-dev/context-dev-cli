@@ -21,7 +21,7 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "change-detection",
-			Usage:    "Detect exact changes. For page targets, this means visible text diffs. For sitemap targets, this means URL additions and removals.",
+			Usage:    "Discriminated union describing how changes are detected.",
 			Required: true,
 			BodyPath: "change_detection",
 		},
@@ -38,8 +38,14 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "target",
+			Usage:    "Discriminated union describing what the monitor watches.",
 			Required: true,
 			BodyPath: "target",
+		},
+		&requestflag.Flag[string]{
+			Name:     "mode",
+			Usage:    "Top-level monitor category. Always `web` today; the concrete behavior is described by `target` and `change_detection`.",
+			BodyPath: "mode",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
@@ -54,13 +60,6 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleMonitorsCreate,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
-	"change-detection": {
-		&requestflag.InnerFlag[string]{
-			Name:       "change-detection.type",
-			Usage:      `Allowed values: "exact".`,
-			InnerField: "type",
-		},
-	},
 	"schedule": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "schedule.frequency",
@@ -76,22 +75,6 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 			Name:       "schedule.unit",
 			Usage:      `Allowed values: "minutes", "hours", "days".`,
 			InnerField: "unit",
-		},
-	},
-	"target": {
-		&requestflag.InnerFlag[string]{
-			Name:       "target.type",
-			Usage:      `Allowed values: "page".`,
-			InnerField: "type",
-		},
-		&requestflag.InnerFlag[string]{
-			Name:       "target.url",
-			InnerField: "url",
-		},
-		&requestflag.InnerFlag[bool]{
-			Name:       "target.normalize-whitespace",
-			Usage:      "Normalize whitespace before comparing or analyzing text.",
-			InnerField: "normalize_whitespace",
 		},
 	},
 	"webhook": {
@@ -204,7 +187,7 @@ var monitorsUpdate = requestflag.WithInnerFlags(cli.Command{
 
 var monitorsList = cli.Command{
 	Name:    "list",
-	Usage:   "List monitors",
+	Usage:   "Lists monitors for the authenticated organization. Supports free-text search\n(`q` over `search_by` fields, `prefix` or `exact` via `search_type`) plus\nstatus/type/tag filters. Results are paginated via the opaque `cursor`.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -222,6 +205,22 @@ var monitorsList = cli.Command{
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
+			Name:      "q",
+			Usage:     "Free-text search term, matched against the fields named in `search_by`.",
+			QueryPath: "q",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "search-by",
+			Usage:     "Comma-separated fields to search with `q`. Defaults to all of them. Note `query` only exists on semantic monitors.",
+			QueryPath: "search_by",
+		},
+		&requestflag.Flag[string]{
+			Name:      "search-type",
+			Usage:     "`prefix` for as-you-type prefix matching (default), `exact` for full-token matching.",
+			Default:   "prefix",
+			QueryPath: "search_type",
+		},
+		&requestflag.Flag[string]{
 			Name:      "status",
 			Usage:     `Allowed values: "active", "paused", "failed".`,
 			QueryPath: "status",
@@ -230,6 +229,11 @@ var monitorsList = cli.Command{
 			Name:      "tag",
 			Usage:     "Filter to items that have this tag.",
 			QueryPath: "tag",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Comma-separated list of tags to filter by (matches monitors having any of them).",
+			QueryPath: "tags",
 		},
 		&requestflag.Flag[string]{
 			Name:      "target-type",

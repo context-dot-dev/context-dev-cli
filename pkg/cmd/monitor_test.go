@@ -17,9 +17,10 @@ func TestMonitorsCreate(t *testing.T) {
 			"--api-key", "string",
 			"monitors", "create",
 			"--change-detection", "{type: exact}",
-			"--name", "Acme pricing monitor",
+			"--name", "Acme pricing page",
 			"--schedule", "{frequency: 6, type: interval, unit: hours}",
 			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
+			"--mode", "web",
 			"--tag", "pricing",
 			"--tag", "competitor",
 			"--webhook", "{url: https://example.com/webhook}",
@@ -35,14 +36,13 @@ func TestMonitorsCreate(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"monitors", "create",
-			"--change-detection.type", "exact",
-			"--name", "Acme pricing monitor",
+			"--change-detection", "{type: exact}",
+			"--name", "Acme pricing page",
 			"--schedule.frequency", "6",
 			"--schedule.type", "interval",
 			"--schedule.unit", "hours",
-			"--target.type", "page",
-			"--target.url", "https://acme.com/pricing",
-			"--target.normalize-whitespace=true",
+			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
+			"--mode", "web",
 			"--tag", "pricing",
 			"--tag", "competitor",
 			"--webhook.url", "https://example.com/webhook",
@@ -54,7 +54,7 @@ func TestMonitorsCreate(t *testing.T) {
 		pipeData := []byte("" +
 			"change_detection:\n" +
 			"  type: exact\n" +
-			"name: Acme pricing monitor\n" +
+			"name: Acme pricing page\n" +
 			"schedule:\n" +
 			"  frequency: 6\n" +
 			"  type: interval\n" +
@@ -63,6 +63,7 @@ func TestMonitorsCreate(t *testing.T) {
 			"  type: page\n" +
 			"  url: https://acme.com/pricing\n" +
 			"  normalize_whitespace: true\n" +
+			"mode: web\n" +
 			"tags:\n" +
 			"  - pricing\n" +
 			"  - competitor\n" +
@@ -169,8 +170,12 @@ func TestMonitorsList(t *testing.T) {
 			"--change-detection-type", "exact",
 			"--cursor", "cursor",
 			"--limit", "1",
+			"--q", "q",
+			"--search-by", "name",
+			"--search-type", "exact",
 			"--status", "active",
 			"--tag", "tag",
+			"--tag", "string",
 			"--target-type", "page",
 		)
 	})
