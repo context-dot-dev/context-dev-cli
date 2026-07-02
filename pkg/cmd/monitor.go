@@ -222,7 +222,7 @@ var monitorsList = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
-			Usage:     `Allowed values: "active", "paused", "failed".`,
+			Usage:     "Monitor lifecycle status. `failed` means the most recent run failed (see the monitor's `last_error`); failed monitors keep running on schedule and flip back to `active` on the next successful run. Monitors are auto-`paused` after repeated consecutive failures or insufficient-credit skips; resume by PATCHing status to `active`.",
 			QueryPath: "status",
 		},
 		&requestflag.Flag[string]{
@@ -322,7 +322,7 @@ var monitorsListAccountRuns = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
-			Usage:     `Allowed values: "queued", "running", "completed", "failed".`,
+			Usage:     "Lifecycle status of a run. `skipped` runs never executed — see `skip_reason` (insufficient credits, monitor paused, or superseded by a concurrent run).",
 			QueryPath: "status",
 		},
 	},
@@ -388,7 +388,7 @@ var monitorsListRuns = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
-			Usage:     `Allowed values: "queued", "running", "completed", "failed".`,
+			Usage:     "Lifecycle status of a run. `skipped` runs never executed — see `skip_reason` (insufficient credits, monitor paused, or superseded by a concurrent run).",
 			QueryPath: "status",
 		},
 	},
