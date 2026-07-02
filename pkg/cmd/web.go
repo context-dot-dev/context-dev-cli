@@ -480,6 +480,12 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "pdf",
 		},
 		&requestflag.Flag[bool]{
+			Name:     "settle-animations",
+			Usage:    "When true, waits briefly for CSS and transition animations to settle before extracting each crawled page. Defaults to false. This adds a bit of latency in exchange for more stable output on animated pages.",
+			Default:  false,
+			BodyPath: "settleAnimations",
+		},
+		&requestflag.Flag[bool]{
 			Name:     "shorten-base64-images",
 			Usage:    "Truncate base64-encoded image data in the Markdown output",
 			Default:  true,
@@ -583,6 +589,12 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "PDF parsing controls. Use start/end to limit text extraction and OCR to an inclusive 1-based page range.",
 			Default:   map[string]any{"shouldParse": true},
 			QueryPath: "pdf",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "settle-animations",
+			Usage:     "When true, waits briefly for CSS and transition animations to settle before extracting HTML. Defaults to false. This adds a bit of latency in exchange for more stable output on animated pages.",
+			Default:   false,
+			QueryPath: "settleAnimations",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
@@ -748,6 +760,12 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "PDF parsing controls. Use start/end to limit text extraction and OCR to an inclusive 1-based page range.",
 			Default:   map[string]any{"shouldParse": true},
 			QueryPath: "pdf",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "settle-animations",
+			Usage:     "When true, waits briefly for CSS and transition animations to settle before converting to Markdown. Defaults to false. This adds a bit of latency in exchange for more stable output on animated pages.",
+			Default:   false,
+			QueryPath: "settleAnimations",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "shorten-base64-images",
