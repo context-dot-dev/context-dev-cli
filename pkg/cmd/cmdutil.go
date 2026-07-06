@@ -17,7 +17,7 @@ import (
 	"syscall"
 
 	"github.com/context-dot-dev/context-dev-cli/internal/jsonview"
-	"github.com/context-dot-dev/context-go-sdk/option"
+	"github.com/context-dot-dev/context-go-sdk/v2/option"
 
 	"github.com/charmbracelet/x/term"
 	"github.com/itchyny/json2yaml"
