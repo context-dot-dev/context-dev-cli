@@ -48,10 +48,9 @@ context-dev [resource] <command> [flags...]
 ```
 
 ```sh
-context-dev web extract \
+context-dev brand retrieve \
   --api-key 'My API Key' \
-  --schema '{type: bar, properties: bar, required: bar, additionalProperties: bar}' \
-  --url https://example.com
+  --domain REPLACE_ME
 ```
 
 For details about specific commands, use the `--help` flag.
