@@ -286,6 +286,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--max-depth", "0",
 			"--max-pages", "1",
 			"--pdf", "{end: 1, shouldParse: true, start: 1}",
+			"--settle-animations=true",
 			"--shorten-base64-images=true",
 			"--stop-after-ms", "10000",
 			"--timeout-ms", "1000",
@@ -318,6 +319,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--pdf.end", "1",
 			"--pdf.should-parse=true",
 			"--pdf.start", "1",
+			"--settle-animations=true",
 			"--shorten-base64-images=true",
 			"--stop-after-ms", "10000",
 			"--timeout-ms", "1000",
@@ -347,6 +349,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"  end: 1\n" +
 			"  shouldParse: true\n" +
 			"  start: 1\n" +
+			"settleAnimations: true\n" +
 			"shortenBase64Images: true\n" +
 			"stopAfterMs: 10000\n" +
 			"timeoutMS: 1000\n" +
@@ -376,6 +379,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--include-selector", "string",
 			"--max-age-ms", "0",
 			"--pdf", "{end: 1, shouldParse: true, start: 1}",
+			"--settle-animations=true",
 			"--timeout-ms", "1000",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
@@ -401,6 +405,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--pdf.end", "1",
 			"--pdf.should-parse=true",
 			"--pdf.start", "1",
+			"--settle-animations=true",
 			"--timeout-ms", "1000",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
@@ -416,6 +421,7 @@ func TestWebWebScrapeImages(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-images",
 			"--url", "https://example.com",
+			"--dedupe=true",
 			"--enrichment", "{classification: true, hostedUrl: true, maxTimePerMs: 1, resolution: true}",
 			"--headers", "{foo: J!}",
 			"--max-age-ms", "0",
@@ -434,6 +440,7 @@ func TestWebWebScrapeImages(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-images",
 			"--url", "https://example.com",
+			"--dedupe=true",
 			"--enrichment.classification=true",
 			"--enrichment.hosted-url=true",
 			"--enrichment.max-time-per-ms", "1",
@@ -463,6 +470,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--include-selector", "string",
 			"--max-age-ms", "0",
 			"--pdf", "{end: 1, shouldParse: true, start: 1}",
+			"--settle-animations=true",
 			"--shorten-base64-images=true",
 			"--timeout-ms", "1000",
 			"--use-main-content-only=true",
@@ -491,6 +499,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--pdf.end", "1",
 			"--pdf.should-parse=true",
 			"--pdf.start", "1",
+			"--settle-animations=true",
 			"--shorten-base64-images=true",
 			"--timeout-ms", "1000",
 			"--use-main-content-only=true",

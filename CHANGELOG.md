@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.8.0 (2026-07-06)
+
+Full Changelog: [v0.7.1...v0.8.0](https://github.com/context-dot-dev/context-dev-cli/compare/v0.7.1...v0.8.0)
+
+### Features
+
+* **api:** api update ([8b611d1](https://github.com/context-dot-dev/context-dev-cli/commit/8b611d174d071bd86accc7c31ce6233949247457))
+* **api:** api update ([a0e254f](https://github.com/context-dot-dev/context-dev-cli/commit/a0e254f262eb656902ba18f4894a29e19c81b3a7))
+* **api:** api update ([a9d6531](https://github.com/context-dot-dev/context-dev-cli/commit/a9d6531da6214adc7f8bd0b0e147c11b0fe9e1d1))
+* **api:** api update ([4d0ddd0](https://github.com/context-dot-dev/context-dev-cli/commit/4d0ddd0adb859f0103c397807ed41afb6190329c))
+* **api:** api update ([6a98028](https://github.com/context-dot-dev/context-dev-cli/commit/6a9802898695bda06edd6aaee2f5ce1b7d90f746))
+* **api:** manual updates ([1aef807](https://github.com/context-dot-dev/context-dev-cli/commit/1aef8079dd1d7f31da5c7f5e65291396c178283b))
+* **api:** manual updates ([85a84a1](https://github.com/context-dot-dev/context-dev-cli/commit/85a84a193090a6f424364c9196f7b24619953635))
+
+
+### Chores
+
+* **internal:** codegen related update ([3c366ea](https://github.com/context-dot-dev/context-dev-cli/commit/3c366ea25e8f6ac84cbbe835a03bf3c8294831dc))
+
 ## 0.7.1 (2026-06-30)
 
 Full Changelog: [v0.7.0...v0.7.1](https://github.com/context-dot-dev/context-dev-cli/compare/v0.7.0...v0.7.1)

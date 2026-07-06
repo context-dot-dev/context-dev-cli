@@ -107,7 +107,6 @@ func init() {
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
-					&aiAIQuery,
 					&aiExtractProduct,
 					&aiExtractProducts,
 				},
@@ -118,11 +117,6 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&brandRetrieve,
-					&brandIdentifyFromTransaction,
-					&brandRetrieveByEmail,
-					&brandRetrieveByIsin,
-					&brandRetrieveByName,
-					&brandRetrieveByTicker,
 					&brandRetrieveSimplified,
 				},
 			},
@@ -141,7 +135,6 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&utilityPrefetch,
-					&utilityPrefetchByEmail,
 				},
 			},
 			{
