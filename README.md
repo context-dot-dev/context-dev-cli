@@ -50,7 +50,8 @@ context-dev [resource] <command> [flags...]
 ```sh
 context-dev brand retrieve \
   --api-key 'My API Key' \
-  --domain REPLACE_ME
+  --domain REPLACE_ME \
+  --type by_domain
 ```
 
 For details about specific commands, use the `--help` flag.
