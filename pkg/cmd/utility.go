@@ -14,7 +14,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var utilityPrefetch = requestflag.WithInnerFlags(cli.Command{
+var utilityPrefetch = cli.Command{
 	Name:    "prefetch",
 	Usage:   "Signal that you may fetch brand data soon to improve latency. The type field\nselects what to prefetch (currently only 'brand') and identifier carries exactly\none lookup key: a domain, or an email whose domain is extracted and validated\n(free email providers and disposable email addresses are not allowed).",
 	Suggest: true,
@@ -39,20 +39,7 @@ var utilityPrefetch = requestflag.WithInnerFlags(cli.Command{
 	},
 	Action:          handleUtilityPrefetch,
 	HideHelpCommand: true,
-}, map[string][]requestflag.HasOuterFlag{
-	"identifier": {
-		&requestflag.InnerFlag[string]{
-			Name:       "identifier.domain",
-			Usage:      "Domain name to prefetch brand data for",
-			InnerField: "domain",
-		},
-		&requestflag.InnerFlag[string]{
-			Name:       "identifier.email",
-			Usage:      "Email address to prefetch brand data for. The domain will be extracted from the email. Free email providers (gmail.com, yahoo.com, etc.) and disposable email addresses are not allowed.",
-			InnerField: "email",
-		},
-	},
-})
+}
 
 func handleUtilityPrefetch(ctx context.Context, cmd *cli.Command) error {
 	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
