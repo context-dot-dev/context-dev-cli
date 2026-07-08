@@ -211,7 +211,7 @@ var monitorsList = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "search-by",
-			Usage:     "Comma-separated fields to search with `q`. Defaults to all of them. Note `query` only exists on semantic monitors.",
+			Usage:     "Comma-separated fields to search with `q`. Defaults to all of them. Note `instructions` only exists on extract monitors.",
 			QueryPath: "search_by",
 		},
 		&requestflag.Flag[string]{
