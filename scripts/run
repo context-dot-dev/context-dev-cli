@@ -5,6 +5,6 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 # Mark the necessary Go modules as private to avoid Go's proxy
-export GOPRIVATE="${GOPRIVATE:+$GOPRIVATE,}github.com/context-dot-dev/context-go-sdk,github.com/stainless-sdks/context.dev-go"
+export GOPRIVATE="${GOPRIVATE:+$GOPRIVATE,}github.com/context-dot-dev/context-go-sdk/v2,github.com/stainless-sdks/context.dev-go/v2"
 
 go run ./cmd/context-dev "$@"

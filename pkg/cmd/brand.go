@@ -8,15 +8,15 @@ import (
 
 	"github.com/context-dot-dev/context-dev-cli/internal/apiquery"
 	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
-	"github.com/context-dot-dev/context-go-sdk"
-	"github.com/context-dot-dev/context-go-sdk/option"
+	"github.com/context-dot-dev/context-go-sdk/v2"
+	"github.com/context-dot-dev/context-go-sdk/v2/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var brandRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Retrieve logos, backdrops, colors, industry, description, and more. Provide\nexactly one lookup identifier in the request body: a domain, company name, email\naddress, stock ticker, or transaction descriptor.",
+	Usage:   "Retrieve logos, backdrops, colors, industry, description, and more. Provide\nexactly one lookup identifier in the request body: a domain, company name, email\naddress, stock ticker, transaction descriptor, or direct URL. Note:\n`by_direct_url` fetches brand data only from the provided URL — not from the\nentire internet.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -74,6 +74,11 @@ var brandRetrieve = cli.Command{
 			Name:     "ticker-exchange",
 			Usage:    "Optional stock exchange for the ticker. Defaults to NASDAQ if not specified.",
 			BodyPath: "ticker_exchange",
+		},
+		&requestflag.Flag[string]{
+			Name:     "direct-url",
+			Usage:    "Full http(s) URL to fetch brand data from (e.g., 'https://stripe.com/enterprise'). Only this URL is fetched — not the entire internet.",
+			BodyPath: "direct_url",
 		},
 		&requestflag.Flag[string]{
 			Name:     "transaction-info",

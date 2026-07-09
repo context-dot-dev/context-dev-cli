@@ -8,8 +8,8 @@ import (
 
 	"github.com/context-dot-dev/context-dev-cli/internal/apiquery"
 	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
-	"github.com/context-dot-dev/context-go-sdk"
-	"github.com/context-dot-dev/context-go-sdk/option"
+	"github.com/context-dot-dev/context-go-sdk/v2"
+	"github.com/context-dot-dev/context-go-sdk/v2/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
@@ -211,7 +211,7 @@ var monitorsList = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "search-by",
-			Usage:     "Comma-separated fields to search with `q`. Defaults to all of them. Note `query` only exists on semantic monitors.",
+			Usage:     "Comma-separated fields to search with `q`. Defaults to all of them. Note `instructions` only exists on extract monitors.",
 			QueryPath: "search_by",
 		},
 		&requestflag.Flag[string]{
