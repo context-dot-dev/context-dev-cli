@@ -708,7 +708,7 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 
 var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-md",
-	Usage:   "Scrapes the given URL into LLM usable Markdown.",
+	Usage:   "Scrapes the given URL into LLM usable Markdown. Inspect key_metadata on JSON\nresponses from a recognized API key; use error_code to distinguish stable\nfailure categories.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
