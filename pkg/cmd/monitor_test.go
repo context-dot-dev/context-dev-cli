@@ -23,7 +23,7 @@ func TestMonitorsCreate(t *testing.T) {
 			"--mode", "web",
 			"--tag", "pricing",
 			"--tag", "competitor",
-			"--webhook", "{url: https://example.com/webhook}",
+			"--webhook", "{url: https://example.com/webhook, events: [change.detected, run.completed]}",
 		)
 	})
 
@@ -46,6 +46,7 @@ func TestMonitorsCreate(t *testing.T) {
 			"--tag", "pricing",
 			"--tag", "competitor",
 			"--webhook.url", "https://example.com/webhook",
+			"--webhook.events", "[change.detected, run.completed]",
 		)
 	})
 
@@ -68,7 +69,10 @@ func TestMonitorsCreate(t *testing.T) {
 			"  - pricing\n" +
 			"  - competitor\n" +
 			"webhook:\n" +
-			"  url: https://example.com/webhook\n")
+			"  url: https://example.com/webhook\n" +
+			"  events:\n" +
+			"    - change.detected\n" +
+			"    - run.completed\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -104,7 +108,7 @@ func TestMonitorsUpdate(t *testing.T) {
 			"--tag", "pricing",
 			"--tag", "competitor",
 			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
-			"--webhook", "{url: https://example.com/webhook}",
+			"--webhook", "{url: https://example.com/webhook, events: [change.detected, run.completed]}",
 		)
 	})
 
@@ -128,6 +132,7 @@ func TestMonitorsUpdate(t *testing.T) {
 			"--tag", "competitor",
 			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
 			"--webhook.url", "https://example.com/webhook",
+			"--webhook.events", "[change.detected, run.completed]",
 		)
 	})
 
@@ -150,7 +155,10 @@ func TestMonitorsUpdate(t *testing.T) {
 			"  url: https://acme.com/pricing\n" +
 			"  normalize_whitespace: true\n" +
 			"webhook:\n" +
-			"  url: https://example.com/webhook\n")
+			"  url: https://example.com/webhook\n" +
+			"  events:\n" +
+			"    - change.detected\n" +
+			"    - run.completed\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
