@@ -80,8 +80,13 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 	"webhook": {
 		&requestflag.InnerFlag[string]{
 			Name:       "webhook.url",
-			Usage:      "Webhook URL called when a change is detected.",
+			Usage:      "Webhook URL events are delivered to.",
 			InnerField: "url",
+		},
+		&requestflag.InnerFlag[[]string]{
+			Name:       "webhook.events",
+			Usage:      "Events delivered to this endpoint. `change.detected` fires only when a run detects a change; `run.completed` fires on every completed run — including runs that detected no change — and embeds the change when one was detected. Defaults to `[\"change.detected\"]` when omitted.",
+			InnerField: "events",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "webhook.secret",
@@ -174,8 +179,13 @@ var monitorsUpdate = requestflag.WithInnerFlags(cli.Command{
 	"webhook": {
 		&requestflag.InnerFlag[string]{
 			Name:       "webhook.url",
-			Usage:      "Webhook URL called when a change is detected.",
+			Usage:      "Webhook URL events are delivered to.",
 			InnerField: "url",
+		},
+		&requestflag.InnerFlag[[]string]{
+			Name:       "webhook.events",
+			Usage:      "Events delivered to this endpoint. `change.detected` fires only when a run detects a change; `run.completed` fires on every completed run — including runs that detected no change — and embeds the change when one was detected. Defaults to `[\"change.detected\"]` when omitted.",
+			InnerField: "events",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "webhook.secret",

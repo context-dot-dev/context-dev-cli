@@ -475,8 +475,8 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "pdf",
-			Usage:    "PDF parsing controls. Use start/end to limit text extraction and OCR to an inclusive 1-based page range.",
-			Default:  map[string]any{"shouldParse": true},
+			Usage:    "PDF parsing controls. Use start/end to limit text extraction and embedded-image detection/OCR to an inclusive 1-based page range.",
+			Default:  map[string]any{"shouldParse": true, "ocr": false},
 			BodyPath: "pdf",
 		},
 		&requestflag.Flag[bool]{
@@ -527,6 +527,11 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Name:       "pdf.end",
 			Usage:      "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to start when both are provided.",
 			InnerField: "end",
+		},
+		&requestflag.InnerFlag[bool]{
+			Name:       "pdf.ocr",
+			Usage:      "When true, detect and OCR images embedded in the selected PDF pages, inserting recognized text at each image's position in page reading order while preserving the PDF text layer. This is separate from automatic scanned-PDF OCR fallback.",
+			InnerField: "ocr",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.should-parse",
@@ -586,8 +591,8 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "pdf",
-			Usage:     "PDF parsing controls. Use start/end to limit text extraction and OCR to an inclusive 1-based page range.",
-			Default:   map[string]any{"shouldParse": true},
+			Usage:     "PDF parsing controls. Use start/end to limit text extraction and embedded-image detection/OCR to an inclusive 1-based page range.",
+			Default:   map[string]any{"shouldParse": true, "ocr": false},
 			QueryPath: "pdf",
 		},
 		&requestflag.Flag[bool]{
@@ -621,6 +626,11 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Name:       "pdf.end",
 			Usage:      "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to start when both are provided.",
 			InnerField: "end",
+		},
+		&requestflag.InnerFlag[bool]{
+			Name:       "pdf.ocr",
+			Usage:      "When true, detect and OCR images embedded in the selected PDF pages, inserting recognized text at each image's position in page reading order while preserving the PDF text layer. This is separate from automatic scanned-PDF OCR fallback.",
+			InnerField: "ocr",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.should-parse",
@@ -708,7 +718,7 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 
 var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-md",
-	Usage:   "Scrapes the given URL into LLM usable Markdown.",
+	Usage:   "Scrapes the given URL into LLM usable Markdown. Inspect key_metadata on JSON\nresponses from a recognized API key; use error_code to distinguish stable\nfailure categories.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -763,8 +773,8 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "pdf",
-			Usage:     "PDF parsing controls. Use start/end to limit text extraction and OCR to an inclusive 1-based page range.",
-			Default:   map[string]any{"shouldParse": true},
+			Usage:     "PDF parsing controls. Use start/end to limit text extraction and embedded-image detection/OCR to an inclusive 1-based page range.",
+			Default:   map[string]any{"shouldParse": true, "ocr": false},
 			QueryPath: "pdf",
 		},
 		&requestflag.Flag[bool]{
@@ -804,6 +814,11 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Name:       "pdf.end",
 			Usage:      "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to start when both are provided.",
 			InnerField: "end",
+		},
+		&requestflag.InnerFlag[bool]{
+			Name:       "pdf.ocr",
+			Usage:      "When true, detect and OCR images embedded in the selected PDF pages, inserting recognized text at each image's position in page reading order while preserving the PDF text layer. This is separate from automatic scanned-PDF OCR fallback.",
+			InnerField: "ocr",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.should-parse",
