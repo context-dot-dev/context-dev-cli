@@ -285,7 +285,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--max-age-ms", "0",
 			"--max-depth", "0",
 			"--max-pages", "1",
-			"--pdf", "{end: 1, shouldParse: true, start: 1}",
+			"--pdf", "{end: 1, ocr: true, shouldParse: true, start: 1}",
 			"--settle-animations=true",
 			"--shorten-base64-images=true",
 			"--stop-after-ms", "10000",
@@ -317,6 +317,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--max-depth", "0",
 			"--max-pages", "1",
 			"--pdf.end", "1",
+			"--pdf.ocr=true",
 			"--pdf.should-parse=true",
 			"--pdf.start", "1",
 			"--settle-animations=true",
@@ -347,6 +348,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"maxPages: 1\n" +
 			"pdf:\n" +
 			"  end: 1\n" +
+			"  ocr: true\n" +
 			"  shouldParse: true\n" +
 			"  start: 1\n" +
 			"settleAnimations: true\n" +
@@ -378,7 +380,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--include-frames=true",
 			"--include-selector", "string",
 			"--max-age-ms", "0",
-			"--pdf", "{end: 1, shouldParse: true, start: 1}",
+			"--pdf", "{end: 1, ocr: true, shouldParse: true, start: 1}",
 			"--settle-animations=true",
 			"--timeout-ms", "1000",
 			"--use-main-content-only=true",
@@ -403,6 +405,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--include-selector", "string",
 			"--max-age-ms", "0",
 			"--pdf.end", "1",
+			"--pdf.ocr=true",
 			"--pdf.should-parse=true",
 			"--pdf.start", "1",
 			"--settle-animations=true",
@@ -469,7 +472,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--include-links=true",
 			"--include-selector", "string",
 			"--max-age-ms", "0",
-			"--pdf", "{end: 1, shouldParse: true, start: 1}",
+			"--pdf", "{end: 1, ocr: true, shouldParse: true, start: 1}",
 			"--settle-animations=true",
 			"--shorten-base64-images=true",
 			"--timeout-ms", "1000",
@@ -497,6 +500,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--include-selector", "string",
 			"--max-age-ms", "0",
 			"--pdf.end", "1",
+			"--pdf.ocr=true",
 			"--pdf.should-parse=true",
 			"--pdf.start", "1",
 			"--settle-animations=true",
