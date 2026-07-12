@@ -85,6 +85,14 @@ func init() {
 		},
 		Commands: []*cli.Command{
 			{
+				Name:     "parse",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&parseHandle,
+				},
+			},
+			{
 				Name:     "web",
 				Category: "API RESOURCE",
 				Suggest:  true,
