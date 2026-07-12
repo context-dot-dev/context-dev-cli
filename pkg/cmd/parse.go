@@ -16,9 +16,9 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var parseHandle = cli.Command{
+var parseHandle = requestflag.WithInnerFlags(cli.Command{
 	Name:    "handle",
-	Usage:   "Converts raw text, source code, web/data, PDF, Microsoft Office, and image bytes\ninto LLM-usable Markdown.",
+	Usage:   "Converts raw text, source code, web/data, PDF, Microsoft Office, and image bytes\ninto LLM-usable Markdown. The base request costs 1 credit. When OCR runs\n(requires ocr=true), the entire call costs 5 credits; ocr=true requests where no\nOCR ends up running still cost 1 credit.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -28,19 +28,9 @@ var parseHandle = cli.Command{
 			FileInput: true,
 		},
 		&requestflag.Flag[string]{
-			Name:      "base-url",
-			Usage:     "Optional HTTP(S) source document URL used to resolve relative links and image references. Relative references remain relative when omitted.",
-			QueryPath: "baseUrl",
-		},
-		&requestflag.Flag[string]{
 			Name:      "extension",
-			Usage:     "Optional file extension hint, such as pdf, docx, xlsx, pptx, html, json, csv, md, py, rtf, jpg, png, or txt.",
+			Usage:     `Optional file extension hint. Case-insensitive; a leading dot is accepted (e.g. ".pdf").`,
 			QueryPath: "extension",
-		},
-		&requestflag.Flag[string]{
-			Name:      "filename",
-			Usage:     "Optional filename hint used to infer the extension when extension is omitted.",
-			QueryPath: "filename",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "include-images",
@@ -56,19 +46,15 @@ var parseHandle = cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:      "ocr",
-			Usage:     "When true for PDF inputs, detect and OCR images embedded in the selected pages, inserting recognized text at each image's position in page reading order while preserving the PDF text layer. pdfStart/pdfEnd limit the inclusive page range. This is separate from automatic scanned-PDF OCR fallback.",
+			Usage:     "Gates all OCR. When true, PDFs get embedded-image OCR (recognized text inserted at each image's position in page reading order, preserving the text layer; pdf.start/pdf.end limit the page range), scanned PDFs with no text layer get full-document OCR, and raster images get their visible text transcribed. When false, no OCR runs: scanned PDFs may yield no content and images return only format/dimension metadata. Calls where OCR actually runs cost 5 credits instead of 1.",
 			Default:   false,
 			QueryPath: "ocr",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "pdf-end",
-			Usage:     "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to pdfStart when both are provided.",
-			QueryPath: "pdfEnd",
-		},
-		&requestflag.Flag[int64]{
-			Name:      "pdf-start",
-			Usage:     "First 1-based PDF page to parse. When omitted, parsing starts at the first page.",
-			QueryPath: "pdfStart",
+		&requestflag.Flag[map[string]any]{
+			Name:      "pdf",
+			Usage:     "PDF page-range controls. Use start/end to limit parsing (and OCR when ocr=true) to an inclusive 1-based page range.",
+			Default:   map[string]any{},
+			QueryPath: "pdf",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "shorten-base64-images",
@@ -85,7 +71,20 @@ var parseHandle = cli.Command{
 	},
 	Action:          handleParseHandle,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"pdf": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "pdf.end",
+			Usage:      "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to start when both are provided.",
+			InnerField: "end",
+		},
+		&requestflag.InnerFlag[int64]{
+			Name:       "pdf.start",
+			Usage:      "First 1-based PDF page to parse. When omitted, parsing starts at the first page.",
+			InnerField: "start",
+		},
+	},
+})
 
 func handleParseHandle(ctx context.Context, cmd *cli.Command) error {
 	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)

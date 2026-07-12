@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/context-dot-dev/context-dev-cli/internal/mocktest"
+	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
 )
 
 func TestParseHandle(t *testing.T) {
@@ -16,14 +17,32 @@ func TestParseHandle(t *testing.T) {
 			"--api-key", "string",
 			"parse", "handle",
 			"--body", mocktest.TestFile(t, "Example data"),
-			"--base-url", "https://example.com",
-			"--extension", "extension",
-			"--filename", "filename",
+			"--extension", "txt",
 			"--include-images=true",
 			"--include-links=true",
 			"--ocr=true",
-			"--pdf-end", "1",
-			"--pdf-start", "1",
+			"--pdf", "{end: 1, start: 1}",
+			"--shorten-base64-images=true",
+			"--use-main-content-only=true",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(parseHandle)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"parse", "handle",
+			"--body", mocktest.TestFile(t, "Example data"),
+			"--extension", "txt",
+			"--include-images=true",
+			"--include-links=true",
+			"--ocr=true",
+			"--pdf.end", "1",
+			"--pdf.start", "1",
 			"--shorten-base64-images=true",
 			"--use-main-content-only=true",
 		)
@@ -36,14 +55,11 @@ func TestParseHandle(t *testing.T) {
 			t, pipeData,
 			"--api-key", "string",
 			"parse", "handle",
-			"--base-url", "https://example.com",
-			"--extension", "extension",
-			"--filename", "filename",
+			"--extension", "txt",
 			"--include-images=true",
 			"--include-links=true",
 			"--ocr=true",
-			"--pdf-end", "1",
-			"--pdf-start", "1",
+			"--pdf", "{end: 1, start: 1}",
 			"--shorten-base64-images=true",
 			"--use-main-content-only=true",
 		)
