@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.11.0 (2026-07-12)
+
+Full Changelog: [v0.10.0...v0.11.0](https://github.com/context-dot-dev/context-dev-cli/compare/v0.10.0...v0.11.0)
+
+### Features
+
+* **api:** api update ([0a8b58e](https://github.com/context-dot-dev/context-dev-cli/commit/0a8b58e4e26794d3c2a67f2d4ff92a85a8396d54))
+* **api:** api update ([16201c6](https://github.com/context-dot-dev/context-dev-cli/commit/16201c67e3dd1e192a0ca50557518d4bf8314580))
+* **api:** api update ([e636b6d](https://github.com/context-dot-dev/context-dev-cli/commit/e636b6d51d9c58cfb2f0845900e22eddcd939d50))
+* **api:** api update ([e16a2a9](https://github.com/context-dot-dev/context-dev-cli/commit/e16a2a9ef5a60f1b135bc081867e7404c1e2c8f5))
+* **api:** manual updates ([d742101](https://github.com/context-dot-dev/context-dev-cli/commit/d74210104ea1f0a693d91aa8f8b53d6ea433ec70))
+
 ## 0.10.0 (2026-07-10)
 
 Full Changelog: [v0.9.0...v0.10.0](https://github.com/context-dot-dev/context-dev-cli/compare/v0.9.0...v0.10.0)
