@@ -31,6 +31,11 @@ var aiExtractProduct = cli.Command{
 			Default:  604800000,
 			BodyPath: "maxAgeMs",
 		},
+		&requestflag.Flag[[]string]{
+			Name:     "tag",
+			Usage:    "Optional caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			BodyPath: "tags",
+		},
 		&requestflag.Flag[int64]{
 			Name:     "timeout-ms",
 			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
@@ -61,6 +66,11 @@ var aiExtractProducts = cli.Command{
 			Name:     "max-products",
 			Usage:    "Maximum number of products to extract.",
 			BodyPath: "maxProducts",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "tag",
+			Usage:    "Optional caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			BodyPath: "tags",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "timeout-ms",

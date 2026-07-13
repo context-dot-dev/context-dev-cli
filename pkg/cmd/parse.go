@@ -62,6 +62,11 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 			Default:   true,
 			QueryPath: "shortenBase64Images",
 		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
+		},
 		&requestflag.Flag[bool]{
 			Name:      "use-main-content-only",
 			Usage:     "Extract only the main content from HTML-like inputs",
