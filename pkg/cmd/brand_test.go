@@ -20,6 +20,8 @@ func TestBrandRetrieve(t *testing.T) {
 			"--force-language", "afrikaans",
 			"--max-age-ms", "0",
 			"--max-speed=true",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -32,6 +34,9 @@ func TestBrandRetrieve(t *testing.T) {
 			"force_language: afrikaans\n" +
 			"maxAgeMs: 0\n" +
 			"maxSpeed: true\n" +
+			"tags:\n" +
+			"  - production\n" +
+			"  - team-alpha\n" +
 			"timeoutMS: 1000\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
@@ -50,6 +55,8 @@ func TestBrandRetrieveSimplified(t *testing.T) {
 			"brand", "retrieve-simplified",
 			"--domain", "domain",
 			"--max-age-ms", "86400000",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})

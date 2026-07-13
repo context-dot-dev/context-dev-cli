@@ -18,6 +18,8 @@ func TestIndustryRetrieveNaics(t *testing.T) {
 			"--input", "input",
 			"--max-results", "1",
 			"--min-results", "1",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -33,6 +35,8 @@ func TestIndustryRetrieveSic(t *testing.T) {
 			"--input", "input",
 			"--max-results", "1",
 			"--min-results", "1",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 			"--type", "original_sic",
 		)

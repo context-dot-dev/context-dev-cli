@@ -17,6 +17,8 @@ func TestUtilityPrefetch(t *testing.T) {
 			"utility", "prefetch",
 			"--identifier", "{domain: domain}",
 			"--type", "brand",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -27,6 +29,9 @@ func TestUtilityPrefetch(t *testing.T) {
 			"identifier:\n" +
 			"  domain: domain\n" +
 			"type: brand\n" +
+			"tags:\n" +
+			"  - production\n" +
+			"  - team-alpha\n" +
 			"timeoutMS: 1000\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,

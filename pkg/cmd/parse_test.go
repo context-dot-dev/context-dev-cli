@@ -23,6 +23,8 @@ func TestParseHandle(t *testing.T) {
 			"--ocr=true",
 			"--pdf", "{end: 1, start: 1}",
 			"--shorten-base64-images=true",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--use-main-content-only=true",
 		)
 	})
@@ -44,6 +46,8 @@ func TestParseHandle(t *testing.T) {
 			"--pdf.end", "1",
 			"--pdf.start", "1",
 			"--shorten-base64-images=true",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--use-main-content-only=true",
 		)
 	})
@@ -61,6 +65,8 @@ func TestParseHandle(t *testing.T) {
 			"--ocr=true",
 			"--pdf", "{end: 1, start: 1}",
 			"--shorten-base64-images=true",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--use-main-content-only=true",
 		)
 	})

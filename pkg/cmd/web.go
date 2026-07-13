@@ -82,6 +82,11 @@ var webExtract = requestflag.WithInnerFlags(cli.Command{
 			Default:  80000,
 			BodyPath: "stopAfterMs",
 		},
+		&requestflag.Flag[[]string]{
+			Name:     "tag",
+			Usage:    "Optional caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			BodyPath: "tags",
+		},
 		&requestflag.Flag[int64]{
 			Name:     "timeout-ms",
 			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
@@ -132,6 +137,11 @@ var webExtractCompetitors = cli.Command{
 			Default:   5,
 			QueryPath: "numCompetitors",
 		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
+		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
 			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
@@ -162,6 +172,11 @@ var webExtractFonts = cli.Command{
 			Usage:     "Maximum age in milliseconds for cached data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Values below 1 day (86400000 ms) are clamped to 1 day; values above 1 year (31536000000 ms) are clamped to 1 year.",
 			Default:   7776000000,
 			QueryPath: "maxAgeMs",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
@@ -198,6 +213,11 @@ var webExtractStyleguide = cli.Command{
 			Usage:     "Maximum age in milliseconds for cached data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Values below 1 day (86400000 ms) are clamped to 1 day; values above 1 year (31536000000 ms) are clamped to 1 year.",
 			Default:   7776000000,
 			QueryPath: "maxAgeMs",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
@@ -260,6 +280,11 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 			Name:      "scroll-offset",
 			Usage:     "Optional vertical scroll offset in pixels for capturing a long page in viewport-sized chunks. When provided, the full page is captured once and the returned image is the viewport-sized slice that begins at this Y offset (e.g. request scrollOffset=0, then 1080, then 2160 to walk a 1920x1080 landing page top to bottom). The final slice may be shorter than the viewport height. Takes precedence over fullScreenshot. Max: 100000.",
 			QueryPath: "scrollOffset",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
@@ -342,6 +367,11 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Name:     "query-fanout",
 			Usage:    "Expand the query into multiple parallel variants for broader recall.",
 			BodyPath: "queryFanout",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "tag",
+			Usage:    "Optional caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			BodyPath: "tags",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "timeout-ms",
@@ -497,6 +527,11 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Default:  80000,
 			BodyPath: "stopAfterMs",
 		},
+		&requestflag.Flag[[]string]{
+			Name:     "tag",
+			Usage:    "Optional caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			BodyPath: "tags",
+		},
 		&requestflag.Flag[int64]{
 			Name:     "timeout-ms",
 			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
@@ -601,6 +636,11 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Default:   false,
 			QueryPath: "settleAnimations",
 		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
+		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
 			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
@@ -677,6 +717,11 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Reuse a cached result this many milliseconds old or newer. Default: 86400000 (1 day). Set to 0 to bypass cache. Maximum: 2592000000 (30 days).",
 			Default:   86400000,
 			QueryPath: "maxAgeMs",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
@@ -789,6 +834,11 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Default:   true,
 			QueryPath: "shortenBase64Images",
 		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
+		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
 			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
@@ -854,6 +904,11 @@ var webWebScrapeSitemap = cli.Command{
 			Usage:     "Maximum number of links to return from the sitemap crawl. Defaults to 10,000. Minimum is 1, maximum is 100,000.",
 			Default:   10000,
 			QueryPath: "maxLinks",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
