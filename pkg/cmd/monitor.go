@@ -202,16 +202,17 @@ var monitorsList = cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "change-detection-type",
-			Usage:     `Allowed values: "exact", "semantic".`,
+			Usage:     "Filter by change detection type.",
 			QueryPath: "change_detection_type",
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "Opaque pagination cursor from a previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Default:   25,
+			Usage:     "Maximum number of items to return per page (1-100). Defaults to 25.",
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
@@ -219,7 +220,7 @@ var monitorsList = cli.Command{
 			Usage:     "Free-text search term, matched against the fields named in `search_by`.",
 			QueryPath: "q",
 		},
-		&requestflag.Flag[[]string]{
+		&requestflag.Flag[any]{
 			Name:      "search-by",
 			Usage:     "Comma-separated fields to search with `q`. Defaults to all of them. Note `instructions` only exists on extract monitors.",
 			QueryPath: "search_by",
@@ -227,12 +228,11 @@ var monitorsList = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "search-type",
 			Usage:     "`prefix` for as-you-type prefix matching (default), `exact` for full-token matching.",
-			Default:   "prefix",
 			QueryPath: "search_type",
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
-			Usage:     "Monitor lifecycle status. `failed` means the most recent run failed (see the monitor's `last_error`); failed monitors keep running on schedule and flip back to `active` on the next successful run. Monitors are auto-`paused` after repeated consecutive failures or insufficient-credit skips; resume by PATCHing status to `active`.",
+			Usage:     "Filter monitors by lifecycle status.",
 			QueryPath: "status",
 		},
 		&requestflag.Flag[string]{
@@ -240,14 +240,14 @@ var monitorsList = cli.Command{
 			Usage:     "Filter to items that have this tag.",
 			QueryPath: "tag",
 		},
-		&requestflag.Flag[[]string]{
+		&requestflag.Flag[any]{
 			Name:      "tag",
 			Usage:     "Comma-separated list of tags to filter by (matches monitors having any of them).",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[string]{
 			Name:      "target-type",
-			Usage:     `Allowed values: "page", "sitemap", "extract".`,
+			Usage:     "Filter by target type.",
 			QueryPath: "target_type",
 		},
 	},
@@ -277,24 +277,27 @@ var monitorsListAccountChanges = cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "change-detection-type",
-			Usage:     `Allowed values: "exact", "semantic".`,
+			Usage:     "Filter by change detection type.",
 			QueryPath: "change_detection_type",
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "Opaque pagination cursor from a previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Default:   25,
+			Usage:     "Maximum number of items to return per page (1-100). Defaults to 25.",
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
 			Name:      "monitor-id",
+			Usage:     "Filter changes to a single monitor.",
 			QueryPath: "monitor_id",
 		},
 		&requestflag.Flag[any]{
 			Name:      "since",
+			Usage:     "Only include items at or after this ISO 8601 timestamp.",
 			QueryPath: "since",
 		},
 		&requestflag.Flag[string]{
@@ -304,11 +307,12 @@ var monitorsListAccountChanges = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "target-type",
-			Usage:     `Allowed values: "page", "sitemap", "extract".`,
+			Usage:     "Filter by target type.",
 			QueryPath: "target_type",
 		},
 		&requestflag.Flag[any]{
 			Name:      "until",
+			Usage:     "Only include items before this ISO 8601 timestamp.",
 			QueryPath: "until",
 		},
 	},
@@ -323,16 +327,17 @@ var monitorsListAccountRuns = cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "Opaque pagination cursor from a previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Default:   25,
+			Usage:     "Maximum number of items to return per page (1-100). Defaults to 25.",
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
-			Usage:     "Lifecycle status of a run. `skipped` runs never executed — see `skip_reason` (insufficient credits, monitor paused, or superseded by a concurrent run).",
+			Usage:     "Filter runs by lifecycle status.",
 			QueryPath: "status",
 		},
 	},
@@ -352,15 +357,17 @@ var monitorsListChanges = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "Opaque pagination cursor from a previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Default:   25,
+			Usage:     "Maximum number of items to return per page (1-100). Defaults to 25.",
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[any]{
 			Name:      "since",
+			Usage:     "Only include items at or after this ISO 8601 timestamp.",
 			QueryPath: "since",
 		},
 		&requestflag.Flag[string]{
@@ -370,6 +377,7 @@ var monitorsListChanges = cli.Command{
 		},
 		&requestflag.Flag[any]{
 			Name:      "until",
+			Usage:     "Only include items before this ISO 8601 timestamp.",
 			QueryPath: "until",
 		},
 	},
@@ -389,16 +397,17 @@ var monitorsListRuns = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "Opaque pagination cursor from a previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Default:   25,
+			Usage:     "Maximum number of items to return per page (1-100). Defaults to 25.",
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
-			Usage:     "Lifecycle status of a run. `skipped` runs never executed — see `skip_reason` (insufficient credits, monitor paused, or superseded by a concurrent run).",
+			Usage:     "Filter runs by lifecycle status.",
 			QueryPath: "status",
 		},
 	},
