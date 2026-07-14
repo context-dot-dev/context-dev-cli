@@ -167,10 +167,10 @@ var webExtractFonts = cli.Command{
 			Usage:     "Domain name to extract fonts from (e.g., 'example.com', 'google.com'). The domain will be automatically normalized and validated. You must provide either 'domain' or 'directUrl', but not both.",
 			QueryPath: "domain",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
-			Usage:     "Maximum age in milliseconds for cached data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Values below 1 day (86400000 ms) are clamped to 1 day; values above 1 year (31536000000 ms) are clamped to 1 year.",
-			Default:   7776000000,
+			Usage:     "Maximum age in milliseconds for cached brand data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Values below 1 day (86400000 ms) are clamped to 1 day; values above 1 year (31536000000 ms) are clamped to 1 year.",
+			Default:   requestflag.Ptr[int64](7776000000),
 			QueryPath: "maxAgeMs",
 		},
 		&requestflag.Flag[[]string]{
@@ -208,10 +208,10 @@ var webExtractStyleguide = cli.Command{
 			Usage:     "Domain name to extract styleguide from (e.g., 'example.com', 'google.com'). The domain will be automatically normalized and validated. You must provide either 'domain' or 'directUrl', but not both.",
 			QueryPath: "domain",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
-			Usage:     "Maximum age in milliseconds for cached data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Values below 1 day (86400000 ms) are clamped to 1 day; values above 1 year (31536000000 ms) are clamped to 1 year.",
-			Default:   7776000000,
+			Usage:     "Maximum age in milliseconds for cached brand data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Values below 1 day (86400000 ms) are clamped to 1 day; values above 1 year (31536000000 ms) are clamped to 1 year.",
+			Default:   requestflag.Ptr[int64](7776000000),
 			QueryPath: "maxAgeMs",
 		},
 		&requestflag.Flag[[]string]{
@@ -241,7 +241,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
-			Usage:     "Two-letter ISO 3166-1 alpha-2 country code for the website request location. When provided, Context.dev fetches the target page from that country.",
+			Usage:     "Two-letter ISO 3166-1 alpha-2 country code identifying a supported Context.dev residential proxy exit location. Must be one of Context.dev's supported countries. When provided, Context.dev fetches the target page from that country.",
 			QueryPath: "country",
 		},
 		&requestflag.Flag[string]{
@@ -259,16 +259,16 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional parameter to determine screenshot type. If 'true', takes a full page screenshot capturing all content. If 'false' or not provided, takes a viewport screenshot (standard browser view).",
 			QueryPath: "fullScreenshot",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:      "handle-cookie-popup",
 			Usage:     "Optional parameter to control cookie/consent popup handling. If 'true', we dismiss cookie banner before capture. If 'false' or not provided, captures the page without that step.",
-			Default:   "false",
+			Default:   false,
 			QueryPath: "handleCookiePopup",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
 			Usage:     "Return a cached screenshot if a prior screenshot for the same parameters exists and is younger than this many milliseconds. Defaults to 1 day (86400000 ms) when omitted. Max is 30 days (2592000000 ms). Set to 0 to always capture fresh.",
-			Default:   86400000,
+			Default:   requestflag.Ptr[int64](86400000),
 			QueryPath: "maxAgeMs",
 		},
 		&requestflag.Flag[string]{
@@ -276,7 +276,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional parameter to specify which page type to screenshot. If provided, the system will scrape the domain's links and use heuristics to find the most appropriate URL for the specified page type (30 supported languages). If not provided, screenshots the main domain landing page. Only applicable when using 'domain', not 'directUrl'.",
 			QueryPath: "page",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "scroll-offset",
 			Usage:     "Optional vertical scroll offset in pixels for capturing a long page in viewport-sized chunks. When provided, the full page is captured once and the returned image is the viewport-sized slice that begins at this Y offset (e.g. request scrollOffset=0, then 1080, then 2160 to walk a 1920x1080 landing page top to bottom). The final slice may be shorter than the viewport height. Takes precedence over fullScreenshot. Max: 100000.",
 			QueryPath: "scrollOffset",
@@ -297,10 +297,10 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 			Default:   map[string]any{"width": 1920, "height": 1080},
 			QueryPath: "viewport",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load before taking the screenshot. Min: 0. Max: 30000 (30 seconds).  Defaults to 3000 ms when omitted.",
-			Default:   3000,
+			Usage:     "Optional browser wait time in milliseconds after initial page load before taking the screenshot. Min: 0. Max: 30000 (30 seconds). Defaults to 3000 ms when omitted.",
+			Default:   requestflag.Ptr[int64](3000),
 			QueryPath: "waitForMs",
 		},
 	},
@@ -594,10 +594,10 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
-			Usage:     "Two-letter ISO 3166-1 alpha-2 country code for the website request location. When provided, Context.dev fetches the target page from that country.",
+			Usage:     "Two-letter ISO 3166-1 alpha-2 country code identifying a supported Context.dev residential proxy exit location. Must be one of Context.dev's supported countries. When provided, Context.dev fetches the target page from that country.",
 			QueryPath: "country",
 		},
-		&requestflag.Flag[[]string]{
+		&requestflag.Flag[any]{
 			Name:      "exclude-selector",
 			Usage:     `CSS selectors to remove from the result. Applied after includeSelectors. Exclusion takes precedence: an element matching both is removed. Examples: "nav", "footer", ".ad-banner", "[aria-hidden=true]".`,
 			QueryPath: "excludeSelectors",
@@ -607,21 +607,21 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional outbound HTTP headers forwarded only to the target URL, sent as deep-object query params such as headers[X-Custom]=value. When provided, caching is bypassed: the result is neither read from nor written to cache.",
 			QueryPath: "headers",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "include-frames",
 			Usage:     "When true, iframes are rendered inline into the returned HTML.",
 			Default:   false,
 			QueryPath: "includeFrames",
 		},
-		&requestflag.Flag[[]string]{
+		&requestflag.Flag[any]{
 			Name:      "include-selector",
 			Usage:     `CSS selectors. When provided, only matching subtrees (and their descendants) are kept and everything else is dropped. When omitted, the entire document is kept. Examples: "article.main", "#content", "[role=main]".`,
 			QueryPath: "includeSelectors",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
 			Usage:     "Return a cached result if a prior scrape for the same parameters exists and is younger than this many milliseconds. Defaults to 1 day (86400000 ms) when omitted. Max is 30 days (2592000000 ms). Set to 0 to always scrape fresh.",
-			Default:   86400000,
+			Default:   requestflag.Ptr[int64](86400000),
 			QueryPath: "maxAgeMs",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -630,7 +630,7 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Default:   map[string]any{"shouldParse": true, "ocr": false},
 			QueryPath: "pdf",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "settle-animations",
 			Usage:     "When true, waits briefly for CSS and transition animations to settle before extracting HTML. Defaults to false. This adds a bit of latency in exchange for more stable output on animated pages.",
 			Default:   false,
@@ -646,15 +646,15 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
 			QueryPath: "timeoutMS",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "use-main-content-only",
 			Usage:     "When true, return only the page's main content in the HTML response, excluding headers, footers, sidebars, and navigation when detectable.",
 			Default:   false,
 			QueryPath: "useMainContentOnly",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load. Min: 0. Max: 30000 (30 seconds). ",
+			Usage:     "Optional browser wait time in milliseconds after initial page load. Min: 0. Max: 30000 (30 seconds).",
 			QueryPath: "waitForMs",
 		},
 	},
@@ -667,12 +667,12 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to start when both are provided.",
 			InnerField: "end",
 		},
-		&requestflag.InnerFlag[bool]{
+		&requestflag.InnerFlag[any]{
 			Name:       "pdf.ocr",
 			Usage:      "When true, detect and OCR images embedded in the selected PDF pages, inserting recognized text at each image's position in page reading order while preserving the PDF text layer. This is separate from automatic scanned-PDF OCR fallback.",
 			InnerField: "ocr",
 		},
-		&requestflag.InnerFlag[bool]{
+		&requestflag.InnerFlag[any]{
 			Name:       "pdf.should-parse",
 			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 WEBSITE_ACCESS_ERROR is returned.",
 			InnerField: "shouldParse",
@@ -696,7 +696,7 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Required:  true,
 			QueryPath: "url",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "dedupe",
 			Usage:     "When true, visually duplicate images are removed: every image is loaded and perceptually hashed, and only the highest-resolution copy of each duplicate group is kept. Images that cannot be downloaded or hashed are kept. Default: false.",
 			Default:   false,
@@ -712,10 +712,10 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional outbound HTTP headers forwarded only to the target URL, sent as deep-object query params such as headers[X-Custom]=value. When provided, caching is bypassed: the result is neither read from nor written to cache.",
 			QueryPath: "headers",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
 			Usage:     "Reuse a cached result this many milliseconds old or newer. Default: 86400000 (1 day). Set to 0 to bypass cache. Maximum: 2592000000 (30 days).",
-			Default:   86400000,
+			Default:   requestflag.Ptr[int64](86400000),
 			QueryPath: "maxAgeMs",
 		},
 		&requestflag.Flag[[]string]{
@@ -728,9 +728,9 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
 			QueryPath: "timeoutMS",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load before collecting images. Min: 0. Max: 30000 (30 seconds). ",
+			Usage:     "Optional browser wait time in milliseconds after initial page load before collecting images. Min: 0. Max: 30000 (30 seconds).",
 			QueryPath: "waitForMs",
 		},
 	},
@@ -738,12 +738,12 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
 	"enrichment": {
-		&requestflag.InnerFlag[bool]{
+		&requestflag.InnerFlag[any]{
 			Name:       "enrichment.classification",
 			Usage:      "Classify each image by visual asset type.",
 			InnerField: "classification",
 		},
-		&requestflag.InnerFlag[bool]{
+		&requestflag.InnerFlag[any]{
 			Name:       "enrichment.hosted-url",
 			Usage:      "Host materializable images on the Brand.dev CDN and return their URL and MIME type.",
 			InnerField: "hostedUrl",
@@ -753,7 +753,7 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Per-image enrichment timeout in milliseconds. Default: 30000. Maximum: 60000.",
 			InnerField: "maxTimePerMs",
 		},
-		&requestflag.InnerFlag[bool]{
+		&requestflag.InnerFlag[any]{
 			Name:       "enrichment.resolution",
 			Usage:      "Measure image width and height when possible.",
 			InnerField: "resolution",
@@ -774,10 +774,10 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
-			Usage:     "Two-letter ISO 3166-1 alpha-2 country code for the website request location. When provided, Context.dev fetches the target page from that country.",
+			Usage:     "Two-letter ISO 3166-1 alpha-2 country code identifying a supported Context.dev residential proxy exit location. Must be one of Context.dev's supported countries. When provided, Context.dev fetches the target page from that country.",
 			QueryPath: "country",
 		},
-		&requestflag.Flag[[]string]{
+		&requestflag.Flag[any]{
 			Name:      "exclude-selector",
 			Usage:     `CSS selectors to remove before conversion to Markdown. Applied after includeSelectors. Exclusion takes precedence: an element matching both is removed. Examples: "nav", "footer", ".ad-banner", "[aria-hidden=true]".`,
 			QueryPath: "excludeSelectors",
@@ -787,33 +787,33 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional outbound HTTP headers forwarded only to the target URL, sent as deep-object query params such as headers[X-Custom]=value. When provided, caching is bypassed: the result is neither read from nor written to cache.",
 			QueryPath: "headers",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "include-frames",
 			Usage:     "When true, the contents of iframes are rendered to Markdown.",
 			Default:   false,
 			QueryPath: "includeFrames",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "include-images",
 			Usage:     "Include image references in Markdown output",
 			Default:   false,
 			QueryPath: "includeImages",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "include-links",
 			Usage:     "Preserve hyperlinks in Markdown output",
 			Default:   true,
 			QueryPath: "includeLinks",
 		},
-		&requestflag.Flag[[]string]{
+		&requestflag.Flag[any]{
 			Name:      "include-selector",
 			Usage:     `CSS selectors. When provided, only matching HTML subtrees (and their descendants) are kept before conversion to Markdown. When omitted, the entire document is kept. Examples: "article.main", "#content", "[role=main]".`,
 			QueryPath: "includeSelectors",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
 			Usage:     "Return a cached result if a prior scrape for the same parameters exists and is younger than this many milliseconds. Defaults to 1 day (86400000 ms) when omitted. Max is 30 days (2592000000 ms). Set to 0 to always scrape fresh.",
-			Default:   86400000,
+			Default:   requestflag.Ptr[int64](86400000),
 			QueryPath: "maxAgeMs",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -822,13 +822,13 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Default:   map[string]any{"shouldParse": true, "ocr": false},
 			QueryPath: "pdf",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "settle-animations",
 			Usage:     "When true, waits briefly for CSS and transition animations to settle before converting to Markdown. Defaults to false. This adds a bit of latency in exchange for more stable output on animated pages.",
 			Default:   false,
 			QueryPath: "settleAnimations",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "shorten-base64-images",
 			Usage:     "Shorten base64-encoded image data in the Markdown output",
 			Default:   true,
@@ -844,15 +844,15 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
 			QueryPath: "timeoutMS",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "use-main-content-only",
 			Usage:     "Extract only the main content of the page, excluding headers, footers, sidebars, and navigation",
 			Default:   false,
 			QueryPath: "useMainContentOnly",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load before converting the page to Markdown. Min: 0. Max: 30000 (30 seconds). ",
+			Usage:     "Optional browser wait time in milliseconds after initial page load before converting the page to Markdown. Min: 0. Max: 30000 (30 seconds).",
 			QueryPath: "waitForMs",
 		},
 	},
@@ -865,12 +865,12 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to start when both are provided.",
 			InnerField: "end",
 		},
-		&requestflag.InnerFlag[bool]{
+		&requestflag.InnerFlag[any]{
 			Name:       "pdf.ocr",
 			Usage:      "When true, detect and OCR images embedded in the selected PDF pages, inserting recognized text at each image's position in page reading order while preserving the PDF text layer. This is separate from automatic scanned-PDF OCR fallback.",
 			InnerField: "ocr",
 		},
-		&requestflag.InnerFlag[bool]{
+		&requestflag.InnerFlag[any]{
 			Name:       "pdf.should-parse",
 			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 WEBSITE_ACCESS_ERROR is returned.",
 			InnerField: "shouldParse",
@@ -904,6 +904,11 @@ var webWebScrapeSitemap = cli.Command{
 			Usage:     "Maximum number of links to return from the sitemap crawl. Defaults to 10,000. Minimum is 1, maximum is 100,000.",
 			Default:   10000,
 			QueryPath: "maxLinks",
+		},
+		&requestflag.Flag[string]{
+			Name:      "sitemap-url",
+			Usage:     "Optional explicit sitemap URL. When provided, exactly this sitemap is crawled instead of discovering the domain's sitemaps.",
+			QueryPath: "sitemapUrl",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",

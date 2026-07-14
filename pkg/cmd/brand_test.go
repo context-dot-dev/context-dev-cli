@@ -15,7 +15,7 @@ func TestBrandRetrieve(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"brand", "retrieve",
-			"--domain", "domain",
+			"--domain", "xxx",
 			"--type", "by_domain",
 			"--force-language", "afrikaans",
 			"--max-age-ms", "0",
@@ -29,7 +29,7 @@ func TestBrandRetrieve(t *testing.T) {
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
-			"domain: domain\n" +
+			"domain: xxx\n" +
 			"type: by_domain\n" +
 			"force_language: afrikaans\n" +
 			"maxAgeMs: 0\n" +
@@ -53,10 +53,11 @@ func TestBrandRetrieveSimplified(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"brand", "retrieve-simplified",
-			"--domain", "domain",
-			"--max-age-ms", "86400000",
+			"--domain", "xxx",
+			"--max-age-ms", "0",
 			"--tag", "production",
 			"--tag", "team-alpha",
+			"--theme", "light",
 			"--timeout-ms", "1000",
 		)
 	})
