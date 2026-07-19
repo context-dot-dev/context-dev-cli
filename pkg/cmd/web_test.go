@@ -26,6 +26,7 @@ func TestWebExtract(t *testing.T) {
 			"--max-depth", "0",
 			"--max-pages", "1",
 			"--pdf", "{end: 1, shouldParse: true, start: 1}",
+			"--settle-animations=true",
 			"--stop-after-ms", "10000",
 			"--tag", "production",
 			"--tag", "team-alpha",
@@ -55,6 +56,7 @@ func TestWebExtract(t *testing.T) {
 			"--pdf.end", "1",
 			"--pdf.should-parse=true",
 			"--pdf.start", "1",
+			"--settle-animations=true",
 			"--stop-after-ms", "10000",
 			"--tag", "production",
 			"--tag", "team-alpha",
@@ -83,6 +85,7 @@ func TestWebExtract(t *testing.T) {
 			"  end: 1\n" +
 			"  shouldParse: true\n" +
 			"  start: 1\n" +
+			"settleAnimations: true\n" +
 			"stopAfterMs: 10000\n" +
 			"tags:\n" +
 			"  - production\n" +
