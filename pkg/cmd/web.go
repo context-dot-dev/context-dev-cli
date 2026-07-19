@@ -76,6 +76,12 @@ var webExtract = requestflag.WithInnerFlags(cli.Command{
 			Default:  map[string]any{"shouldParse": true},
 			BodyPath: "pdf",
 		},
+		&requestflag.Flag[bool]{
+			Name:     "settle-animations",
+			Usage:    "When true, waits briefly for CSS and transition animations to settle before extracting each crawled page. Defaults to false. This adds a bit of latency in exchange for more stable output on animated pages.",
+			Default:  false,
+			BodyPath: "settleAnimations",
+		},
 		&requestflag.Flag[int64]{
 			Name:     "stop-after-ms",
 			Usage:    "Soft time budget for the crawl in milliseconds. Min: 10000 (10s). Max: 110000 (110s). Default: 80000 (80s).",
@@ -84,7 +90,7 @@ var webExtract = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[int64]{
@@ -370,7 +376,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[int64]{
@@ -529,7 +535,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[int64]{
