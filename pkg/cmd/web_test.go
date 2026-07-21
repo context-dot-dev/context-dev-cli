@@ -172,6 +172,7 @@ func TestWebScreenshot(t *testing.T) {
 			"--timeout-ms", "1",
 			"--viewport", "{height: 240, width: 240}",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -199,6 +200,7 @@ func TestWebScreenshot(t *testing.T) {
 			"--viewport.height", "240",
 			"--viewport.width", "240",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 }
@@ -322,6 +324,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--url-regex", "^https?://[^/]+/blog/",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -358,6 +361,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--url-regex", "^https?://[^/]+/blog/",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -391,7 +395,8 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"timeoutMS: 1000\n" +
 			"urlRegex: ^https?://[^/]+/blog/\n" +
 			"useMainContentOnly: true\n" +
-			"waitForMs: 0\n")
+			"waitForMs: 0\n" +
+			"zdr: enabled\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -421,6 +426,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--timeout-ms", "1",
 			"--use-main-content-only", "'true'",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -450,6 +456,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--timeout-ms", "1",
 			"--use-main-content-only", "'true'",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 }
@@ -522,6 +529,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--timeout-ms", "1",
 			"--use-main-content-only", "'true'",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -554,6 +562,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--timeout-ms", "1",
 			"--use-main-content-only", "'true'",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 }
@@ -573,6 +582,7 @@ func TestWebWebScrapeSitemap(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-ms", "1",
 			"--url-regex", "^https?://[^/]+/blog/",
+			"--zdr", "enabled",
 		)
 	})
 }

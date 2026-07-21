@@ -27,6 +27,7 @@ func TestParseHandle(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--use-main-content-only", "'true'",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -51,6 +52,7 @@ func TestParseHandle(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--use-main-content-only", "'true'",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -71,6 +73,7 @@ func TestParseHandle(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--use-main-content-only", "'true'",
+			"--zdr", "enabled",
 		)
 	})
 }

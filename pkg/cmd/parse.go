@@ -78,6 +78,12 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 			Default:   false,
 			QueryPath: "useMainContentOnly",
 		},
+		&requestflag.Flag[string]{
+			Name:      "zdr",
+			Usage:     "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Default:   "disabled",
+			QueryPath: "zdr",
+		},
 	},
 	Action:          handleParseHandle,
 	HideHelpCommand: true,
