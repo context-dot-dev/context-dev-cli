@@ -270,6 +270,35 @@ var monitorsDelete = cli.Command{
 	HideHelpCommand: true,
 }
 
+var monitorsGetCreditUsage = cli.Command{
+	Name:    "get-credit-usage",
+	Usage:   "Returns credits charged per monitor over an optional [since, until] window,\nnewest spenders first.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[any]{
+			Name:      "since",
+			Usage:     "Only include items at or after this ISO 8601 timestamp.",
+			QueryPath: "since",
+		},
+		&requestflag.Flag[any]{
+			Name:      "until",
+			Usage:     "Only include items before this ISO 8601 timestamp.",
+			QueryPath: "until",
+		},
+	},
+	Action:          handleMonitorsGetCreditUsage,
+	HideHelpCommand: true,
+}
+
+var monitorsGetLimits = cli.Command{
+	Name:            "get-limits",
+	Usage:           "Returns how many monitors the account has and the maximum it allows.",
+	Suggest:         true,
+	Flags:           []cli.Flag{},
+	Action:          handleMonitorsGetLimits,
+	HideHelpCommand: true,
+}
+
 var monitorsListAccountChanges = cli.Command{
 	Name:    "list-account-changes",
 	Usage:   "Returns an account-wide feed of detected changes across monitors.",
@@ -656,6 +685,86 @@ func handleMonitorsDelete(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "monitors delete",
+		Transform:      transform,
+	})
+}
+
+func handleMonitorsGetCreditUsage(ctx context.Context, cmd *cli.Command) error {
+	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := contextdev.MonitorGetCreditUsageParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Monitors.GetCreditUsage(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "monitors get-credit-usage",
+		Transform:      transform,
+	})
+}
+
+func handleMonitorsGetLimits(ctx context.Context, cmd *cli.Command) error {
+	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Monitors.GetLimits(ctx, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "monitors get-limits",
 		Transform:      transform,
 	})
 }
