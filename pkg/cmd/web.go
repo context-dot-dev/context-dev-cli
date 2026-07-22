@@ -601,7 +601,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 
 var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-html",
-	Usage:   "Scrapes the given URL and returns the raw HTML content of the page.",
+	Usage:   "Scrapes the given URL and returns the raw HTML content of the page. The base\nrequest costs 1 credit; requests with browser actions cost 2 credits.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -609,6 +609,11 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Full URL to scrape (must include http:// or https:// protocol)",
 			Required:  true,
 			QueryPath: "url",
+		},
+		&requestflag.Flag[any]{
+			Name:      "action",
+			Usage:     "Optional browser actions executed in array order after the page loads and before content is captured. Requires a paid plan. Send a JSON array in the query parameter. Maximum: 5 actions.",
+			QueryPath: "actions",
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
@@ -711,7 +716,7 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 
 var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-images",
-	Usage:   "Extract image assets from a web page, including standard URLs, inline SVGs, data\nURIs, responsive image sources, metadata, CSS backgrounds, video posters, and\nembeds. The base request costs 1 credit. When enrichment is enabled, the entire\ncall costs 5 credits.",
+	Usage:   "Extract image assets from a web page, including standard URLs, inline SVGs, data\nURIs, responsive image sources, metadata, CSS backgrounds, video posters, and\nembeds. The base request costs 1 credit, or 2 credits with browser actions. When\nenrichment is enabled, the entire call costs 5 credits, including requests that\nalso use actions.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -719,6 +724,11 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Page URL to inspect. Must include http:// or https://.",
 			Required:  true,
 			QueryPath: "url",
+		},
+		&requestflag.Flag[any]{
+			Name:      "action",
+			Usage:     "Optional browser actions executed in array order after the page loads and before content is captured. Requires a paid plan. Send a JSON array in the query parameter. Maximum: 5 actions.",
+			QueryPath: "actions",
 		},
 		&requestflag.Flag[any]{
 			Name:      "dedupe",
@@ -795,6 +805,11 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Full URL to scrape into LLM usable Markdown (must include http:// or https:// protocol)",
 			Required:  true,
 			QueryPath: "url",
+		},
+		&requestflag.Flag[any]{
+			Name:      "action",
+			Usage:     "Optional browser actions executed in array order after the page loads and before content is captured. Requires a paid plan. Send a JSON array in the query parameter. Maximum: 5 actions.",
+			QueryPath: "actions",
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
