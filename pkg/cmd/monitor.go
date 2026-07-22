@@ -49,7 +49,7 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "User-defined tags for grouping and filtering monitors and their changes.",
+			Usage:    "User-defined tags for grouping and filtering monitors and their changes. Duplicates are removed.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -142,7 +142,7 @@ var monitorsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "User-defined tags for grouping and filtering monitors and their changes.",
+			Usage:    "User-defined tags for grouping and filtering monitors and their changes. Duplicates are removed.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
