@@ -178,12 +178,12 @@ func TestMonitorsList(t *testing.T) {
 			"--change-detection-type", "exact",
 			"--cursor", "cursor",
 			"--limit", "1",
-			"--q", "q",
-			"--search-by", "name",
+			"--q", "pricing",
+			"--search-by", "[name]",
 			"--search-type", "exact",
 			"--status", "active",
-			"--tag", "tag",
-			"--tag", "string",
+			"--tag", "pricing",
+			"--tag", "[x]",
 			"--target-type", "page",
 		)
 	})
@@ -201,6 +201,30 @@ func TestMonitorsDelete(t *testing.T) {
 	})
 }
 
+func TestMonitorsGetCreditUsage(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"monitors", "get-credit-usage",
+			"--since", "'2026-06-01T00:00:00Z'",
+			"--until", "'2026-06-28T00:00:00Z'",
+		)
+	})
+}
+
+func TestMonitorsGetLimits(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"monitors", "get-limits",
+		)
+	})
+}
+
 func TestMonitorsListAccountChanges(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
@@ -211,11 +235,11 @@ func TestMonitorsListAccountChanges(t *testing.T) {
 			"--change-detection-type", "exact",
 			"--cursor", "cursor",
 			"--limit", "1",
-			"--monitor-id", "monitor_id",
-			"--since", "'2019-12-27T18:11:19.117Z'",
-			"--tag", "tag",
+			"--monitor-id", "mon_123",
+			"--since", "'2026-06-01T00:00:00Z'",
+			"--tag", "pricing",
 			"--target-type", "page",
-			"--until", "'2019-12-27T18:11:19.117Z'",
+			"--until", "'2026-06-28T00:00:00Z'",
 		)
 	})
 }
@@ -244,9 +268,9 @@ func TestMonitorsListChanges(t *testing.T) {
 			"--monitor-id", "mon_123",
 			"--cursor", "cursor",
 			"--limit", "1",
-			"--since", "'2019-12-27T18:11:19.117Z'",
-			"--tag", "tag",
-			"--until", "'2019-12-27T18:11:19.117Z'",
+			"--since", "'2026-06-01T00:00:00Z'",
+			"--tag", "pricing",
+			"--until", "'2026-06-28T00:00:00Z'",
 		)
 	})
 }

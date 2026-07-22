@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.1.0 (2026-07-22)
+
+Full Changelog: [v1.0.0...v1.1.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.0.0...v1.1.0)
+
+### Features
+
+* **api:** api update ([cd4503b](https://github.com/context-dot-dev/context-dev-cli/commit/cd4503b7722a10614512c2d1ea9c3dffc670f434))
+* **api:** api update ([af90e28](https://github.com/context-dot-dev/context-dev-cli/commit/af90e280f6fe278065c1d873be594fae7f9d61a4))
+* **api:** api update ([5f2e61b](https://github.com/context-dot-dev/context-dev-cli/commit/5f2e61b15cc331ec398111cac0d43b409826da40))
+* **api:** api update ([e21218b](https://github.com/context-dot-dev/context-dev-cli/commit/e21218b5cb90979c8a2ef32539859d671a33967a))
+* **api:** api update ([21c81e4](https://github.com/context-dot-dev/context-dev-cli/commit/21c81e4faf5385a5c02c21585524d8d04794f598))
+* **api:** api update ([0468ad1](https://github.com/context-dot-dev/context-dev-cli/commit/0468ad177e1bfb23732f4bda41ad34fb37f972b4))
+* **api:** api update ([349f90c](https://github.com/context-dot-dev/context-dev-cli/commit/349f90c23ba4ac35c8c5dee81060a495475435c3))
+* **api:** manual updates ([e02d02e](https://github.com/context-dot-dev/context-dev-cli/commit/e02d02e69c215116d5d3e1aec5cab2be279da032))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([d55d529](https://github.com/context-dot-dev/context-dev-cli/commit/d55d5297e92d05dc7bc507f2ac9f3c02f1f9d178))
+
 ## 1.0.0 (2026-07-12)
 
 Full Changelog: [v0.11.0...v1.0.0](https://github.com/context-dot-dev/context-dev-cli/compare/v0.11.0...v1.0.0)

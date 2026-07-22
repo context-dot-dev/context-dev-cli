@@ -37,6 +37,11 @@ var industryRetrieveNaics = cli.Command{
 			Default:   1,
 			QueryPath: "minResults",
 		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
+		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",
 			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
@@ -69,6 +74,11 @@ var industryRetrieveSic = cli.Command{
 			Usage:     "Minimum number of SIC codes to return. Must be at least 1. Defaults to 1.",
 			Default:   1,
 			QueryPath: "minResults",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",

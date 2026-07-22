@@ -30,7 +30,7 @@ var brandRetrieve = cli.Command{
 			Required: true,
 			BodyPath: "type",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[*string]{
 			Name:     "force-language",
 			Usage:    `Allowed values: "afrikaans", "albanian", "amharic", "arabic", "armenian", "assamese", "aymara", "azeri", "basque", "belarusian", "bengali", "bosnian", "bulgarian", "burmese", "cantonese", "catalan", "cebuano", "chinese", "corsican", "croatian", "czech", "danish", "dutch", "english", "esperanto", "estonian", "farsi", "fijian", "finnish", "french", "galician", "georgian", "german", "greek", "guarani", "gujarati", "haitian-creole", "hausa", "hawaiian", "hebrew", "hindi", "hmong", "hungarian", "icelandic", "igbo", "indonesian", "irish", "italian", "japanese", "javanese", "kannada", "kazakh", "khmer", "kinyarwanda", "korean", "kurdish", "kyrgyz", "lao", "latin", "latvian", "lingala", "lithuanian", "luxembourgish", "macedonian", "malagasy", "malay", "malayalam", "maltese", "maori", "marathi", "mongolian", "nepali", "norwegian", "odia", "oromo", "pashto", "pidgin", "polish", "portuguese", "punjabi", "quechua", "romanian", "russian", "samoan", "scottish-gaelic", "serbian", "sesotho", "shona", "sindhi", "sinhala", "slovak", "slovene", "somali", "spanish", "sundanese", "swahili", "swedish", "tagalog", "tajik", "tamil", "tatar", "telugu", "thai", "tibetan", "tigrinya", "tongan", "tswana", "turkish", "turkmen", "ukrainian", "urdu", "uyghur", "uzbek", "vietnamese", "welsh", "wolof", "xhosa", "yiddish", "yoruba", "zulu".`,
 			BodyPath: "force_language",
@@ -44,6 +44,11 @@ var brandRetrieve = cli.Command{
 			Name:     "max-speed",
 			Usage:    "Optional parameter to optimize the API call for maximum speed. When set to true, the API will skip time-consuming operations for faster response at the cost of less comprehensive data.",
 			BodyPath: "maxSpeed",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "tag",
+			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			BodyPath: "tags",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "timeout-ms",
@@ -95,12 +100,12 @@ var brandRetrieve = cli.Command{
 			Usage:    "When set to true, the API performs additional verification to ensure the identified brand matches the transaction with high confidence.",
 			BodyPath: "high_confidence_only",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[any]{
 			Name:     "mcc",
 			Usage:    "Optional Merchant Category Code (MCC) to help identify the business category or industry.",
 			BodyPath: "mcc",
 		},
-		&requestflag.Flag[float64]{
+		&requestflag.Flag[any]{
 			Name:     "phone",
 			Usage:    "Optional phone number from the transaction to help verify brand match.",
 			BodyPath: "phone",
@@ -121,11 +126,21 @@ var brandRetrieveSimplified = cli.Command{
 			Required:  true,
 			QueryPath: "domain",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
 			Usage:     "Maximum age in milliseconds for cached brand data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Values below 1 day (86400000 ms) are clamped to 1 day; values above 1 year (31536000000 ms) are clamped to 1 year.",
-			Default:   7776000000,
+			Default:   requestflag.Ptr[int64](7776000000),
 			QueryPath: "maxAgeMs",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
+		},
+		&requestflag.Flag[string]{
+			Name:      "theme",
+			Usage:     "Optional theme preference used when selecting brand assets.",
+			QueryPath: "theme",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "timeout-ms",

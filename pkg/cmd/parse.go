@@ -18,7 +18,7 @@ import (
 
 var parseHandle = requestflag.WithInnerFlags(cli.Command{
 	Name:    "handle",
-	Usage:   "Converts raw text, source code, web/data, PDF, Microsoft Office, and image bytes\ninto LLM-usable Markdown. The base request costs 1 credit. When OCR runs\n(requires ocr=true), the entire call costs 5 credits; ocr=true requests where no\nOCR ends up running still cost 1 credit.",
+	Usage:   "Converts raw text, source code, web/data, PDF, Microsoft Office, and image bytes\ninto LLM-usable Markdown.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -28,45 +28,61 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 			FileInput: true,
 		},
 		&requestflag.Flag[string]{
+			Name:      "client",
+			Usage:     "Optional client identifier used for usage attribution.",
+			QueryPath: "client",
+		},
+		&requestflag.Flag[string]{
 			Name:      "extension",
-			Usage:     `Optional file extension hint. Case-insensitive; a leading dot is accepted (e.g. ".pdf").`,
+			Usage:     "Optional file extension hint, such as pdf, docx, xlsx, pptx, html, json, csv, md, py, rtf, jpg, png, or txt.",
 			QueryPath: "extension",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "include-images",
 			Usage:     "Include image references in Markdown output",
 			Default:   false,
 			QueryPath: "includeImages",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "include-links",
 			Usage:     "Preserve hyperlinks in Markdown output",
 			Default:   true,
 			QueryPath: "includeLinks",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "ocr",
-			Usage:     "Gates all OCR. When true, PDFs get embedded-image OCR (recognized text inserted at each image's position in page reading order, preserving the text layer; pdf.start/pdf.end limit the page range), scanned PDFs with no text layer get full-document OCR, and raster images get their visible text transcribed. When false, no OCR runs: scanned PDFs may yield no content and images return only format/dimension metadata. Calls where OCR actually runs cost 5 credits instead of 1.",
+			Usage:     "When true for PDF inputs, detect and OCR images embedded in the selected pages, inserting recognized text at each image's position in page reading order while preserving the PDF text layer. pdf.start/pdf.end limit the inclusive page range. When false, all OCR is disabled, including the automatic scanned-PDF fallback.",
 			Default:   false,
 			QueryPath: "ocr",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "pdf",
-			Usage:     "PDF page-range controls. Use start/end to limit parsing (and OCR when ocr=true) to an inclusive 1-based page range.",
+			Usage:     `PDF page-range options as a JSON object, e.g. {"start": 2, "end": 5}.`,
 			Default:   map[string]any{},
 			QueryPath: "pdf",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:      "shorten-base64-images",
 			Usage:     "Shorten base64-encoded image data in the Markdown output",
 			Default:   true,
 			QueryPath: "shortenBase64Images",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
+		},
+		&requestflag.Flag[any]{
 			Name:      "use-main-content-only",
 			Usage:     "Extract only the main content from HTML-like inputs",
 			Default:   false,
 			QueryPath: "useMainContentOnly",
+		},
+		&requestflag.Flag[string]{
+			Name:      "zdr",
+			Usage:     "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Default:   "disabled",
+			QueryPath: "zdr",
 		},
 	},
 	Action:          handleParseHandle,

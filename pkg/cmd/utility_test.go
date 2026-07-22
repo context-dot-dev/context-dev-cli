@@ -15,8 +15,10 @@ func TestUtilityPrefetch(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"utility", "prefetch",
-			"--identifier", "{domain: domain}",
+			"--identifier", "{domain: xxx}",
 			"--type", "brand",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -25,8 +27,11 @@ func TestUtilityPrefetch(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"identifier:\n" +
-			"  domain: domain\n" +
+			"  domain: xxx\n" +
 			"type: brand\n" +
+			"tags:\n" +
+			"  - production\n" +
+			"  - team-alpha\n" +
 			"timeoutMS: 1000\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,

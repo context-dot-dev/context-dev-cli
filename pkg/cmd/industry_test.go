@@ -15,9 +15,11 @@ func TestIndustryRetrieveNaics(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"industry", "retrieve-naics",
-			"--input", "input",
+			"--input", "xxxx",
 			"--max-results", "1",
 			"--min-results", "1",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -30,9 +32,11 @@ func TestIndustryRetrieveSic(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"industry", "retrieve-sic",
-			"--input", "input",
+			"--input", "xxxx",
 			"--max-results", "1",
 			"--min-results", "1",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 			"--type", "original_sic",
 		)

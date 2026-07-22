@@ -17,6 +17,8 @@ func TestAIExtractProduct(t *testing.T) {
 			"ai", "extract-product",
 			"--url", "https://example.com",
 			"--max-age-ms", "0",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -26,6 +28,9 @@ func TestAIExtractProduct(t *testing.T) {
 		pipeData := []byte("" +
 			"url: https://example.com\n" +
 			"maxAgeMs: 0\n" +
+			"tags:\n" +
+			"  - production\n" +
+			"  - team-alpha\n" +
 			"timeoutMS: 1000\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
@@ -45,6 +50,8 @@ func TestAIExtractProducts(t *testing.T) {
 			"--domain", "domain",
 			"--max-age-ms", "0",
 			"--max-products", "1",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -55,6 +62,9 @@ func TestAIExtractProducts(t *testing.T) {
 			"domain: domain\n" +
 			"maxAgeMs: 0\n" +
 			"maxProducts: 1\n" +
+			"tags:\n" +
+			"  - production\n" +
+			"  - team-alpha\n" +
 			"timeoutMS: 1000\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,

@@ -155,6 +155,8 @@ func init() {
 					&monitorsUpdate,
 					&monitorsList,
 					&monitorsDelete,
+					&monitorsGetCreditUsage,
+					&monitorsGetLimits,
 					&monitorsListAccountChanges,
 					&monitorsListAccountRuns,
 					&monitorsListChanges,

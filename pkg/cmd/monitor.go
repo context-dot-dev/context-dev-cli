@@ -49,7 +49,7 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "User-defined tags for grouping and filtering monitors and their changes.",
+			Usage:    "User-defined tags for grouping and filtering monitors and their changes. Duplicates are removed.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -142,7 +142,7 @@ var monitorsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "User-defined tags for grouping and filtering monitors and their changes.",
+			Usage:    "User-defined tags for grouping and filtering monitors and their changes. Duplicates are removed.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -202,16 +202,17 @@ var monitorsList = cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "change-detection-type",
-			Usage:     `Allowed values: "exact", "semantic".`,
+			Usage:     "Filter by change detection type.",
 			QueryPath: "change_detection_type",
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "Opaque pagination cursor from a previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Default:   25,
+			Usage:     "Maximum number of items to return per page (1-100). Defaults to 25.",
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
@@ -219,7 +220,7 @@ var monitorsList = cli.Command{
 			Usage:     "Free-text search term, matched against the fields named in `search_by`.",
 			QueryPath: "q",
 		},
-		&requestflag.Flag[[]string]{
+		&requestflag.Flag[any]{
 			Name:      "search-by",
 			Usage:     "Comma-separated fields to search with `q`. Defaults to all of them. Note `instructions` only exists on extract monitors.",
 			QueryPath: "search_by",
@@ -227,12 +228,11 @@ var monitorsList = cli.Command{
 		&requestflag.Flag[string]{
 			Name:      "search-type",
 			Usage:     "`prefix` for as-you-type prefix matching (default), `exact` for full-token matching.",
-			Default:   "prefix",
 			QueryPath: "search_type",
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
-			Usage:     "Monitor lifecycle status. `failed` means the most recent run failed (see the monitor's `last_error`); failed monitors keep running on schedule and flip back to `active` on the next successful run. Monitors are auto-`paused` after repeated consecutive failures or insufficient-credit skips; resume by PATCHing status to `active`.",
+			Usage:     "Filter monitors by lifecycle status.",
 			QueryPath: "status",
 		},
 		&requestflag.Flag[string]{
@@ -240,14 +240,14 @@ var monitorsList = cli.Command{
 			Usage:     "Filter to items that have this tag.",
 			QueryPath: "tag",
 		},
-		&requestflag.Flag[[]string]{
+		&requestflag.Flag[any]{
 			Name:      "tag",
 			Usage:     "Comma-separated list of tags to filter by (matches monitors having any of them).",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[string]{
 			Name:      "target-type",
-			Usage:     `Allowed values: "page", "sitemap", "extract".`,
+			Usage:     "Filter by target type.",
 			QueryPath: "target_type",
 		},
 	},
@@ -270,6 +270,35 @@ var monitorsDelete = cli.Command{
 	HideHelpCommand: true,
 }
 
+var monitorsGetCreditUsage = cli.Command{
+	Name:    "get-credit-usage",
+	Usage:   "Returns credits charged per monitor over an optional [since, until] window,\nnewest spenders first.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[any]{
+			Name:      "since",
+			Usage:     "Only include items at or after this ISO 8601 timestamp.",
+			QueryPath: "since",
+		},
+		&requestflag.Flag[any]{
+			Name:      "until",
+			Usage:     "Only include items before this ISO 8601 timestamp.",
+			QueryPath: "until",
+		},
+	},
+	Action:          handleMonitorsGetCreditUsage,
+	HideHelpCommand: true,
+}
+
+var monitorsGetLimits = cli.Command{
+	Name:            "get-limits",
+	Usage:           "Returns how many monitors the account has and the maximum it allows.",
+	Suggest:         true,
+	Flags:           []cli.Flag{},
+	Action:          handleMonitorsGetLimits,
+	HideHelpCommand: true,
+}
+
 var monitorsListAccountChanges = cli.Command{
 	Name:    "list-account-changes",
 	Usage:   "Returns an account-wide feed of detected changes across monitors.",
@@ -277,24 +306,27 @@ var monitorsListAccountChanges = cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "change-detection-type",
-			Usage:     `Allowed values: "exact", "semantic".`,
+			Usage:     "Filter by change detection type.",
 			QueryPath: "change_detection_type",
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "Opaque pagination cursor from a previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Default:   25,
+			Usage:     "Maximum number of items to return per page (1-100). Defaults to 25.",
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
 			Name:      "monitor-id",
+			Usage:     "Filter changes to a single monitor.",
 			QueryPath: "monitor_id",
 		},
 		&requestflag.Flag[any]{
 			Name:      "since",
+			Usage:     "Only include items at or after this ISO 8601 timestamp.",
 			QueryPath: "since",
 		},
 		&requestflag.Flag[string]{
@@ -304,11 +336,12 @@ var monitorsListAccountChanges = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "target-type",
-			Usage:     `Allowed values: "page", "sitemap", "extract".`,
+			Usage:     "Filter by target type.",
 			QueryPath: "target_type",
 		},
 		&requestflag.Flag[any]{
 			Name:      "until",
+			Usage:     "Only include items before this ISO 8601 timestamp.",
 			QueryPath: "until",
 		},
 	},
@@ -323,16 +356,17 @@ var monitorsListAccountRuns = cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "Opaque pagination cursor from a previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Default:   25,
+			Usage:     "Maximum number of items to return per page (1-100). Defaults to 25.",
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
-			Usage:     "Lifecycle status of a run. `skipped` runs never executed — see `skip_reason` (insufficient credits, monitor paused, or superseded by a concurrent run).",
+			Usage:     "Filter runs by lifecycle status.",
 			QueryPath: "status",
 		},
 	},
@@ -352,15 +386,17 @@ var monitorsListChanges = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "Opaque pagination cursor from a previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Default:   25,
+			Usage:     "Maximum number of items to return per page (1-100). Defaults to 25.",
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[any]{
 			Name:      "since",
+			Usage:     "Only include items at or after this ISO 8601 timestamp.",
 			QueryPath: "since",
 		},
 		&requestflag.Flag[string]{
@@ -370,6 +406,7 @@ var monitorsListChanges = cli.Command{
 		},
 		&requestflag.Flag[any]{
 			Name:      "until",
+			Usage:     "Only include items before this ISO 8601 timestamp.",
 			QueryPath: "until",
 		},
 	},
@@ -389,16 +426,17 @@ var monitorsListRuns = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "Opaque pagination cursor from a previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Default:   25,
+			Usage:     "Maximum number of items to return per page (1-100). Defaults to 25.",
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
-			Usage:     "Lifecycle status of a run. `skipped` runs never executed — see `skip_reason` (insufficient credits, monitor paused, or superseded by a concurrent run).",
+			Usage:     "Filter runs by lifecycle status.",
 			QueryPath: "status",
 		},
 	},
@@ -647,6 +685,86 @@ func handleMonitorsDelete(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "monitors delete",
+		Transform:      transform,
+	})
+}
+
+func handleMonitorsGetCreditUsage(ctx context.Context, cmd *cli.Command) error {
+	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := contextdev.MonitorGetCreditUsageParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Monitors.GetCreditUsage(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "monitors get-credit-usage",
+		Transform:      transform,
+	})
+}
+
+func handleMonitorsGetLimits(ctx context.Context, cmd *cli.Command) error {
+	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Monitors.GetLimits(ctx, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "monitors get-limits",
 		Transform:      transform,
 	})
 }

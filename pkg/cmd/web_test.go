@@ -26,7 +26,10 @@ func TestWebExtract(t *testing.T) {
 			"--max-depth", "0",
 			"--max-pages", "1",
 			"--pdf", "{end: 1, shouldParse: true, start: 1}",
+			"--settle-animations=true",
 			"--stop-after-ms", "10000",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 			"--wait-for-ms", "0",
 		)
@@ -53,7 +56,10 @@ func TestWebExtract(t *testing.T) {
 			"--pdf.end", "1",
 			"--pdf.should-parse=true",
 			"--pdf.start", "1",
+			"--settle-animations=true",
 			"--stop-after-ms", "10000",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 			"--wait-for-ms", "0",
 		)
@@ -79,7 +85,11 @@ func TestWebExtract(t *testing.T) {
 			"  end: 1\n" +
 			"  shouldParse: true\n" +
 			"  start: 1\n" +
+			"settleAnimations: true\n" +
 			"stopAfterMs: 10000\n" +
+			"tags:\n" +
+			"  - production\n" +
+			"  - team-alpha\n" +
 			"timeoutMS: 1000\n" +
 			"waitForMs: 0\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
@@ -99,6 +109,8 @@ func TestWebExtractCompetitors(t *testing.T) {
 			"web", "extract-competitors",
 			"--domain", "xxx",
 			"--num-competitors", "1",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -112,8 +124,10 @@ func TestWebExtractFonts(t *testing.T) {
 			"--api-key", "string",
 			"web", "extract-fonts",
 			"--direct-url", "https://example.com",
-			"--domain", "domain",
-			"--max-age-ms", "86400000",
+			"--domain", "xxx",
+			"--max-age-ms", "0",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -128,8 +142,10 @@ func TestWebExtractStyleguide(t *testing.T) {
 			"web", "extract-styleguide",
 			"--color-scheme", "light",
 			"--direct-url", "https://example.com",
-			"--domain", "domain",
-			"--max-age-ms", "86400000",
+			"--domain", "xxx",
+			"--max-age-ms", "0",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -145,15 +161,18 @@ func TestWebScreenshot(t *testing.T) {
 			"--color-scheme", "light",
 			"--country", "de",
 			"--direct-url", "https://example.com",
-			"--domain", "domain",
+			"--domain", "xxx",
 			"--full-screenshot", "true",
-			"--handle-cookie-popup", "true",
+			"--handle-cookie-popup", "'true'",
 			"--max-age-ms", "0",
 			"--page", "login",
 			"--scroll-offset", "0",
-			"--timeout-ms", "1000",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1",
 			"--viewport", "{height: 240, width: 240}",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -169,16 +188,19 @@ func TestWebScreenshot(t *testing.T) {
 			"--color-scheme", "light",
 			"--country", "de",
 			"--direct-url", "https://example.com",
-			"--domain", "domain",
+			"--domain", "xxx",
 			"--full-screenshot", "true",
-			"--handle-cookie-popup", "true",
+			"--handle-cookie-popup", "'true'",
 			"--max-age-ms", "0",
 			"--page", "login",
 			"--scroll-offset", "0",
-			"--timeout-ms", "1000",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1",
 			"--viewport.height", "240",
 			"--viewport.width", "240",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 }
@@ -198,6 +220,8 @@ func TestWebSearch(t *testing.T) {
 			"--markdown-options", "{enabled: true, includeFrames: true, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutMS: 1000, useMainContentOnly: true, waitForMs: 0}",
 			"--num-results", "10",
 			"--query-fanout=true",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -228,6 +252,8 @@ func TestWebSearch(t *testing.T) {
 			"--markdown-options.wait-for-ms", "0",
 			"--num-results", "10",
 			"--query-fanout=true",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 		)
 	})
@@ -258,6 +284,9 @@ func TestWebSearch(t *testing.T) {
 			"  waitForMs: 0\n" +
 			"numResults: 10\n" +
 			"queryFanout: true\n" +
+			"tags:\n" +
+			"  - production\n" +
+			"  - team-alpha\n" +
 			"timeoutMS: 1000\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
@@ -289,10 +318,13 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--settle-animations=true",
 			"--shorten-base64-images=true",
 			"--stop-after-ms", "10000",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 			"--url-regex", "^https?://[^/]+/blog/",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -323,10 +355,13 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--settle-animations=true",
 			"--shorten-base64-images=true",
 			"--stop-after-ms", "10000",
+			"--tag", "production",
+			"--tag", "team-alpha",
 			"--timeout-ms", "1000",
 			"--url-regex", "^https?://[^/]+/blog/",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -354,10 +389,14 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"settleAnimations: true\n" +
 			"shortenBase64Images: true\n" +
 			"stopAfterMs: 10000\n" +
+			"tags:\n" +
+			"  - production\n" +
+			"  - team-alpha\n" +
 			"timeoutMS: 1000\n" +
 			"urlRegex: ^https?://[^/]+/blog/\n" +
 			"useMainContentOnly: true\n" +
-			"waitForMs: 0\n")
+			"waitForMs: 0\n" +
+			"zdr: enabled\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -374,17 +413,21 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-html",
 			"--url", "https://example.com",
+			"--action", "[{do: wait, timeMs: 0}]",
 			"--country", "de",
-			"--exclude-selector", "string",
+			"--exclude-selector", "[x]",
 			"--headers", "{foo: J!}",
-			"--include-frames=true",
-			"--include-selector", "string",
+			"--include-frames", "'true'",
+			"--include-selector", "[x]",
 			"--max-age-ms", "0",
-			"--pdf", "{end: 1, ocr: true, shouldParse: true, start: 1}",
-			"--settle-animations=true",
-			"--timeout-ms", "1000",
-			"--use-main-content-only=true",
+			"--pdf", "{end: 1, ocr: 'true', shouldParse: 'true', start: 1}",
+			"--settle-animations", "'true'",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1",
+			"--use-main-content-only", "'true'",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -398,20 +441,24 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-html",
 			"--url", "https://example.com",
+			"--action", "[{do: wait, timeMs: 0}]",
 			"--country", "de",
-			"--exclude-selector", "string",
+			"--exclude-selector", "[x]",
 			"--headers", "{foo: J!}",
-			"--include-frames=true",
-			"--include-selector", "string",
+			"--include-frames", "'true'",
+			"--include-selector", "[x]",
 			"--max-age-ms", "0",
 			"--pdf.end", "1",
-			"--pdf.ocr=true",
-			"--pdf.should-parse=true",
+			"--pdf.ocr", "true",
+			"--pdf.should-parse", "true",
 			"--pdf.start", "1",
-			"--settle-animations=true",
-			"--timeout-ms", "1000",
-			"--use-main-content-only=true",
+			"--settle-animations", "'true'",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1",
+			"--use-main-content-only", "'true'",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 }
@@ -424,11 +471,14 @@ func TestWebWebScrapeImages(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-images",
 			"--url", "https://example.com",
-			"--dedupe=true",
-			"--enrichment", "{classification: true, hostedUrl: true, maxTimePerMs: 1, resolution: true}",
+			"--action", "[{do: wait, timeMs: 0}]",
+			"--dedupe", "'true'",
+			"--enrichment", "{classification: 'true', hostedUrl: 'true', maxTimePerMs: 1, resolution: 'true'}",
 			"--headers", "{foo: J!}",
 			"--max-age-ms", "0",
-			"--timeout-ms", "1000",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1",
 			"--wait-for-ms", "0",
 		)
 	})
@@ -443,14 +493,17 @@ func TestWebWebScrapeImages(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-images",
 			"--url", "https://example.com",
-			"--dedupe=true",
-			"--enrichment.classification=true",
-			"--enrichment.hosted-url=true",
+			"--action", "[{do: wait, timeMs: 0}]",
+			"--dedupe", "'true'",
+			"--enrichment.classification", "true",
+			"--enrichment.hosted-url", "true",
 			"--enrichment.max-time-per-ms", "1",
-			"--enrichment.resolution=true",
+			"--enrichment.resolution", "true",
 			"--headers", "{foo: J!}",
 			"--max-age-ms", "0",
-			"--timeout-ms", "1000",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1",
 			"--wait-for-ms", "0",
 		)
 	})
@@ -464,20 +517,24 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-md",
 			"--url", "https://example.com",
+			"--action", "[{do: wait, timeMs: 0}]",
 			"--country", "de",
-			"--exclude-selector", "string",
+			"--exclude-selector", "[x]",
 			"--headers", "{foo: J!}",
-			"--include-frames=true",
-			"--include-images=true",
-			"--include-links=true",
-			"--include-selector", "string",
+			"--include-frames", "'true'",
+			"--include-images", "'true'",
+			"--include-links", "'true'",
+			"--include-selector", "[x]",
 			"--max-age-ms", "0",
-			"--pdf", "{end: 1, ocr: true, shouldParse: true, start: 1}",
-			"--settle-animations=true",
-			"--shorten-base64-images=true",
-			"--timeout-ms", "1000",
-			"--use-main-content-only=true",
+			"--pdf", "{end: 1, ocr: 'true', shouldParse: 'true', start: 1}",
+			"--settle-animations", "'true'",
+			"--shorten-base64-images", "'true'",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1",
+			"--use-main-content-only", "'true'",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -491,23 +548,27 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--api-key", "string",
 			"web", "web-scrape-md",
 			"--url", "https://example.com",
+			"--action", "[{do: wait, timeMs: 0}]",
 			"--country", "de",
-			"--exclude-selector", "string",
+			"--exclude-selector", "[x]",
 			"--headers", "{foo: J!}",
-			"--include-frames=true",
-			"--include-images=true",
-			"--include-links=true",
-			"--include-selector", "string",
+			"--include-frames", "'true'",
+			"--include-images", "'true'",
+			"--include-links", "'true'",
+			"--include-selector", "[x]",
 			"--max-age-ms", "0",
 			"--pdf.end", "1",
-			"--pdf.ocr=true",
-			"--pdf.should-parse=true",
+			"--pdf.ocr", "true",
+			"--pdf.should-parse", "true",
 			"--pdf.start", "1",
-			"--settle-animations=true",
-			"--shorten-base64-images=true",
-			"--timeout-ms", "1000",
-			"--use-main-content-only=true",
+			"--settle-animations", "'true'",
+			"--shorten-base64-images", "'true'",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1",
+			"--use-main-content-only", "'true'",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 }
@@ -519,11 +580,15 @@ func TestWebWebScrapeSitemap(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"web", "web-scrape-sitemap",
-			"--domain", "domain",
+			"--domain", "xxx",
 			"--headers", "{foo: J!}",
 			"--max-links", "1",
-			"--timeout-ms", "1000",
+			"--sitemap-url", "https://example.com",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1",
 			"--url-regex", "^https?://[^/]+/blog/",
+			"--zdr", "enabled",
 		)
 	})
 }
