@@ -201,6 +201,30 @@ func TestMonitorsDelete(t *testing.T) {
 	})
 }
 
+func TestMonitorsGetCreditUsage(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"monitors", "get-credit-usage",
+			"--since", "'2026-06-01T00:00:00Z'",
+			"--until", "'2026-06-28T00:00:00Z'",
+		)
+	})
+}
+
+func TestMonitorsGetLimits(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"monitors", "get-limits",
+		)
+	})
+}
+
 func TestMonitorsListAccountChanges(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
