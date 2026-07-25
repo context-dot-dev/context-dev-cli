@@ -16,11 +16,11 @@ func TestMonitorsCreate(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"monitors", "create",
-			"--change-detection", "{type: exact}",
 			"--name", "Acme pricing page",
-			"--schedule", "{frequency: 6, type: interval, unit: hours}",
 			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
+			"--change-detection", "{type: exact}",
 			"--mode", "web",
+			"--schedule", "{frequency: 6, type: interval, unit: hours}",
 			"--tag", "pricing",
 			"--tag", "competitor",
 			"--webhook", "{url: https://example.com/webhook, events: [change.detected, run.completed]}",
@@ -36,13 +36,13 @@ func TestMonitorsCreate(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"monitors", "create",
-			"--change-detection", "{type: exact}",
 			"--name", "Acme pricing page",
+			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
+			"--change-detection", "{type: exact}",
+			"--mode", "web",
 			"--schedule.frequency", "6",
 			"--schedule.type", "interval",
 			"--schedule.unit", "hours",
-			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
-			"--mode", "web",
 			"--tag", "pricing",
 			"--tag", "competitor",
 			"--webhook.url", "https://example.com/webhook",
@@ -53,18 +53,18 @@ func TestMonitorsCreate(t *testing.T) {
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
-			"change_detection:\n" +
-			"  type: exact\n" +
 			"name: Acme pricing page\n" +
-			"schedule:\n" +
-			"  frequency: 6\n" +
-			"  type: interval\n" +
-			"  unit: hours\n" +
 			"target:\n" +
 			"  type: page\n" +
 			"  url: https://acme.com/pricing\n" +
 			"  normalize_whitespace: true\n" +
+			"change_detection:\n" +
+			"  type: exact\n" +
 			"mode: web\n" +
+			"schedule:\n" +
+			"  frequency: 6\n" +
+			"  type: interval\n" +
+			"  unit: hours\n" +
 			"tags:\n" +
 			"  - pricing\n" +
 			"  - competitor\n" +
