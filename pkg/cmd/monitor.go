@@ -19,22 +19,10 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 	Usage:   "Creates a monitor. The request body is a union of the supported target/change\ndetection combinations. The monitor runs immediately after creation to create\nits initial baseline.",
 	Suggest: true,
 	Flags: []cli.Flag{
-		&requestflag.Flag[map[string]any]{
-			Name:     "change-detection",
-			Usage:    "Discriminated union describing how changes are detected.",
-			Required: true,
-			BodyPath: "change_detection",
-		},
 		&requestflag.Flag[string]{
 			Name:     "name",
 			Required: true,
 			BodyPath: "name",
-		},
-		&requestflag.Flag[map[string]any]{
-			Name:     "schedule",
-			Usage:    "Run the monitor on a fixed interval defined by a frequency and a unit, e.g. every 6 hours or every 2 days. The total interval (frequency × unit) must be between 10 minutes and 1 year.",
-			Required: true,
-			BodyPath: "schedule",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "target",
@@ -42,10 +30,20 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "target",
 		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "change-detection",
+			Usage:    "Discriminated union describing how changes are detected.",
+			BodyPath: "change_detection",
+		},
 		&requestflag.Flag[string]{
 			Name:     "mode",
 			Usage:    "Top-level monitor category. Always `web` today; the concrete behavior is described by `target` and `change_detection`.",
 			BodyPath: "mode",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "schedule",
+			Usage:    "Run the monitor on a fixed interval defined by a frequency and a unit, e.g. every 6 hours or every 2 days. The total interval (frequency × unit) must be between 10 minutes and 1 year.",
+			BodyPath: "schedule",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
