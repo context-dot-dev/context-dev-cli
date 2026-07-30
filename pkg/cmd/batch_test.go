@@ -17,8 +17,6 @@ func TestBatchRetrieve(t *testing.T) {
 			"--api-key", "string",
 			"batch", "retrieve",
 			"--batch-id", "batch_9f2c8a",
-			"--tag", "production",
-			"--tag", "team-alpha",
 		)
 	})
 }
@@ -32,9 +30,10 @@ func TestBatchList(t *testing.T) {
 			"batch", "list",
 			"--cursor", "cursor",
 			"--limit", "1",
+			"--q", "batch_1a2b",
+			"--search-type", "exact",
 			"--status", "queued",
-			"--tag", "production",
-			"--tag", "team-alpha",
+			"--tags", "docs,competitor",
 		)
 	})
 }
@@ -47,8 +46,6 @@ func TestBatchCancel(t *testing.T) {
 			"--api-key", "string",
 			"batch", "cancel",
 			"--batch-id", "batch_9f2c8a",
-			"--tag", "production",
-			"--tag", "team-alpha",
 		)
 	})
 }
@@ -63,8 +60,6 @@ func TestBatchGetResults(t *testing.T) {
 			"--batch-id", "batch_9f2c8a",
 			"--cursor", "cursor",
 			"--limit", "1",
-			"--tag", "production",
-			"--tag", "team-alpha",
 		)
 	})
 }
