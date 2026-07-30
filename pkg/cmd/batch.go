@@ -25,11 +25,6 @@ var batchRetrieve = cli.Command{
 			Required:  true,
 			PathParam: "batch_id",
 		},
-		&requestflag.Flag[[]string]{
-			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
-			QueryPath: "tags",
-		},
 	},
 	Action:          handleBatchRetrieve,
 	HideHelpCommand: true,
@@ -51,13 +46,23 @@ var batchList = cli.Command{
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
+			Name:      "q",
+			Usage:     "Free-text search term, matched against the batch id, crawl source (start URL or sitemap domain), and tags.",
+			QueryPath: "q",
+		},
+		&requestflag.Flag[string]{
+			Name:      "search-type",
+			Usage:     "`prefix` for as-you-type prefix matching (default), `exact` for full-token matching.",
+			QueryPath: "search_type",
+		},
+		&requestflag.Flag[string]{
 			Name:      "status",
 			Usage:     "Filter by status.",
 			QueryPath: "status",
 		},
-		&requestflag.Flag[[]string]{
-			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+		&requestflag.Flag[string]{
+			Name:      "tags",
+			Usage:     "Comma-separated list of tags to filter by (matches batches having any of them).",
 			QueryPath: "tags",
 		},
 	},
@@ -75,11 +80,6 @@ var batchCancel = cli.Command{
 			Usage:     "ID of the batch to retrieve or cancel.",
 			Required:  true,
 			PathParam: "batch_id",
-		},
-		&requestflag.Flag[[]string]{
-			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
-			QueryPath: "tags",
 		},
 	},
 	Action:          handleBatchCancel,
@@ -106,11 +106,6 @@ var batchGetResults = cli.Command{
 			Name:      "limit",
 			Usage:     "Records per page. Defaults to 25. A page can close early so its payload stays under ~8 MB; rely on next_cursor rather than counting records.",
 			QueryPath: "limit",
-		},
-		&requestflag.Flag[[]string]{
-			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
-			QueryPath: "tags",
 		},
 	},
 	Action:          handleBatchGetResults,
@@ -173,16 +168,9 @@ func handleBatchRetrieve(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	params := contextdev.BatchGetParams{}
-
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Batch.Get(
-		ctx,
-		cmd.Value("batch-id").(string),
-		params,
-		options...,
-	)
+	_, err = client.Batch.Get(ctx, cmd.Value("batch-id").(string), options...)
 	if err != nil {
 		return err
 	}
@@ -263,16 +251,9 @@ func handleBatchCancel(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	params := contextdev.BatchCancelParams{}
-
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Batch.Cancel(
-		ctx,
-		cmd.Value("batch-id").(string),
-		params,
-		options...,
-	)
+	_, err = client.Batch.Cancel(ctx, cmd.Value("batch-id").(string), options...)
 	if err != nil {
 		return err
 	}
