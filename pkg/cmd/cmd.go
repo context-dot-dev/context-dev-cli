@@ -166,6 +166,18 @@ func init() {
 				},
 			},
 			{
+				Name:     "batch",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&batchRetrieve,
+					&batchList,
+					&batchCancel,
+					&batchGetResults,
+					&batchSubmit,
+				},
+			},
+			{
 				Name:            "@manpages",
 				Usage:           "Generate documentation for 'man'",
 				UsageText:       "context-dev @manpages [-o context-dev.1] [--gzip]",
