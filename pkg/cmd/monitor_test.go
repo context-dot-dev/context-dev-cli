@@ -16,11 +16,11 @@ func TestMonitorsCreate(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"monitors", "create",
-			"--change-detection", "{type: exact}",
 			"--name", "Acme pricing page",
-			"--schedule", "{frequency: 6, type: interval, unit: hours}",
-			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
+			"--target", "{type: page, url: https://acme.com/pricing, instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}",
+			"--change-detection", "{type: exact}",
 			"--mode", "web",
+			"--schedule", "{frequency: 6, type: interval, unit: hours}",
 			"--tag", "pricing",
 			"--tag", "competitor",
 			"--webhook", "{url: https://example.com/webhook, events: [change.detected, run.completed]}",
@@ -36,13 +36,13 @@ func TestMonitorsCreate(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"monitors", "create",
-			"--change-detection", "{type: exact}",
 			"--name", "Acme pricing page",
+			"--target", "{type: page, url: https://acme.com/pricing, instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}",
+			"--change-detection", "{type: exact}",
+			"--mode", "web",
 			"--schedule.frequency", "6",
 			"--schedule.type", "interval",
 			"--schedule.unit", "hours",
-			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
-			"--mode", "web",
 			"--tag", "pricing",
 			"--tag", "competitor",
 			"--webhook.url", "https://example.com/webhook",
@@ -53,18 +53,21 @@ func TestMonitorsCreate(t *testing.T) {
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
+			"name: Acme pricing page\n" +
+			"target:\n" +
+			"  type: page\n" +
+			"  url: https://acme.com/pricing\n" +
+			"  instructions: >-\n" +
+			"    Report pricing or plan availability changes. Ignore counters, timestamps,\n" +
+			"    testimonials, and navigation.\n" +
+			"  normalize_whitespace: true\n" +
 			"change_detection:\n" +
 			"  type: exact\n" +
-			"name: Acme pricing page\n" +
+			"mode: web\n" +
 			"schedule:\n" +
 			"  frequency: 6\n" +
 			"  type: interval\n" +
 			"  unit: hours\n" +
-			"target:\n" +
-			"  type: page\n" +
-			"  url: https://acme.com/pricing\n" +
-			"  normalize_whitespace: true\n" +
-			"mode: web\n" +
 			"tags:\n" +
 			"  - pricing\n" +
 			"  - competitor\n" +
@@ -107,7 +110,7 @@ func TestMonitorsUpdate(t *testing.T) {
 			"--status", "active",
 			"--tag", "pricing",
 			"--tag", "competitor",
-			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
+			"--target", "{type: page, url: https://acme.com/pricing, instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}",
 			"--webhook", "{url: https://example.com/webhook, events: [change.detected, run.completed]}",
 		)
 	})
@@ -130,7 +133,7 @@ func TestMonitorsUpdate(t *testing.T) {
 			"--status", "active",
 			"--tag", "pricing",
 			"--tag", "competitor",
-			"--target", "{type: page, url: https://acme.com/pricing, normalize_whitespace: true}",
+			"--target", "{type: page, url: https://acme.com/pricing, instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}",
 			"--webhook.url", "https://example.com/webhook",
 			"--webhook.events", "[change.detected, run.completed]",
 		)
@@ -153,6 +156,9 @@ func TestMonitorsUpdate(t *testing.T) {
 			"target:\n" +
 			"  type: page\n" +
 			"  url: https://acme.com/pricing\n" +
+			"  instructions: >-\n" +
+			"    Report pricing or plan availability changes. Ignore counters, timestamps,\n" +
+			"    testimonials, and navigation.\n" +
 			"  normalize_whitespace: true\n" +
 			"webhook:\n" +
 			"  url: https://example.com/webhook\n" +
