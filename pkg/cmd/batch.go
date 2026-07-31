@@ -16,7 +16,7 @@ import (
 
 var batchRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Check progress and get download links when the batch finishes. Also returns the\nrejected-URL list and webhook signing secret from submission, so nothing is lost\nif the submit response was dropped.",
+	Usage:   "Check progress and get download links when the batch finishes. Also returns the\nrejected-URL list from submission. The webhook signing secret is not repeated\nhere — it is returned once, by the submit response.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
