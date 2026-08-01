@@ -16,7 +16,7 @@ import (
 
 var batchRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Check progress and get download links when the batch finishes. Also returns the\nrejected-URL list from submission. The webhook signing secret is not repeated\nhere — it is returned once, by the submit response.",
+	Usage:   "Check progress, and get download links once the batch finishes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -88,7 +88,7 @@ var batchCancel = cli.Command{
 
 var batchGetResults = cli.Command{
 	Name:    "get-results",
-	Usage:   "Page through the result records of a finished batch as JSON, in the same order\nas the downloadable result files. Use this instead of downloading and parsing\nthe NDJSON files yourself.",
+	Usage:   "Page through a finished batch's results as JSON instead of downloading the\nNDJSON files.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
