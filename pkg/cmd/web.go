@@ -247,7 +247,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
-			Usage:     "Two-letter ISO 3166-1 alpha-2 country code identifying a supported Context.dev residential proxy exit location. Must be one of Context.dev's supported countries. When provided, Context.dev fetches the target page from that country.",
+			Usage:     "Fetch the target page through a residential proxy in this country (ISO 3166-1 alpha-2).",
 			QueryPath: "country",
 		},
 		&requestflag.Flag[string]{
@@ -461,7 +461,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "country",
-			Usage:    "Two-letter ISO 3166-1 alpha-2 country code identifying a supported Context.dev residential proxy exit location. Must be one of Context.dev's supported countries. When provided, Context.dev fetches the target page from that country.",
+			Usage:    "Fetch the target page through a residential proxy in this country (ISO 3166-1 alpha-2).",
 			BodyPath: "country",
 		},
 		&requestflag.Flag[[]string]{
@@ -617,7 +617,7 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
-			Usage:     "Two-letter ISO 3166-1 alpha-2 country code identifying a supported Context.dev residential proxy exit location. Must be one of Context.dev's supported countries. When provided, Context.dev fetches the target page from that country.",
+			Usage:     "Fetch the target page through a residential proxy in this country (ISO 3166-1 alpha-2).",
 			QueryPath: "country",
 		},
 		&requestflag.Flag[any]{
@@ -813,7 +813,7 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
-			Usage:     "Two-letter ISO 3166-1 alpha-2 country code identifying a supported Context.dev residential proxy exit location. Must be one of Context.dev's supported countries. When provided, Context.dev fetches the target page from that country.",
+			Usage:     "Fetch the target page through a residential proxy in this country (ISO 3166-1 alpha-2).",
 			QueryPath: "country",
 		},
 		&requestflag.Flag[any]{
