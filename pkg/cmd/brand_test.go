@@ -62,3 +62,17 @@ func TestBrandRetrieveSimplified(t *testing.T) {
 		)
 	})
 }
+
+func TestBrandSearch(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"brand", "search",
+			"--query", "x",
+			"--tag", "production",
+			"--tag", "team-alpha",
+		)
+	})
+}

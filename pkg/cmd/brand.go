@@ -152,6 +152,27 @@ var brandRetrieveSimplified = cli.Command{
 	HideHelpCommand: true,
 }
 
+var brandSearch = cli.Command{
+	Name:    "search",
+	Usage:   "Search brands by name or domain and get back up to 10 lightweight matches\n(domain, name, logo), most popular first: by Tranco rank, then market cap for\nbrands outside the Tranco list, with text relevance breaking ties. Matching is\nprefix-based with no typo tolerance, so it is suited to autocomplete. Only\nbrands already in the Context.dev index are returned — use /brand/retrieve to\nfetch (and index) a specific domain. Free on Pro and Scale plans; costs 1 credit\nper request on the Free and Starter plans.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "query",
+			Usage:     "Search term, matched against brand names and domains by prefix (e.g. 'nike', 'nike.com', 'nik').",
+			Required:  true,
+			QueryPath: "query",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
+		},
+	},
+	Action:          handleBrandSearch,
+	HideHelpCommand: true,
+}
+
 func handleBrandRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -230,6 +251,47 @@ func handleBrandRetrieveSimplified(ctx context.Context, cmd *cli.Command) error 
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "brand retrieve-simplified",
+		Transform:      transform,
+	})
+}
+
+func handleBrandSearch(ctx context.Context, cmd *cli.Command) error {
+	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := contextdev.BrandSearchParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Brand.Search(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "brand search",
 		Transform:      transform,
 	})
 }
