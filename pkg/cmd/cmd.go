@@ -126,6 +126,7 @@ func init() {
 				Commands: []*cli.Command{
 					&brandRetrieve,
 					&brandRetrieveSimplified,
+					&brandSearch,
 				},
 			},
 			{
