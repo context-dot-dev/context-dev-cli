@@ -154,7 +154,7 @@ var brandRetrieveSimplified = cli.Command{
 
 var brandSearch = cli.Command{
 	Name:    "search",
-	Usage:   "Search brands by name or domain and get back up to 10 lightweight matches\n(domain, name, logo), most popular first: by Tranco rank, then market cap for\nbrands outside the Tranco list, with text relevance breaking ties. Matching is\nprefix-based with no typo tolerance, so it is suited to autocomplete. Only\nbrands already in the Context.dev index are returned — use /brand/retrieve to\nfetch (and index) a specific domain. Free on Pro and Scale plans; costs 1 credit\nper request on the Free and Starter plans.",
+	Usage:   "Search brands by name or domain and get back up to 10 lightweight matches\n(domain, name, logo). Name matches rank ahead of domain matches; within each\ngroup the most popular brands come first: by Tranco rank, then market cap for\nbrands outside the Tranco list, with text relevance breaking ties. Matching is\nprefix-based with no typo tolerance, so it is suited to autocomplete. Only\nbrands already in the Context.dev index are returned — use /brand/retrieve to\nfetch (and index) a specific domain. Free on Pro and Scale plans; costs 1 credit\nper request on the Free and Starter plans.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
