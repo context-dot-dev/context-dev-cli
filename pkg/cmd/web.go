@@ -703,7 +703,7 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[any]{
 			Name:       "pdf.should-parse",
-			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 WEBSITE_ACCESS_ERROR is returned.",
+			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 PDF_SKIPPED is returned.",
 			InnerField: "shouldParse",
 		},
 		&requestflag.InnerFlag[int64]{
@@ -917,7 +917,7 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[any]{
 			Name:       "pdf.should-parse",
-			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 WEBSITE_ACCESS_ERROR is returned.",
+			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 PDF_SKIPPED is returned.",
 			InnerField: "shouldParse",
 		},
 		&requestflag.InnerFlag[int64]{
