@@ -930,7 +930,7 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 
 var webWebScrapeSitemap = cli.Command{
 	Name:    "web-scrape-sitemap",
-	Usage:   "Crawl an entire website's sitemap and return all discovered page URLs.",
+	Usage:   "Crawl an entire website's sitemap and return all discovered page URLs. Pass\n`search` to have the crawled sitemap filtered down to the pages about a phrase\n(for example `pricing and plans` or `api authentication docs`), most relevant\nfirst — a searched crawl scans the whole sitemap and costs 2 credits instead\nof 1.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -949,6 +949,11 @@ var webWebScrapeSitemap = cli.Command{
 			Usage:     "Maximum number of links to return from the sitemap crawl. Defaults to 10,000. Minimum is 1, maximum is 100,000.",
 			Default:   10000,
 			QueryPath: "maxLinks",
+		},
+		&requestflag.Flag[string]{
+			Name:      "search",
+			Usage:     "Optional search phrase. When provided, the crawled sitemap is filtered to the pages whose URLs are about that phrase, most relevant first, and the request costs 2 credits instead of 1.",
+			QueryPath: "search",
 		},
 		&requestflag.Flag[string]{
 			Name:      "sitemap-url",
