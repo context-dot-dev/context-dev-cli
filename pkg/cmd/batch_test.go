@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/context-dot-dev/context-dev-cli/internal/mocktest"
-	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
 )
 
 func TestBatchRetrieve(t *testing.T) {
@@ -34,6 +33,18 @@ func TestBatchList(t *testing.T) {
 			"--search-type", "exact",
 			"--status", "queued",
 			"--tags", "docs,competitor",
+		)
+	})
+}
+
+func TestBatchDelete(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"batch", "delete",
+			"--batch-id", "batch_9f2c8a",
 		)
 	})
 }
@@ -71,42 +82,57 @@ func TestBatchSubmit(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"batch", "submit",
-			"--identifiers", "{linkedinUrl: https://www.linkedin.com/in/yahia-bakour/}",
-			"--tag", "production",
-			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
-		)
-	})
-
-	t.Run("inner flags", func(t *testing.T) {
-		// Check that inner flags have been set up correctly
-		requestflag.CheckInnerFlags(batchSubmit)
-
-		// Alternative argument passing style using inner flags
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"batch", "submit",
-			"--identifiers.linkedin-url", "https://www.linkedin.com/in/yahia-bakour/",
-			"--tag", "production",
-			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--input", "{data: {format: markdown, urls: [{url: https://example.com/products/anvil, itemId: sku-1, meta: {category: bar}}, {url: https://example.com/products/hammer, itemId: sku-2, meta: {foo: bar}}], options: {country: de, excludeSelectors: [x], includeImages: true, includeLinks: true, includeSelectors: [x], maxAgeMs: 0, pdf: {end: 1, ocr: 'true', shouldParse: 'true', start: 1}, settleAnimations: true, shortenBase64Images: true, useMainContentOnly: true, waitForMs: 0}}, mode: scrape}",
+			"--tag", "docs",
+			"--tag", "competitor",
+			"--webhook-url", "webhookUrl",
+			"--idempotency-key", "Idempotency-Key",
 		)
 	})
 
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
-			"identifiers:\n" +
-			"  linkedinUrl: https://www.linkedin.com/in/yahia-bakour/\n" +
+			"input:\n" +
+			"  data:\n" +
+			"    format: markdown\n" +
+			"    urls:\n" +
+			"      - url: https://example.com/products/anvil\n" +
+			"        itemId: sku-1\n" +
+			"        meta:\n" +
+			"          category: bar\n" +
+			"      - url: https://example.com/products/hammer\n" +
+			"        itemId: sku-2\n" +
+			"        meta:\n" +
+			"          foo: bar\n" +
+			"    options:\n" +
+			"      country: de\n" +
+			"      excludeSelectors:\n" +
+			"        - x\n" +
+			"      includeImages: true\n" +
+			"      includeLinks: true\n" +
+			"      includeSelectors:\n" +
+			"        - x\n" +
+			"      maxAgeMs: 0\n" +
+			"      pdf:\n" +
+			"        end: 1\n" +
+			"        ocr: 'true'\n" +
+			"        shouldParse: 'true'\n" +
+			"        start: 1\n" +
+			"      settleAnimations: true\n" +
+			"      shortenBase64Images: true\n" +
+			"      useMainContentOnly: true\n" +
+			"      waitForMs: 0\n" +
+			"  mode: scrape\n" +
 			"tags:\n" +
-			"  - production\n" +
-			"  - team-alpha\n" +
-			"timeoutMS: 1000\n")
+			"  - docs\n" +
+			"  - competitor\n" +
+			"webhookUrl: webhookUrl\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
 			"batch", "submit",
+			"--idempotency-key", "Idempotency-Key",
 		)
 	})
 }

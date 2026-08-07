@@ -583,7 +583,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.ocr",
-			Usage:      "When true, detect and OCR images embedded in the selected PDF pages, inserting recognized text at each image's position in page reading order while preserving the PDF text layer. This is separate from automatic scanned-PDF OCR fallback.",
+			Usage:      "When true, OCR the selected PDF pages that have no usable text layer (scans), replacing each recovered page's text with the OCR result while pages with a real text layer keep it. Billed at 1 credit per page OCR actually recovered, on top of the base request cost.",
 			InnerField: "ocr",
 		},
 		&requestflag.InnerFlag[bool]{
@@ -698,12 +698,12 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[any]{
 			Name:       "pdf.ocr",
-			Usage:      "When true, detect and OCR images embedded in the selected PDF pages, inserting recognized text at each image's position in page reading order while preserving the PDF text layer. This is separate from automatic scanned-PDF OCR fallback.",
+			Usage:      "When true, OCR the selected PDF pages that have no usable text layer (scans), replacing each recovered page's text with the OCR result while pages with a real text layer keep it. Billed at 1 credit per page OCR actually recovered, on top of the base request cost. When false, no OCR runs.",
 			InnerField: "ocr",
 		},
 		&requestflag.InnerFlag[any]{
 			Name:       "pdf.should-parse",
-			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 WEBSITE_ACCESS_ERROR is returned.",
+			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 PDF_SKIPPED is returned.",
 			InnerField: "shouldParse",
 		},
 		&requestflag.InnerFlag[int64]{
@@ -912,12 +912,12 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[any]{
 			Name:       "pdf.ocr",
-			Usage:      "When true, detect and OCR images embedded in the selected PDF pages, inserting recognized text at each image's position in page reading order while preserving the PDF text layer. This is separate from automatic scanned-PDF OCR fallback.",
+			Usage:      "When true, OCR the selected PDF pages that have no usable text layer (scans), replacing each recovered page's text with the OCR result while pages with a real text layer keep it. Billed at 1 credit per page OCR actually recovered, on top of the base request cost. When false, no OCR runs.",
 			InnerField: "ocr",
 		},
 		&requestflag.InnerFlag[any]{
 			Name:       "pdf.should-parse",
-			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 WEBSITE_ACCESS_ERROR is returned.",
+			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 PDF_SKIPPED is returned.",
 			InnerField: "shouldParse",
 		},
 		&requestflag.InnerFlag[int64]{
@@ -930,7 +930,7 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 
 var webWebScrapeSitemap = cli.Command{
 	Name:    "web-scrape-sitemap",
-	Usage:   "Crawl an entire website's sitemap and return all discovered page URLs.",
+	Usage:   "Crawl an entire website's sitemap and return all discovered page URLs. Pass\n`search` to have the crawled sitemap filtered down to the pages about a phrase\n(for example `pricing and plans` or `api authentication docs`), most relevant\nfirst — a searched crawl scans the whole sitemap and costs 2 credits instead\nof 1.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -949,6 +949,11 @@ var webWebScrapeSitemap = cli.Command{
 			Usage:     "Maximum number of links to return from the sitemap crawl. Defaults to 10,000. Minimum is 1, maximum is 100,000.",
 			Default:   10000,
 			QueryPath: "maxLinks",
+		},
+		&requestflag.Flag[string]{
+			Name:      "search",
+			Usage:     "Optional search phrase. When provided, the crawled sitemap is filtered to the pages whose URLs are about that phrase, most relevant first, and the request costs 2 credits instead of 1.",
+			QueryPath: "search",
 		},
 		&requestflag.Flag[string]{
 			Name:      "sitemap-url",

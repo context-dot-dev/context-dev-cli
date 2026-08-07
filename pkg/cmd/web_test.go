@@ -583,6 +583,7 @@ func TestWebWebScrapeSitemap(t *testing.T) {
 			"--domain", "xxx",
 			"--headers", "{foo: J!}",
 			"--max-links", "1",
+			"--search", "help center and troubleshooting articles",
 			"--sitemap-url", "https://example.com",
 			"--tag", "production",
 			"--tag", "team-alpha",

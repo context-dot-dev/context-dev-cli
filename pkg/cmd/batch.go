@@ -70,6 +70,22 @@ var batchList = cli.Command{
 	HideHelpCommand: true,
 }
 
+var batchDelete = cli.Command{
+	Name:    "delete",
+	Usage:   "Permanently delete a finished batch and its stored results. Active batches must\nsettle first.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "batch-id",
+			Usage:     "ID of the batch to retrieve or cancel.",
+			Required:  true,
+			PathParam: "batch_id",
+		},
+	},
+	Action:          handleBatchDelete,
+	HideHelpCommand: true,
+}
+
 var batchCancel = cli.Command{
 	Name:    "cancel",
 	Usage:   "Stop a batch from starting new pages. In-progress pages finish, and unused\ncredits are refunded.",
@@ -112,39 +128,36 @@ var batchGetResults = cli.Command{
 	HideHelpCommand: true,
 }
 
-var batchSubmit = requestflag.WithInnerFlags(cli.Command{
+var batchSubmit = cli.Command{
 	Name:    "submit",
-	Usage:   "Retrieve and normalize a person profile from identifiers.",
+	Usage:   "Scrape 25K URLs or crawl large websites asynchronously.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
-			Name:     "identifiers",
-			Usage:    "Known identifiers for the person. At least one identifier is required.",
+			Name:     "input",
+			Usage:    "Choose a URL list or a site crawl.",
 			Required: true,
-			BodyPath: "identifiers",
+			BodyPath: "input",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			Usage:    "Tags stored on the batch. Filter the batch list by them later.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "timeout-ms",
-			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			BodyPath: "timeoutMS",
+		&requestflag.Flag[string]{
+			Name:     "webhook-url",
+			Usage:    "URL notified when the batch finishes.",
+			BodyPath: "webhookUrl",
+		},
+		&requestflag.Flag[string]{
+			Name:       "idempotency-key",
+			Usage:      "Any string unique to this submission. Retries with the same key return the original batch.",
+			HeaderPath: "Idempotency-Key",
 		},
 	},
 	Action:          handleBatchSubmit,
 	HideHelpCommand: true,
-}, map[string][]requestflag.HasOuterFlag{
-	"identifiers": {
-		&requestflag.InnerFlag[string]{
-			Name:       "identifiers.linkedin-url",
-			Usage:      "LinkedIn profile URL, e.g. https://www.linkedin.com/in/yahia-bakour/.",
-			InnerField: "linkedinUrl",
-		},
-	},
-})
+}
 
 func handleBatchRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
@@ -225,6 +238,48 @@ func handleBatchList(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "batch list",
+		Transform:      transform,
+	})
+}
+
+func handleBatchDelete(ctx context.Context, cmd *cli.Command) error {
+	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("batch-id") && len(unusedArgs) > 0 {
+		cmd.Set("batch-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Batch.Delete(ctx, cmd.Value("batch-id").(string), options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "batch delete",
 		Transform:      transform,
 	})
 }
