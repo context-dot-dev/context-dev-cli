@@ -16,7 +16,7 @@ import (
 
 var peopleEnrich = requestflag.WithInnerFlags(cli.Command{
 	Name:    "enrich",
-	Usage:   "Finds and normalizes the best available person candidate from additive identity\nclues, then assigns an identity match score from 0 to 100. Available on Pro and\nScale plans. Successful requests cost 20 credits. Disposable and free email\naddresses (like gmail.com, yahoo.com) will throw a 422 error.",
+	Usage:   "Finds and normalizes the best available person candidate from additive identity\nclues, then assigns an identity match score from 0 to 100. Available on all paid\nplans. Successful requests cost 20 credits. Disposable and free email addresses\n(like gmail.com, yahoo.com) will throw a 422 error.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
