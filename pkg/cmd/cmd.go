@@ -173,9 +173,18 @@ func init() {
 				Commands: []*cli.Command{
 					&batchRetrieve,
 					&batchList,
+					&batchDelete,
 					&batchCancel,
 					&batchGetResults,
 					&batchSubmit,
+				},
+			},
+			{
+				Name:     "people",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&peopleEnrich,
 				},
 			},
 			{
