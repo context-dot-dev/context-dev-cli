@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.0 (2026-08-08)
+
+Full Changelog: [v1.5.0...v1.6.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.5.0...v1.6.0)
+
+### Features
+
+* **api:** api update ([df232b5](https://github.com/context-dot-dev/context-dev-cli/commit/df232b58f81c68fd6a914e7fe63882a0f3de9fd4))
+
 ## 1.5.0 (2026-08-07)
 
 Full Changelog: [v1.4.0...v1.5.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.4.0...v1.5.0)
