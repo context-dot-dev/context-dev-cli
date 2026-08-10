@@ -16,18 +16,18 @@ import (
 
 var utilityPrefetch = cli.Command{
 	Name:    "prefetch",
-	Usage:   "Signal that you may fetch brand data soon to improve latency. The type field\nselects what to prefetch (currently only 'brand') and identifier carries exactly\none lookup key: a domain, or an email whose domain is extracted and validated\n(free email providers and disposable email addresses are not allowed).",
+	Usage:   "Signal that you may fetch data soon to improve latency. The type field selects\nwhat to prefetch ('brand' queues a brand data fetch, 'styleguide' queues a\nstyleguide extraction) and identifier carries exactly one lookup key: a domain,\nor an email whose domain is extracted and validated (free email providers and\ndisposable email addresses are not allowed).",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "identifier",
-			Usage:    "Identifier of the brand to prefetch. Provide exactly one of domain or email.",
+			Usage:    "Identifier of the target to prefetch. Provide exactly one of domain or email.",
 			Required: true,
 			BodyPath: "identifier",
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
-			Usage:    "What to prefetch. Currently only 'brand' is supported.",
+			Usage:    "What to prefetch: 'brand' warms the brand data cache, 'styleguide' warms the styleguide cache.",
 			Required: true,
 			BodyPath: "type",
 		},

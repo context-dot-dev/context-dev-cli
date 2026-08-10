@@ -833,6 +833,12 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			QueryPath: "includeFrames",
 		},
 		&requestflag.Flag[any]{
+			Name:      "include-html",
+			Usage:     "When true, the response also includes an `html` field with the page HTML the Markdown was converted from — the same body the Scrape HTML endpoint returns for the equivalent request.",
+			Default:   false,
+			QueryPath: "includeHTML",
+		},
+		&requestflag.Flag[any]{
 			Name:      "include-images",
 			Usage:     "Include image references in Markdown output",
 			Default:   false,
