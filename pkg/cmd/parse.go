@@ -37,19 +37,19 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional file extension hint, such as pdf, docx, xlsx, pptx, html, json, csv, md, py, rtf, jpg, png, or txt.",
 			QueryPath: "extension",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "include-images",
 			Usage:     "Include image references in Markdown output",
 			Default:   false,
 			QueryPath: "includeImages",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "include-links",
 			Usage:     "Preserve hyperlinks in Markdown output",
 			Default:   true,
 			QueryPath: "includeLinks",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "ocr",
 			Usage:     "When true for PDF inputs, OCR the selected pages that have no usable text layer (scans), replacing each recovered page's text with the OCR result while pages with a real text layer keep it. pdf.start/pdf.end limit the inclusive page range. Billed at 1 credit per page OCR actually recovered, on top of the base request cost. When false, no OCR runs.",
 			Default:   false,
@@ -61,7 +61,7 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 			Default:   map[string]any{},
 			QueryPath: "pdf",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "shorten-base64-images",
 			Usage:     "Shorten base64-encoded image data in the Markdown output",
 			Default:   true,
@@ -72,7 +72,7 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "use-main-content-only",
 			Usage:     "Extract only the main content from HTML-like inputs",
 			Default:   false,
