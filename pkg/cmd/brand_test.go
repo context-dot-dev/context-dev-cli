@@ -71,8 +71,11 @@ func TestBrandSearch(t *testing.T) {
 			"--api-key", "string",
 			"brand", "search",
 			"--query", "x",
+			"--autocomplete=true",
+			"--query-by", "name",
 			"--tag", "production",
 			"--tag", "team-alpha",
+			"--typo-tolerance", "0",
 		)
 	})
 }
