@@ -265,7 +265,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional parameter to determine screenshot type. If 'true', takes a full page screenshot capturing all content. If 'false' or not provided, takes a viewport screenshot (standard browser view).",
 			QueryPath: "fullScreenshot",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "handle-cookie-popup",
 			Usage:     "Optional parameter to control cookie/consent popup handling. If 'true', we dismiss cookie banner before capture. If 'false' or not provided, captures the page without that step.",
 			Default:   false,
@@ -630,7 +630,7 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional outbound HTTP headers forwarded only to the target URL, sent as deep-object query params such as headers[X-Custom]=value. When provided, caching is bypassed: the result is neither read from nor written to cache.",
 			QueryPath: "headers",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "include-frames",
 			Usage:     "When true, iframes are rendered inline into the returned HTML.",
 			Default:   false,
@@ -653,7 +653,7 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Default:   map[string]any{"shouldParse": true, "ocr": false},
 			QueryPath: "pdf",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "settle-animations",
 			Usage:     "When true, waits briefly for CSS and transition animations to settle before extracting HTML. Defaults to false. This adds a bit of latency in exchange for more stable output on animated pages.",
 			Default:   false,
@@ -669,7 +669,7 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
 			QueryPath: "timeoutMS",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "use-main-content-only",
 			Usage:     "When true, return only the page's main content in the HTML response, excluding headers, footers, sidebars, and navigation when detectable.",
 			Default:   false,
@@ -696,12 +696,12 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to start when both are provided.",
 			InnerField: "end",
 		},
-		&requestflag.InnerFlag[any]{
+		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.ocr",
 			Usage:      "When true, OCR the selected PDF pages that have no usable text layer (scans), replacing each recovered page's text with the OCR result while pages with a real text layer keep it. Billed at 1 credit per page OCR actually recovered, on top of the base request cost. When false, no OCR runs.",
 			InnerField: "ocr",
 		},
-		&requestflag.InnerFlag[any]{
+		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.should-parse",
 			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 PDF_SKIPPED is returned.",
 			InnerField: "shouldParse",
@@ -730,7 +730,7 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional browser actions executed in array order after the page loads and before content is captured. Requires a paid plan. Send a JSON array in the query parameter. Maximum: 5 actions.",
 			QueryPath: "actions",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "dedupe",
 			Usage:     "When true, visually duplicate images are removed: every image is loaded and perceptually hashed, and only the highest-resolution copy of each duplicate group is kept. Images that cannot be downloaded or hashed are kept. Default: false.",
 			Default:   false,
@@ -772,12 +772,12 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
 	"enrichment": {
-		&requestflag.InnerFlag[any]{
+		&requestflag.InnerFlag[bool]{
 			Name:       "enrichment.classification",
 			Usage:      "Classify each image by visual asset type.",
 			InnerField: "classification",
 		},
-		&requestflag.InnerFlag[any]{
+		&requestflag.InnerFlag[bool]{
 			Name:       "enrichment.hosted-url",
 			Usage:      "Host materializable images on the Brand.dev CDN and return their URL and MIME type.",
 			InnerField: "hostedUrl",
@@ -787,7 +787,7 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Per-image enrichment timeout in milliseconds. Default: 30000. Maximum: 60000.",
 			InnerField: "maxTimePerMs",
 		},
-		&requestflag.InnerFlag[any]{
+		&requestflag.InnerFlag[bool]{
 			Name:       "enrichment.resolution",
 			Usage:      "Measure image width and height when possible.",
 			InnerField: "resolution",
@@ -826,19 +826,25 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional outbound HTTP headers forwarded only to the target URL, sent as deep-object query params such as headers[X-Custom]=value. When provided, caching is bypassed: the result is neither read from nor written to cache.",
 			QueryPath: "headers",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "include-frames",
 			Usage:     "When true, the contents of iframes are rendered to Markdown.",
 			Default:   false,
 			QueryPath: "includeFrames",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
+			Name:      "include-html",
+			Usage:     "When true, the response also includes an `html` field with the page HTML the Markdown was converted from — the same body the Scrape HTML endpoint returns for the equivalent request.",
+			Default:   false,
+			QueryPath: "includeHTML",
+		},
+		&requestflag.Flag[bool]{
 			Name:      "include-images",
 			Usage:     "Include image references in Markdown output",
 			Default:   false,
 			QueryPath: "includeImages",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "include-links",
 			Usage:     "Preserve hyperlinks in Markdown output",
 			Default:   true,
@@ -861,13 +867,13 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Default:   map[string]any{"shouldParse": true, "ocr": false},
 			QueryPath: "pdf",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "settle-animations",
 			Usage:     "When true, waits briefly for CSS and transition animations to settle before converting to Markdown. Defaults to false. This adds a bit of latency in exchange for more stable output on animated pages.",
 			Default:   false,
 			QueryPath: "settleAnimations",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "shorten-base64-images",
 			Usage:     "Shorten base64-encoded image data in the Markdown output",
 			Default:   true,
@@ -883,7 +889,7 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
 			QueryPath: "timeoutMS",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[bool]{
 			Name:      "use-main-content-only",
 			Usage:     "Extract only the main content of the page, excluding headers, footers, sidebars, and navigation",
 			Default:   false,
@@ -910,12 +916,12 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to start when both are provided.",
 			InnerField: "end",
 		},
-		&requestflag.InnerFlag[any]{
+		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.ocr",
 			Usage:      "When true, OCR the selected PDF pages that have no usable text layer (scans), replacing each recovered page's text with the OCR result while pages with a real text layer keep it. Billed at 1 credit per page OCR actually recovered, on top of the base request cost. When false, no OCR runs.",
 			InnerField: "ocr",
 		},
-		&requestflag.InnerFlag[any]{
+		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.should-parse",
 			Usage:      "When true, PDF URLs are fetched and parsed. When false, PDF URLs are skipped and a 400 PDF_SKIPPED is returned.",
 			InnerField: "shouldParse",

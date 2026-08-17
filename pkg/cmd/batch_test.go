@@ -82,7 +82,7 @@ func TestBatchSubmit(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"batch", "submit",
-			"--input", "{data: {format: markdown, urls: [{url: https://example.com/products/anvil, itemId: sku-1, meta: {category: bar}}, {url: https://example.com/products/hammer, itemId: sku-2, meta: {foo: bar}}], options: {country: de, excludeSelectors: [x], includeImages: true, includeLinks: true, includeSelectors: [x], maxAgeMs: 0, pdf: {end: 1, ocr: 'true', shouldParse: 'true', start: 1}, settleAnimations: true, shortenBase64Images: true, useMainContentOnly: true, waitForMs: 0}}, mode: scrape}",
+			"--input", "{data: {format: markdown, urls: [{url: https://example.com/products/anvil, itemId: sku-1, meta: {category: bar}}, {url: https://example.com/products/hammer, itemId: sku-2, meta: {foo: bar}}], options: {country: de, excludeSelectors: [x], includeHTML: true, includeImages: true, includeLinks: true, includeSelectors: [x], maxAgeMs: 0, pdf: {end: 1, ocr: true, shouldParse: true, start: 1}, settleAnimations: true, shortenBase64Images: true, useMainContentOnly: true, waitForMs: 0}}, mode: scrape}",
 			"--tag", "docs",
 			"--tag", "competitor",
 			"--webhook-url", "webhookUrl",
@@ -109,6 +109,7 @@ func TestBatchSubmit(t *testing.T) {
 			"      country: de\n" +
 			"      excludeSelectors:\n" +
 			"        - x\n" +
+			"      includeHTML: true\n" +
 			"      includeImages: true\n" +
 			"      includeLinks: true\n" +
 			"      includeSelectors:\n" +
@@ -116,8 +117,8 @@ func TestBatchSubmit(t *testing.T) {
 			"      maxAgeMs: 0\n" +
 			"      pdf:\n" +
 			"        end: 1\n" +
-			"        ocr: 'true'\n" +
-			"        shouldParse: 'true'\n" +
+			"        ocr: true\n" +
+			"        shouldParse: true\n" +
 			"        start: 1\n" +
 			"      settleAnimations: true\n" +
 			"      shortenBase64Images: true\n" +
