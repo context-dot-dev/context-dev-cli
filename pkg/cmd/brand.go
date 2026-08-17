@@ -154,19 +154,37 @@ var brandRetrieveSimplified = cli.Command{
 
 var brandSearch = cli.Command{
 	Name:    "search",
-	Usage:   "Search brands by name or domain and get back up to 10 lightweight matches\n(domain, name, logo). Name matches rank ahead of domain matches; within each\ngroup the most popular brands come first: by Tranco rank, then market cap for\nbrands outside the Tranco list, with text relevance breaking ties. Matching is\nprefix-based with no typo tolerance, so it is suited to autocomplete. Only\nbrands already in the Context.dev index are returned — use /brand/retrieve to\nfetch (and index) a specific domain. Free on Pro and Scale plans; costs 1 credit\nper request on the Free and Starter plans.",
+	Usage:   "Search indexed brands by name or domain",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "query",
-			Usage:     "Search term, matched against brand names and domains by prefix (e.g. 'nike', 'nike.com', 'nik').",
+			Usage:     "Search term, matched against the fields selected by queryBy (e.g. 'nike', 'nike.com', 'nik').",
 			Required:  true,
 			QueryPath: "query",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "autocomplete",
+			Usage:     "Whether the search term matches by prefix, so partial words match as they are typed (e.g. 'nik' matches Nike). Set to false to match whole words only.",
+			Default:   true,
+			QueryPath: "autocomplete",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "query-by",
+			Usage:     "Fields to match the search term against, as a comma-separated list or repeated parameter: 'name', 'domain', or both. Defaults to both.",
+			Default:   []string{"name", "domain"},
+			QueryPath: "queryBy",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
 			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "typo-tolerance",
+			Usage:     "Maximum number of typos tolerated when matching, from 0 to 2. Defaults to 0 (no typo tolerance).",
+			Default:   0,
+			QueryPath: "typoTolerance",
 		},
 	},
 	Action:          handleBrandSearch,
