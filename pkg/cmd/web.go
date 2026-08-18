@@ -240,6 +240,12 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 	Usage:   "Capture a screenshot of a website.",
 	Suggest: true,
 	Flags: []cli.Flag{
+		&requestflag.Flag[bool]{
+			Name:      "clear-popups",
+			Usage:     "Optional parameter for comprehensive popup cleanup. If 'true', the browser dismisses detected cookie/consent UI and clears other detected obstructive popups and overlays before capture. If 'false' or not provided, this parameter requests no cleanup; handleCookiePopup can still request cookie/consent handling independently.",
+			Default:   false,
+			QueryPath: "clearPopups",
+		},
 		&requestflag.Flag[string]{
 			Name:      "color-scheme",
 			Usage:     "Optional parameter to choose the site's visual theme in the screenshot. Use 'light' or 'dark' when the site offers both appearances.",
