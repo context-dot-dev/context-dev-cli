@@ -557,7 +557,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "url-regex",
-			Usage:    "Regex pattern. Only URLs matching this pattern will be followed and scraped.",
+			Usage:    "Regex pattern. Only URLs matching this pattern will be followed and scraped. An automatic prefix scope in the form ^<starting URL> follows a redirect of the starting page.",
 			BodyPath: "urlRegex",
 		},
 		&requestflag.Flag[bool]{
@@ -568,7 +568,8 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "wait-for-ms",
-			Usage:    "Optional browser wait time in milliseconds after initial page load for each crawled page. Min: 0. Max: 30000 (30 seconds). ",
+			Usage:    "Browser wait time in milliseconds after initial page load for each crawled page. Defaults to 3500 (3.5 seconds). Min: 0. Max: 30000 (30 seconds).",
+			Default:  3500,
 			BodyPath: "waitForMs",
 		},
 		&requestflag.Flag[string]{
