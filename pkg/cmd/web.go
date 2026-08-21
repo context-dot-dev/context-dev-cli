@@ -21,7 +21,7 @@ var webExtract = requestflag.WithInnerFlags(cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "schema",
-			Usage:    "JSON Schema for the returned data object. TypeScript Zod users can pass a JSON Schema generated from a Zod object; Python users can pass the equivalent JSON Schema object.",
+			Usage:    "JSON Schema for the returned data object. Image fields such as `image_urls` or `product_photos` automatically make page image references available to extraction, so product data and photos can be returned in one call. TypeScript Zod users can pass a JSON Schema generated from a Zod object; Python users can pass the equivalent JSON Schema object.",
 			Required: true,
 			BodyPath: "schema",
 		},
@@ -30,6 +30,11 @@ var webExtract = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "The starting website URL to crawl and extract from. Must include http:// or https://.",
 			Required: true,
 			BodyPath: "url",
+		},
+		&requestflag.Flag[[]map[string]any]{
+			Name:     "action",
+			Usage:    "Optional browser actions executed in order on the requested page after it loads and before extraction. Requires a paid plan. When actions are provided and stopAfterMs is omitted, the crawl budget defaults to 110000 ms.",
+			BodyPath: "actions",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "fact-check",
@@ -84,7 +89,7 @@ var webExtract = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "stop-after-ms",
-			Usage:    "Soft time budget for the crawl in milliseconds. Min: 10000 (10s). Max: 110000 (110s). Default: 80000 (80s).",
+			Usage:    "Soft time budget for the crawl in milliseconds. Min: 10000 (10s). Max: 110000 (110s). Defaults to 80000 (80s), or 110000 (110s) when browser actions are provided.",
 			Default:  80000,
 			BodyPath: "stopAfterMs",
 		},
