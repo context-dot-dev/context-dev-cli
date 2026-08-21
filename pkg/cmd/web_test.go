@@ -18,6 +18,7 @@ func TestWebExtract(t *testing.T) {
 			"web", "extract",
 			"--schema", "{type: bar, properties: bar, required: bar, additionalProperties: bar}",
 			"--url", "https://example.com",
+			"--action", "{do: wait, timeMs: 0}",
 			"--fact-check=true",
 			"--follow-subdomains=true",
 			"--include-frames=true",
@@ -46,6 +47,7 @@ func TestWebExtract(t *testing.T) {
 			"web", "extract",
 			"--schema", "{type: bar, properties: bar, required: bar, additionalProperties: bar}",
 			"--url", "https://example.com",
+			"--action", "{do: wait, timeMs: 0}",
 			"--fact-check=true",
 			"--follow-subdomains=true",
 			"--include-frames=true",
@@ -74,6 +76,9 @@ func TestWebExtract(t *testing.T) {
 			"  required: bar\n" +
 			"  additionalProperties: bar\n" +
 			"url: https://example.com\n" +
+			"actions:\n" +
+			"  - do: wait\n" +
+			"    timeMs: 0\n" +
 			"factCheck: true\n" +
 			"followSubdomains: true\n" +
 			"includeFrames: true\n" +
