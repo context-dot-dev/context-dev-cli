@@ -33,7 +33,7 @@ var webExtract = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "action",
-			Usage:    "Optional browser actions executed in order on the requested page after it loads and before extraction. Requires a paid plan. When actions are provided and stopAfterMs is omitted, the crawl budget defaults to 110000 ms.",
+			Usage:    "Optional browser actions executed in order on the requested page after it loads, before links are discovered or additional pages are crawled. Requires a paid plan. When actions are provided and stopAfterMs is omitted, the crawl budget defaults to 110000 ms.",
 			BodyPath: "actions",
 		},
 		&requestflag.Flag[bool]{
