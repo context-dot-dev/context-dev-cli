@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.9.0 (2026-08-27)
+
+Full Changelog: [v1.8.0...v1.9.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.8.0...v1.9.0)
+
+### Features
+
+* **api:** api update ([2617a31](https://github.com/context-dot-dev/context-dev-cli/commit/2617a312bfe2e2f2c39c3fc0336a0b6f33b4a61d))
+
 ## 1.8.0 (2026-08-23)
 
 Full Changelog: [v1.7.0...v1.8.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.7.0...v1.8.0)
