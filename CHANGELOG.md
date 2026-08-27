@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.8.0...v1.9.0) (2026-08-27)
+
+
+### Features
+
+* initial stlc build ([5dc353c](https://github.com/context-dot-dev/context-dev-cli/commit/5dc353c8190ed4d2747a3e07c09fffb4ad7ec710))
+
 ## 1.8.0 (2026-08-23)
 
 Full Changelog: [v1.7.0...v1.8.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.7.0...v1.8.0)
