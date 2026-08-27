@@ -58,7 +58,6 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.Flag[map[string]any]{
 			Name:      "pdf",
 			Usage:     `PDF page-range options as a JSON object, e.g. {"start": 2, "end": 5}.`,
-			Default:   map[string]any{},
 			QueryPath: "pdf",
 		},
 		&requestflag.Flag[bool]{

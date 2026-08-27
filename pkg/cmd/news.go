@@ -33,7 +33,6 @@ var newsSearch = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.Flag[map[string]any]{
 			Name:     "filter-by",
 			Usage:    "Optional result filters.",
-			Default:  map[string]any{},
 			BodyPath: "filterBy",
 		},
 		&requestflag.Flag[int64]{
