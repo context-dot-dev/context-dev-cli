@@ -27,6 +27,14 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      - name: Authenticate git for the private Go SDK repo
+        if: github.repository == 'context-dot-dev/context-dev-cli-staging'
+        env:
+          GO_MODULE_REPO: context-dot-dev/context-go-sdk-staging
+          GO_REPO_READ_TOKEN: ${{ secrets.GO_REPO_READ_TOKEN }}
+        run: |
+          git config --global url."https://x-access-token:${GO_REPO_READ_TOKEN}@github.com/${GO_MODULE_REPO}".insteadOf "https://github.com/${GO_MODULE_REPO}"
+
       - uses: ./.github/actions/setup-go
         with:
           stainless-api-key: ${{ secrets.STAINLESS_API_KEY }}
@@ -52,6 +60,14 @@ jobs:
     if: (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Authenticate git for the private Go SDK repo
+        if: github.repository == 'context-dot-dev/context-dev-cli-staging'
+        env:
+          GO_MODULE_REPO: context-dot-dev/context-go-sdk-staging
+          GO_REPO_READ_TOKEN: ${{ secrets.GO_REPO_READ_TOKEN }}
+        run: |
+          git config --global url."https://x-access-token:${GO_REPO_READ_TOKEN}@github.com/${GO_MODULE_REPO}".insteadOf "https://github.com/${GO_MODULE_REPO}"
 
       - uses: ./.github/actions/setup-go
         with:
@@ -99,6 +115,14 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Authenticate git for the private Go SDK repo
+        if: github.repository == 'context-dot-dev/context-dev-cli-staging'
+        env:
+          GO_MODULE_REPO: context-dot-dev/context-go-sdk-staging
+          GO_REPO_READ_TOKEN: ${{ secrets.GO_REPO_READ_TOKEN }}
+        run: |
+          git config --global url."https://x-access-token:${GO_REPO_READ_TOKEN}@github.com/${GO_MODULE_REPO}".insteadOf "https://github.com/${GO_MODULE_REPO}"
 
       - uses: ./.github/actions/setup-go
         with:
