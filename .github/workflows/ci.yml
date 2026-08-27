@@ -33,7 +33,12 @@ jobs:
           GO_MODULE_REPO: context-dot-dev/context-go-sdk-staging
           GO_REPO_READ_TOKEN: ${{ secrets.GO_REPO_READ_TOKEN }}
         run: |
-          git config --global url."https://x-access-token:${GO_REPO_READ_TOKEN}@github.com/${GO_MODULE_REPO}".insteadOf "https://github.com/${GO_MODULE_REPO}"
+          # actions/checkout persists an Authorization header for all of github.com in the
+          # workspace git config, which overrides URL-embedded credentials. A repo-scoped
+          # extraheader is a longer URL match, so it takes precedence for the Go SDK repo.
+          auth_header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GO_REPO_READ_TOKEN" | base64 -w0)"
+          git config --global "http.https://github.com/${GO_MODULE_REPO}.extraheader" "$auth_header"
+          git config --global "http.https://github.com/${GO_MODULE_REPO}.git.extraheader" "$auth_header"
 
       - uses: ./.github/actions/setup-go
         with:
@@ -67,7 +72,12 @@ jobs:
           GO_MODULE_REPO: context-dot-dev/context-go-sdk-staging
           GO_REPO_READ_TOKEN: ${{ secrets.GO_REPO_READ_TOKEN }}
         run: |
-          git config --global url."https://x-access-token:${GO_REPO_READ_TOKEN}@github.com/${GO_MODULE_REPO}".insteadOf "https://github.com/${GO_MODULE_REPO}"
+          # actions/checkout persists an Authorization header for all of github.com in the
+          # workspace git config, which overrides URL-embedded credentials. A repo-scoped
+          # extraheader is a longer URL match, so it takes precedence for the Go SDK repo.
+          auth_header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GO_REPO_READ_TOKEN" | base64 -w0)"
+          git config --global "http.https://github.com/${GO_MODULE_REPO}.extraheader" "$auth_header"
+          git config --global "http.https://github.com/${GO_MODULE_REPO}.git.extraheader" "$auth_header"
 
       - uses: ./.github/actions/setup-go
         with:
@@ -122,7 +132,12 @@ jobs:
           GO_MODULE_REPO: context-dot-dev/context-go-sdk-staging
           GO_REPO_READ_TOKEN: ${{ secrets.GO_REPO_READ_TOKEN }}
         run: |
-          git config --global url."https://x-access-token:${GO_REPO_READ_TOKEN}@github.com/${GO_MODULE_REPO}".insteadOf "https://github.com/${GO_MODULE_REPO}"
+          # actions/checkout persists an Authorization header for all of github.com in the
+          # workspace git config, which overrides URL-embedded credentials. A repo-scoped
+          # extraheader is a longer URL match, so it takes precedence for the Go SDK repo.
+          auth_header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GO_REPO_READ_TOKEN" | base64 -w0)"
+          git config --global "http.https://github.com/${GO_MODULE_REPO}.extraheader" "$auth_header"
+          git config --global "http.https://github.com/${GO_MODULE_REPO}.git.extraheader" "$auth_header"
 
       - uses: ./.github/actions/setup-go
         with:
