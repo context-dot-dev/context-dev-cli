@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.9.0...v1.10.0) (2026-09-03)
+
+
+### Features
+
+* **sitemap:** add subdomain discovery ([126d27d](https://github.com/context-dot-dev/context-dev-cli/commit/126d27d4684b5f3e75de83dfe32de7c34f9c5a81))
+
+
+### Bug Fixes
+
+* **openapi:** strip empty-object defaults from the generated spec ([9cb38d9](https://github.com/context-dot-dev/context-dev-cli/commit/9cb38d9e7702224885e18d5060b151d9e9d2ae8e))
+
 ## [1.9.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.8.0...v1.9.0) (2026-08-27)
 
 
