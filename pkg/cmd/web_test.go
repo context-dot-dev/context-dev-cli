@@ -591,6 +591,7 @@ func TestWebWebScrapeSitemap(t *testing.T) {
 			"web", "web-scrape-sitemap",
 			"--domain", "xxx",
 			"--headers", "{foo: J!}",
+			"--include-subdomains=true",
 			"--max-links", "1",
 			"--search", "help center and troubleshooting articles",
 			"--sitemap-url", "https://example.com",

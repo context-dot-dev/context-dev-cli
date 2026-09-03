@@ -948,7 +948,7 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 
 var webWebScrapeSitemap = cli.Command{
 	Name:    "web-scrape-sitemap",
-	Usage:   "Crawl an entire website's sitemap and return all discovered page URLs. Pass\n`search` to have the crawled sitemap filtered down to the pages about a phrase\n(for example `pricing and plans` or `api authentication docs`), most relevant\nfirst — a searched crawl scans the whole sitemap and costs 2 credits instead\nof 1.",
+	Usage:   "Crawl an entire website's sitemap and return all discovered page URLs. Set\n`includeSubdomains=true` to also discover public pages and sitemaps on child\nhosts such as `docs.example.com` or `brand.example.com`. Pass `search` to have\nthe discovered URLs filtered down to the pages about a phrase (for example\n`pricing and plans` or `api authentication docs`), most relevant first — a\nsearched crawl scans the whole sitemap and costs 2 credits instead of 1.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -961,6 +961,12 @@ var webWebScrapeSitemap = cli.Command{
 			Name:      "headers",
 			Usage:     "Optional outbound HTTP headers forwarded only to the target URL, sent as deep-object query params such as headers[X-Custom]=value. When provided, caching is bypassed: the result is neither read from nor written to cache.",
 			QueryPath: "headers",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "include-subdomains",
+			Usage:     "When true, discover and include public pages and sitemaps on subdomains of the requested domain. Defaults to false.",
+			Default:   false,
+			QueryPath: "includeSubdomains",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "max-links",
