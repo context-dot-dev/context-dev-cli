@@ -23,7 +23,7 @@ func TestMonitorsCreate(t *testing.T) {
 			"--schedule", "{frequency: 6, type: interval, unit: hours}",
 			"--tag", "pricing",
 			"--tag", "competitor",
-			"--webhook", "{url: https://example.com/webhook, events: [change.detected, run.completed]}",
+			"--webhook", "{url: https://example.com/webhook, events: [change.detected, run.completed], retry: {delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}}",
 		)
 	})
 
@@ -47,6 +47,7 @@ func TestMonitorsCreate(t *testing.T) {
 			"--tag", "competitor",
 			"--webhook.url", "https://example.com/webhook",
 			"--webhook.events", "[change.detected, run.completed]",
+			"--webhook.retry", "{delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}",
 		)
 	})
 
@@ -75,7 +76,16 @@ func TestMonitorsCreate(t *testing.T) {
 			"  url: https://example.com/webhook\n" +
 			"  events:\n" +
 			"    - change.detected\n" +
-			"    - run.completed\n")
+			"    - run.completed\n" +
+			"  retry:\n" +
+			"    delays_seconds:\n" +
+			"      - 10\n" +
+			"      - 60\n" +
+			"      - 300\n" +
+			"      - 1800\n" +
+			"      - 7200\n" +
+			"      - 21600\n" +
+			"      - 57600\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -111,7 +121,7 @@ func TestMonitorsUpdate(t *testing.T) {
 			"--tag", "pricing",
 			"--tag", "competitor",
 			"--target", "{type: page, url: https://acme.com/pricing, instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}",
-			"--webhook", "{url: https://example.com/webhook, events: [change.detected, run.completed]}",
+			"--webhook", "{url: https://example.com/webhook, events: [change.detected, run.completed], retry: {delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}}",
 		)
 	})
 
@@ -136,6 +146,7 @@ func TestMonitorsUpdate(t *testing.T) {
 			"--target", "{type: page, url: https://acme.com/pricing, instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}",
 			"--webhook.url", "https://example.com/webhook",
 			"--webhook.events", "[change.detected, run.completed]",
+			"--webhook.retry", "{delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}",
 		)
 	})
 
@@ -164,7 +175,16 @@ func TestMonitorsUpdate(t *testing.T) {
 			"  url: https://example.com/webhook\n" +
 			"  events:\n" +
 			"    - change.detected\n" +
-			"    - run.completed\n")
+			"    - run.completed\n" +
+			"  retry:\n" +
+			"    delays_seconds:\n" +
+			"      - 10\n" +
+			"      - 60\n" +
+			"      - 300\n" +
+			"      - 1800\n" +
+			"      - 7200\n" +
+			"      - 21600\n" +
+			"      - 57600\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",

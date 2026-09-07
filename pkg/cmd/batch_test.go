@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/context-dot-dev/context-dev-cli/internal/mocktest"
+	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
 )
 
 func TestBatchRetrieve(t *testing.T) {
@@ -85,6 +86,26 @@ func TestBatchSubmit(t *testing.T) {
 			"--input", "{data: {format: markdown, urls: [{url: https://example.com/products/anvil, itemId: sku-1, meta: {category: bar}}, {url: https://example.com/products/hammer, itemId: sku-2, meta: {foo: bar}}], options: {country: de, excludeSelectors: [x], includeHTML: true, includeImages: true, includeLinks: true, includeSelectors: [x], maxAgeMs: 0, pdf: {end: 1, ocr: true, shouldParse: true, start: 1}, settleAnimations: true, shortenBase64Images: true, useMainContentOnly: true, waitForMs: 0}}, mode: scrape}",
 			"--tag", "docs",
 			"--tag", "competitor",
+			"--webhook", "{url: https://example.com, retry: {delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}}",
+			"--webhook-url", "webhookUrl",
+			"--idempotency-key", "Idempotency-Key",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(batchSubmit)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"batch", "submit",
+			"--input", "{data: {format: markdown, urls: [{url: https://example.com/products/anvil, itemId: sku-1, meta: {category: bar}}, {url: https://example.com/products/hammer, itemId: sku-2, meta: {foo: bar}}], options: {country: de, excludeSelectors: [x], includeHTML: true, includeImages: true, includeLinks: true, includeSelectors: [x], maxAgeMs: 0, pdf: {end: 1, ocr: true, shouldParse: true, start: 1}, settleAnimations: true, shortenBase64Images: true, useMainContentOnly: true, waitForMs: 0}}, mode: scrape}",
+			"--tag", "docs",
+			"--tag", "competitor",
+			"--webhook.url", "https://example.com",
+			"--webhook.retry", "{delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}",
 			"--webhook-url", "webhookUrl",
 			"--idempotency-key", "Idempotency-Key",
 		)
@@ -128,6 +149,17 @@ func TestBatchSubmit(t *testing.T) {
 			"tags:\n" +
 			"  - docs\n" +
 			"  - competitor\n" +
+			"webhook:\n" +
+			"  url: https://example.com\n" +
+			"  retry:\n" +
+			"    delays_seconds:\n" +
+			"      - 10\n" +
+			"      - 60\n" +
+			"      - 300\n" +
+			"      - 1800\n" +
+			"      - 7200\n" +
+			"      - 21600\n" +
+			"      - 57600\n" +
 			"webhookUrl: webhookUrl\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,

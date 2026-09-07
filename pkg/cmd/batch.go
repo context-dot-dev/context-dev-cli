@@ -128,7 +128,7 @@ var batchGetResults = cli.Command{
 	HideHelpCommand: true,
 }
 
-var batchSubmit = cli.Command{
+var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 	Name:    "submit",
 	Usage:   "Scrape 25K URLs or crawl large websites asynchronously.",
 	Suggest: true,
@@ -144,9 +144,14 @@ var batchSubmit = cli.Command{
 			Usage:    "Tags stored on the batch. Filter the batch list by them later.",
 			BodyPath: "tags",
 		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "webhook",
+			Usage:    "Completion webhook settings. Cannot be combined with webhookUrl. Omitting retry preserves legacy delivery; retry: {} opts into durable retries.",
+			BodyPath: "webhook",
+		},
 		&requestflag.Flag[string]{
 			Name:     "webhook-url",
-			Usage:    "URL notified when the batch finishes.",
+			Usage:    "Legacy URL notified when the batch finishes. Preserves one best-effort attempt. Cannot be combined with webhook.",
 			BodyPath: "webhookUrl",
 		},
 		&requestflag.Flag[string]{
@@ -157,7 +162,19 @@ var batchSubmit = cli.Command{
 	},
 	Action:          handleBatchSubmit,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"webhook": {
+		&requestflag.InnerFlag[string]{
+			Name:       "webhook.url",
+			InnerField: "url",
+		},
+		&requestflag.InnerFlag[map[string]any]{
+			Name:       "webhook.retry",
+			Usage:      "Opt into durable webhook delivery. An empty object uses the default retry schedule. Omit retry to preserve legacy delivery behavior. The policy is snapshotted for each event.",
+			InnerField: "retry",
+		},
+	},
+})
 
 func handleBatchRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)

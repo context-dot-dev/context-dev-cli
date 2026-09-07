@@ -180,6 +180,17 @@ func init() {
 				},
 			},
 			{
+				Name:     "webhooks:deliveries",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&webhooksDeliveriesRetrieve,
+					&webhooksDeliveriesList,
+					&webhooksDeliveriesListAttempts,
+					&webhooksDeliveriesRetry,
+				},
+			},
+			{
 				Name:     "people",
 				Category: "API RESOURCE",
 				Suggest:  true,
