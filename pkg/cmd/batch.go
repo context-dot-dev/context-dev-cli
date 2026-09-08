@@ -170,7 +170,7 @@ var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "webhook.retry",
-			Usage:      "Opt into durable webhook delivery. An empty object uses the default retry schedule. Omit retry to preserve legacy delivery behavior. The policy is snapshotted for each event.",
+			Usage:      "Webhook retry settings. Use {} for the default schedule.",
 			InnerField: "retry",
 		},
 	},

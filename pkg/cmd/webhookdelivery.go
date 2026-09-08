@@ -16,17 +16,18 @@ import (
 
 var webhooksDeliveriesRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get the live status, retry policy, latest attempt, and replay expiration for a\nretained delivery. Use the attempts endpoint for its complete paginated history.\nThis endpoint costs no credits.",
+	Usage:   "Get a webhook delivery, including its status and latest attempt.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "delivery-id",
+			Usage:     "Delivery ID.",
 			Required:  true,
 			PathParam: "delivery_id",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
 	},
@@ -36,39 +37,55 @@ var webhooksDeliveriesRetrieve = cli.Command{
 
 var webhooksDeliveriesList = cli.Command{
 	Name:    "list",
-	Usage:   "List retained batch and monitor webhook deliveries for your organization, newest\nfirst. Filter by at most one of batch_id, monitor_id, or run_id, optionally\ncombined with status. Historical events without retained payloads are not\nlisted. This endpoint costs no credits.",
+	Usage:   "List your batch or monitor webhook deliveries, newest first.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:      "batch-id",
-			QueryPath: "batch_id",
+			Name:     "type",
+			Usage:    "Delivery source.",
+			Required: true,
+			BodyPath: "type",
 		},
 		&requestflag.Flag[string]{
-			Name:      "cursor",
-			QueryPath: "cursor",
+			Name:     "batch-id",
+			Usage:    "Filter by batch ID.",
+			BodyPath: "batch_id",
+		},
+		&requestflag.Flag[any]{
+			Name:     "created-after",
+			Usage:    "Only include events created after this ISO 8601 timestamp.",
+			BodyPath: "created_after",
+		},
+		&requestflag.Flag[string]{
+			Name:     "cursor",
+			Usage:    "The next_cursor from the previous response.",
+			BodyPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
-			Name:      "limit",
-			Default:   25,
-			QueryPath: "limit",
+			Name:     "limit",
+			Usage:    "Number of deliveries to return.",
+			Default:  25,
+			BodyPath: "limit",
 		},
 		&requestflag.Flag[string]{
-			Name:      "monitor-id",
-			QueryPath: "monitor_id",
-		},
-		&requestflag.Flag[string]{
-			Name:      "run-id",
-			QueryPath: "run_id",
-		},
-		&requestflag.Flag[string]{
-			Name:      "status",
-			Usage:     `Allowed values: "pending", "delivering", "retrying", "delivered", "failed", "cancelled".`,
-			QueryPath: "status",
+			Name:     "status",
+			Usage:    "Filter by delivery status.",
+			BodyPath: "status",
 		},
 		&requestflag.Flag[[]string]{
-			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
-			QueryPath: "tags",
+			Name:     "tag",
+			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			BodyPath: "tags",
+		},
+		&requestflag.Flag[string]{
+			Name:     "monitor-id",
+			Usage:    "Filter by monitor ID.",
+			BodyPath: "monitor_id",
+		},
+		&requestflag.Flag[string]{
+			Name:     "run-id",
+			Usage:    "Filter by monitor run ID.",
+			BodyPath: "run_id",
 		},
 	},
 	Action:          handleWebhooksDeliveriesList,
@@ -77,26 +94,29 @@ var webhooksDeliveriesList = cli.Command{
 
 var webhooksDeliveriesListAttempts = cli.Command{
 	Name:    "list-attempts",
-	Usage:   "List individual HTTP attempts for a delivery, newest first, including their\ndestination, timestamps, HTTP status, and error. An interrupted attempt may have\nreached the endpoint even when its outcome is unknown. This endpoint costs no\ncredits.",
+	Usage:   "List delivery attempts, newest first.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "delivery-id",
+			Usage:     "Delivery ID.",
 			Required:  true,
 			PathParam: "delivery_id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
+			Usage:     "The next_cursor from the previous response.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
+			Usage:     "Number of attempts to return.",
 			Default:   25,
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
 	},
@@ -106,16 +126,18 @@ var webhooksDeliveriesListAttempts = cli.Command{
 
 var webhooksDeliveriesRetry = cli.Command{
 	Name:    "retry",
-	Usage:   "Queue an immediate attempt without rerunning or billing the underlying batch or\nmonitor. A waiting retry is brought forward. A failed delivery gets one\nadditional attempt without restarting its automatic retry budget. Set force:\ntrue to resend an acknowledged delivery. An in-progress attempt cannot be\nduplicated. The stored event body, event ID, and creation time remain unchanged;\neach attempt receives a fresh signature. Monitor retries use the current URL and\nsecret; removing the webhook cancels pending deliveries. Batch result URLs in\nold payloads may have expired: retrieve the batch to get fresh URLs. Replay is\navailable for seven days. A successful attempt cancels remaining automatic\nretries. Idempotency-Key is scoped to your organization and retained with the\ndelivery metadata; repeating the same key and input returns the original\naccepted response.",
+	Usage:   "Retry a webhook delivery within seven days of creation.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "delivery-id",
+			Usage:     "Delivery ID.",
 			Required:  true,
 			PathParam: "delivery_id",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "force",
+			Usage:    "Resend a delivery that already succeeded.",
 			BodyPath: "force",
 		},
 		&requestflag.Flag[[]string]{
@@ -125,6 +147,7 @@ var webhooksDeliveriesRetry = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:       "idempotency-key",
+			Usage:      "Unique key to prevent duplicate retry requests.",
 			HeaderPath: "Idempotency-Key",
 		},
 	},
@@ -193,7 +216,7 @@ func handleWebhooksDeliveriesList(ctx context.Context, cmd *cli.Command) error {
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
 		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
+		ApplicationJSON,
 		false,
 	)
 	if err != nil {

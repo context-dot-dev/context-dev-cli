@@ -150,7 +150,7 @@ var webExtractCompetitors = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
@@ -186,7 +186,7 @@ var webExtractFonts = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
@@ -227,7 +227,7 @@ var webExtractStyleguide = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
@@ -300,7 +300,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
@@ -673,7 +673,7 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
@@ -766,7 +766,7 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
@@ -893,7 +893,7 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
@@ -986,7 +986,7 @@ var webWebScrapeSitemap = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Optional comma-separated caller-defined tags for tracking this request. Tags are recorded on the request's usage log and can be used to filter usage on the dashboard usage page. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
