@@ -316,7 +316,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load before taking the screenshot. Min: 0. Max: 30000 (30 seconds). Defaults to 3000 ms when omitted.",
+			Usage:     "Optional browser wait time in milliseconds after initial page load before taking the screenshot. Min: 0. Max: 30000 (30 seconds). Defaults to 3000 ms when omitted. When combined with timeoutMS, timeoutMS must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
 			Default:   requestflag.Ptr[int64](3000),
 			QueryPath: "waitForMs",
 		},
@@ -689,7 +689,7 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load. Min: 0. Max: 30000 (30 seconds).",
+			Usage:     "Optional browser wait time in milliseconds after initial page load. Min: 0. Max: 30000 (30 seconds). When combined with timeoutMS, timeoutMS must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
 			QueryPath: "waitForMs",
 		},
 		&requestflag.Flag[string]{
@@ -776,7 +776,7 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load before collecting images. Min: 0. Max: 30000 (30 seconds).",
+			Usage:     "Optional browser wait time in milliseconds after initial page load before collecting images. Min: 0. Max: 30000 (30 seconds). When combined with timeoutMS, timeoutMS must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
 			QueryPath: "waitForMs",
 		},
 	},
@@ -909,7 +909,7 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load before converting the page to Markdown. Min: 0. Max: 30000 (30 seconds).",
+			Usage:     "Optional browser wait time in milliseconds after initial page load before converting the page to Markdown. Min: 0. Max: 30000 (30 seconds). When combined with timeoutMS, timeoutMS must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
 			QueryPath: "waitForMs",
 		},
 		&requestflag.Flag[string]{
