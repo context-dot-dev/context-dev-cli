@@ -207,6 +207,15 @@ func init() {
 				},
 			},
 			{
+				Name:     "logs",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&logsRetrieve,
+					&logsList,
+				},
+			},
+			{
 				Name:            "@manpages",
 				Usage:           "Generate documentation for 'man'",
 				UsageText:       "context-dev @manpages [-o context-dev.1] [--gzip]",
