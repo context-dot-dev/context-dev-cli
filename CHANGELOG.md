@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.10.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.9.0...v1.10.0) (2026-09-12)
+
+
+### Features
+
+* **api-keys:** enforce scoped API key permissions ([#1038](https://github.com/context-dot-dev/context-dev-cli/issues/1038)) ([f2427ba](https://github.com/context-dot-dev/context-dev-cli/commit/f2427ba6e9d7538546b0dee7b90a037c082b6d03))
+* **logs:** expose request log endpoints in SDKs ([#1025](https://github.com/context-dot-dev/context-dev-cli/issues/1025)) ([08ee0eb](https://github.com/context-dot-dev/context-dev-cli/commit/08ee0ebeb58a3fa865c4df7c5ba2364d2745b9ee))
+* **monitors:** add page selector filters ([#1037](https://github.com/context-dot-dev/context-dev-cli/issues/1037)) ([39ca377](https://github.com/context-dot-dev/context-dev-cli/commit/39ca377527e965766a22a5dcf583101cbffd1692))
+* **sitemap:** add subdomain discovery ([126d27d](https://github.com/context-dot-dev/context-dev-cli/commit/126d27d4684b5f3e75de83dfe32de7c34f9c5a81))
+* **webhooks:** add configurable retries and manual replay ([d366bd3](https://github.com/context-dot-dev/context-dev-cli/commit/d366bd323f7875132dfe35ceb8fdfe3d92e9edaf))
+* **webhooks:** simplify delivery APIs ([7fd54b9](https://github.com/context-dot-dev/context-dev-cli/commit/7fd54b92fa451965a26df73df1ac6b4cc0d8d458))
+
+
+### Bug Fixes
+
+* **api:** reject timeoutMS too short for waitForMs ([7e03bf3](https://github.com/context-dot-dev/context-dev-cli/commit/7e03bf3075934de07ee9364819531f14756816e5))
+* **openapi:** strip empty-object defaults from the generated spec ([9cb38d9](https://github.com/context-dot-dev/context-dev-cli/commit/9cb38d9e7702224885e18d5060b151d9e9d2ae8e))
+
 ## [1.9.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.8.0...v1.9.0) (2026-08-27)
 
 
