@@ -17,7 +17,7 @@ func TestMonitorsCreate(t *testing.T) {
 			"--api-key", "string",
 			"monitors", "create",
 			"--name", "Acme pricing page",
-			"--target", "{type: page, url: https://acme.com/pricing, instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}",
+			"--target", `{type: page, url: https://acme.com/pricing, exclude_selectors: [.carousel, '[id^="TA_"]'], include_selectors: ['#attraction-details'], instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}`,
 			"--change-detection", "{type: exact}",
 			"--mode", "web",
 			"--schedule", "{frequency: 6, type: interval, unit: hours}",
@@ -37,7 +37,7 @@ func TestMonitorsCreate(t *testing.T) {
 			"--api-key", "string",
 			"monitors", "create",
 			"--name", "Acme pricing page",
-			"--target", "{type: page, url: https://acme.com/pricing, instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}",
+			"--target", `{type: page, url: https://acme.com/pricing, exclude_selectors: [.carousel, '[id^="TA_"]'], include_selectors: ['#attraction-details'], instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}`,
 			"--change-detection", "{type: exact}",
 			"--mode", "web",
 			"--schedule.frequency", "6",
@@ -58,6 +58,11 @@ func TestMonitorsCreate(t *testing.T) {
 			"target:\n" +
 			"  type: page\n" +
 			"  url: https://acme.com/pricing\n" +
+			"  exclude_selectors:\n" +
+			"    - .carousel\n" +
+			"    - '[id^=\"TA_\"]'\n" +
+			"  include_selectors:\n" +
+			"    - '#attraction-details'\n" +
 			"  instructions: >-\n" +
 			"    Report pricing or plan availability changes. Ignore counters, timestamps,\n" +
 			"    testimonials, and navigation.\n" +
@@ -120,7 +125,7 @@ func TestMonitorsUpdate(t *testing.T) {
 			"--status", "active",
 			"--tag", "pricing",
 			"--tag", "competitor",
-			"--target", "{type: page, url: https://acme.com/pricing, instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}",
+			"--target", `{type: page, url: https://acme.com/pricing, exclude_selectors: [.carousel, '[id^="TA_"]'], include_selectors: ['#attraction-details'], instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}`,
 			"--webhook", "{url: https://example.com/webhook, events: [change.detected, run.completed], retry: {delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}}",
 		)
 	})
@@ -143,7 +148,7 @@ func TestMonitorsUpdate(t *testing.T) {
 			"--status", "active",
 			"--tag", "pricing",
 			"--tag", "competitor",
-			"--target", "{type: page, url: https://acme.com/pricing, instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}",
+			"--target", `{type: page, url: https://acme.com/pricing, exclude_selectors: [.carousel, '[id^="TA_"]'], include_selectors: ['#attraction-details'], instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}`,
 			"--webhook.url", "https://example.com/webhook",
 			"--webhook.events", "[change.detected, run.completed]",
 			"--webhook.retry", "{delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}",
@@ -167,6 +172,11 @@ func TestMonitorsUpdate(t *testing.T) {
 			"target:\n" +
 			"  type: page\n" +
 			"  url: https://acme.com/pricing\n" +
+			"  exclude_selectors:\n" +
+			"    - .carousel\n" +
+			"    - '[id^=\"TA_\"]'\n" +
+			"  include_selectors:\n" +
+			"    - '#attraction-details'\n" +
 			"  instructions: >-\n" +
 			"    Report pricing or plan availability changes. Ignore counters, timestamps,\n" +
 			"    testimonials, and navigation.\n" +
