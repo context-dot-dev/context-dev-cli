@@ -180,7 +180,7 @@ var webExtractFonts = cli.Command{
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
-			Usage:     "Maximum age in milliseconds for cached brand data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Values below 1 day (86400000 ms) are clamped to 1 day; values above 1 year (31536000000 ms) are clamped to 1 year.",
+			Usage:     "Maximum age in milliseconds for cached brand data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Set to 0 to always perform a hard refresh. Negative values are clamped to 0; values above 1 year (31536000000 ms) are clamped to 1 year.",
 			Default:   requestflag.Ptr[int64](7776000000),
 			QueryPath: "maxAgeMs",
 		},
@@ -221,7 +221,7 @@ var webExtractStyleguide = cli.Command{
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
-			Usage:     "Maximum age in milliseconds for cached brand data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Values below 1 day (86400000 ms) are clamped to 1 day; values above 1 year (31536000000 ms) are clamped to 1 year.",
+			Usage:     "Maximum age in milliseconds for cached brand data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Set to 0 to always perform a hard refresh. Negative values are clamped to 0; values above 1 year (31536000000 ms) are clamped to 1 year.",
 			Default:   requestflag.Ptr[int64](7776000000),
 			QueryPath: "maxAgeMs",
 		},
