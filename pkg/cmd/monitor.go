@@ -78,7 +78,7 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 	"webhook": {
 		&requestflag.InnerFlag[string]{
 			Name:       "webhook.url",
-			Usage:      "Webhook URL events are delivered to.",
+			Usage:      "Webhook URL events are delivered to. Slack incoming webhook URLs are automatically formatted as Slack messages.",
 			InnerField: "url",
 		},
 		&requestflag.InnerFlag[[]string]{
@@ -182,7 +182,7 @@ var monitorsUpdate = requestflag.WithInnerFlags(cli.Command{
 	"webhook": {
 		&requestflag.InnerFlag[string]{
 			Name:       "webhook.url",
-			Usage:      "Webhook URL events are delivered to.",
+			Usage:      "Webhook URL events are delivered to. Slack incoming webhook URLs are automatically formatted as Slack messages.",
 			InnerField: "url",
 		},
 		&requestflag.InnerFlag[[]string]{
