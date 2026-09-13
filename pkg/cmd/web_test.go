@@ -9,6 +9,42 @@ import (
 	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
 )
 
+func TestWebAnswers(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"web", "answers",
+			"--task", "Find the pricing page URL and plan names for context.dev.",
+			"--json-format", "{pricing_page_url: bar, plans: bar}",
+			"--mode", "fast",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1000",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"task: Find the pricing page URL and plan names for context.dev.\n" +
+			"json_format:\n" +
+			"  pricing_page_url: bar\n" +
+			"  plans: bar\n" +
+			"mode: fast\n" +
+			"tags:\n" +
+			"  - production\n" +
+			"  - team-alpha\n" +
+			"timeoutMS: 1000\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"web", "answers",
+		)
+	})
+}
+
 func TestWebExtract(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
