@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.10.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.9.0...v1.10.0) (2026-09-15)
+
+
+### Features
+
+* **answers:** add live web research with fast and ultra modes ([#954](https://github.com/context-dot-dev/context-dev-cli/issues/954)) ([8f226f8](https://github.com/context-dot-dev/context-dev-cli/commit/8f226f8287e196fcd383f1bef037d804a493c222))
+* **api-keys:** enforce scoped API key permissions ([#1038](https://github.com/context-dot-dev/context-dev-cli/issues/1038)) ([f2427ba](https://github.com/context-dot-dev/context-dev-cli/commit/f2427ba6e9d7538546b0dee7b90a037c082b6d03))
+* **api:** unify timeout configuration and return partial results ([#1030](https://github.com/context-dot-dev/context-dev-cli/issues/1030)) ([467f13a](https://github.com/context-dot-dev/context-dev-cli/commit/467f13ab47753ff0889e46d3315604841dab78d4))
+* **logs:** expose request log endpoints in SDKs ([#1025](https://github.com/context-dot-dev/context-dev-cli/issues/1025)) ([08ee0eb](https://github.com/context-dot-dev/context-dev-cli/commit/08ee0ebeb58a3fa865c4df7c5ba2364d2745b9ee))
+* **monitors:** add page selector filters ([#1037](https://github.com/context-dot-dev/context-dev-cli/issues/1037)) ([39ca377](https://github.com/context-dot-dev/context-dev-cli/commit/39ca377527e965766a22a5dcf583101cbffd1692))
+* **sitemap:** add subdomain discovery ([126d27d](https://github.com/context-dot-dev/context-dev-cli/commit/126d27d4684b5f3e75de83dfe32de7c34f9c5a81))
+* **web:** add raw bytes scraping endpoint ([#1081](https://github.com/context-dot-dev/context-dev-cli/issues/1081)) ([5d45957](https://github.com/context-dot-dev/context-dev-cli/commit/5d4595725c6a850bc9df5e265ddcd2b6eb8321eb))
+* **webhooks:** add configurable retries and manual replay ([d366bd3](https://github.com/context-dot-dev/context-dev-cli/commit/d366bd323f7875132dfe35ceb8fdfe3d92e9edaf))
+* **webhooks:** simplify delivery APIs ([7fd54b9](https://github.com/context-dot-dev/context-dev-cli/commit/7fd54b92fa451965a26df73df1ac6b4cc0d8d458))
+
+
+### Bug Fixes
+
+* **api:** guarantee search descriptions and align response types ([#1089](https://github.com/context-dot-dev/context-dev-cli/issues/1089)) ([1fc274a](https://github.com/context-dot-dev/context-dev-cli/commit/1fc274a8c9bbe1711442c49f0cef7d393318c270))
+* **api:** honour maxAgeMs=0 on brand retrieve, styleguide and fonts endpoints ([#998](https://github.com/context-dot-dev/context-dev-cli/issues/998)) ([97370fd](https://github.com/context-dot-dev/context-dev-cli/commit/97370fd41d8d503270a786dc474ffe2a84c94214))
+* **api:** reject timeoutMS too short for waitForMs ([7e03bf3](https://github.com/context-dot-dev/context-dev-cli/commit/7e03bf3075934de07ee9364819531f14756816e5))
+* **openapi:** strip empty-object defaults from the generated spec ([9cb38d9](https://github.com/context-dot-dev/context-dev-cli/commit/9cb38d9e7702224885e18d5060b151d9e9d2ae8e))
+* **webhooks:** format Slack webhook notifications ([#1045](https://github.com/context-dot-dev/context-dev-cli/issues/1045)) ([d7173ff](https://github.com/context-dot-dev/context-dev-cli/commit/d7173ff5eff964c53db99e59a4da62df112bdaba))
+
 ## [1.9.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.8.0...v1.9.0) (2026-08-27)
 
 
