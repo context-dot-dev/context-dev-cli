@@ -14,7 +14,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var industryRetrieveNaics = cli.Command{
+var industryRetrieveNaics = requestflag.WithInnerFlags(cli.Command{
 	Name:    "retrieve-naics",
 	Usage:   "Classify any brand into 2022 NAICS industry codes from its domain or name.",
 	Suggest: true,
@@ -42,17 +42,30 @@ var industryRetrieveNaics = cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 	},
 	Action:          handleIndustryRetrieveNaics,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
-var industryRetrieveSic = cli.Command{
+var industryRetrieveSic = requestflag.WithInnerFlags(cli.Command{
 	Name:    "retrieve-sic",
 	Usage:   "Classify any brand into Standard Industrial Classification (SIC) codes from its\ndomain or name. Choose between the original SIC system (`original_sic`) or the\nlatest SIC list maintained by the SEC (`latest_sec`).",
 	Suggest: true,
@@ -80,10 +93,10 @@ var industryRetrieveSic = cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:      "type",
@@ -94,7 +107,20 @@ var industryRetrieveSic = cli.Command{
 	},
 	Action:          handleIndustryRetrieveSic,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
 func handleIndustryRetrieveNaics(ctx context.Context, cmd *cli.Command) error {
 	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)

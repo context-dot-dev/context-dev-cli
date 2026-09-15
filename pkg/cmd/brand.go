@@ -14,7 +14,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var brandRetrieve = cli.Command{
+var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 	Name:    "retrieve",
 	Usage:   "Retrieve logos, backdrops, colors, industry, description, and more. Provide\nexactly one lookup identifier in the request body: a domain, company name, email\naddress, stock ticker, transaction descriptor, or direct URL. Note:\n`by_direct_url` fetches brand data only from the provided URL — not from the\nentire internet.",
 	Suggest: true,
@@ -50,10 +50,10 @@ var brandRetrieve = cli.Command{
 			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "timeout-ms",
-			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			BodyPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:     "timeout-opts",
+			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			BodyPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:     "name",
@@ -113,9 +113,22 @@ var brandRetrieve = cli.Command{
 	},
 	Action:          handleBrandRetrieve,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
-var brandRetrieveSimplified = cli.Command{
+var brandRetrieveSimplified = requestflag.WithInnerFlags(cli.Command{
 	Name:    "retrieve-simplified",
 	Usage:   "Returns a simplified version of brand data containing only essential\ninformation: domain, title, colors, logos, and backdrops. Optimized for faster\nresponses and reduced data transfer.",
 	Suggest: true,
@@ -142,15 +155,28 @@ var brandRetrieveSimplified = cli.Command{
 			Usage:     "Optional theme preference used when selecting brand assets.",
 			QueryPath: "theme",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 	},
 	Action:          handleBrandRetrieveSimplified,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
 var brandSearch = cli.Command{
 	Name:    "search",

@@ -14,9 +14,9 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var webAnswers = cli.Command{
+var webAnswers = requestflag.WithInnerFlags(cli.Command{
 	Name:    "answers",
-	Usage:   "Researches the live web and returns a sourced answer in your requested JSON\nshape. Select fast for a smaller research budget at 10 credits or ultra for\ndeeper reasoning at 100 credits. Defaults to ultra. Fast research is limited to\n30 seconds and ultra to 50 seconds; timeoutMS can shorten either deadline.",
+	Usage:   "Researches the live web and returns a sourced answer in your requested JSON\nshape. Select fast for a smaller research budget at 10 credits or ultra for\ndeeper reasoning at 100 credits. Defaults to ultra. Fast research is limited to\n30 seconds and ultra to 50 seconds; timeoutOpts.milliseconds can shorten either\ndeadline.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -40,15 +40,28 @@ var webAnswers = cli.Command{
 			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "timeout-ms",
-			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			BodyPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:     "timeout-opts",
+			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			BodyPath: "timeoutOpts",
 		},
 	},
 	Action:          handleWebAnswers,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
 var webExtract = requestflag.WithInnerFlags(cli.Command{
 	Name:    "extract",
@@ -134,10 +147,10 @@ var webExtract = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "timeout-ms",
-			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			BodyPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:     "timeout-opts",
+			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			BodyPath: "timeoutOpts",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "wait-for-ms",
@@ -165,9 +178,21 @@ var webExtract = requestflag.WithInnerFlags(cli.Command{
 			InnerField: "start",
 		},
 	},
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
 })
 
-var webExtractCompetitors = cli.Command{
+var webExtractCompetitors = requestflag.WithInnerFlags(cli.Command{
 	Name:    "extract-competitors",
 	Usage:   "Analyze a company's landing page and web search evidence to return direct\ncompetitors for the same product or market.",
 	Suggest: true,
@@ -189,17 +214,30 @@ var webExtractCompetitors = cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 	},
 	Action:          handleWebExtractCompetitors,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
-var webExtractFonts = cli.Command{
+var webExtractFonts = requestflag.WithInnerFlags(cli.Command{
 	Name:    "extract-fonts",
 	Usage:   "Scrape font information from a website including font families, usage\nstatistics, fallbacks, and element/word counts.",
 	Suggest: true,
@@ -225,17 +263,30 @@ var webExtractFonts = cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 	},
 	Action:          handleWebExtractFonts,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results. "return-partial" requires milliseconds of at least 15000.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
-var webExtractStyleguide = cli.Command{
+var webExtractStyleguide = requestflag.WithInnerFlags(cli.Command{
 	Name:    "extract-styleguide",
 	Usage:   "Extract a comprehensive design system from a website including colors,\ntypography, spacing, shadows, and UI components.",
 	Suggest: true,
@@ -266,15 +317,28 @@ var webExtractStyleguide = cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 	},
 	Action:          handleWebExtractStyleguide,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results. "return-partial" requires milliseconds of at least 15000.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
 var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 	Name:    "screenshot",
@@ -339,10 +403,10 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "viewport",
@@ -352,7 +416,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load before taking the screenshot. Min: 0. Max: 30000 (30 seconds). Defaults to 3000 ms when omitted. When combined with timeoutMS, timeoutMS must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
+			Usage:     "Optional browser wait time in milliseconds after initial page load before taking the screenshot. Min: 0. Max: 30000 (30 seconds). Defaults to 3000 ms when omitted. When combined with timeoutOpts, timeoutOpts.milliseconds must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
 			Default:   requestflag.Ptr[int64](3000),
 			QueryPath: "waitForMs",
 		},
@@ -366,6 +430,18 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleWebScreenshot,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results. "return-partial" requires milliseconds of at least 15000.`,
+			InnerField: "behavior",
+		},
+	},
 	"viewport": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "viewport.height",
@@ -432,10 +508,10 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "timeout-ms",
-			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			BodyPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:     "timeout-opts",
+			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			BodyPath: "timeoutOpts",
 		},
 	},
 	Action:          handleWebSearch,
@@ -477,10 +553,10 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Truncate inline base64 image payloads to keep responses small.",
 			InnerField: "shortenBase64Images",
 		},
-		&requestflag.InnerFlag[int64]{
-			Name:       "markdown-options.timeout-ms",
-			Usage:      "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			InnerField: "timeoutMS",
+		&requestflag.InnerFlag[map[string]any]{
+			Name:       "markdown-options.timeout-opts",
+			Usage:      "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			InnerField: "timeoutOpts",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "markdown-options.use-main-content-only",
@@ -491,6 +567,18 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Name:       "markdown-options.wait-for-ms",
 			Usage:      "Extra wait after page load before rendering, in ms (0–30000). Useful for JS-heavy pages.",
 			InnerField: "waitForMs",
+		},
+	},
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
 		},
 	},
 })
@@ -591,10 +679,10 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "timeout-ms",
-			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			BodyPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:     "timeout-opts",
+			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			BodyPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:     "url-regex",
@@ -645,9 +733,21 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			InnerField: "start",
 		},
 	},
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
 })
 
-var webWebScrapeBytes = cli.Command{
+var webWebScrapeBytes = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-bytes",
 	Usage:   "Downloads a resource and returns its bytes as base64. Supports images, PDFs,\nHTML pages, and any other content type without image conversion, text\nextraction, or character-encoding changes. HTTP compression is decoded before\nbase64 encoding. HTML is the original HTTP response; JavaScript is not rendered.\nFollows public redirects and retries failed downloads through ISP and\nresidential proxies, with a direct fallback. When country is specified, only a\nresidential proxy in that country is used. Supply headers such as Referer for\nimages that require a referring page. Downloads are not cached. Maximum decoded\nresource size: 20 MiB (20971520 bytes), before base64 encoding. Successful\nrequests cost 1 credit; errors are not billed.",
 	Suggest: true,
@@ -673,10 +773,10 @@ var webWebScrapeBytes = cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:      "zdr",
@@ -687,11 +787,24 @@ var webWebScrapeBytes = cli.Command{
 	},
 	Action:          handleWebWebScrapeBytes,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. This endpoint supports "fail": return 408 REQUEST_TIMEOUT without charging credits.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
 var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-html",
-	Usage:   "Scrapes the given URL and returns the raw HTML content of the page. The base\nrequest costs 1 credit; requests with browser actions cost 2 credits.",
+	Usage:   "Scrapes the given URL and returns the raw HTML content of the page. The base\nrequest costs 1 credit; requests with browser actions cost 2 credits. A request\nthat hits its timeoutOpts.milliseconds deadline fails with 408 and is not\nbilled, unless timeoutOpts.behavior=return-partial is set — then the page as\nrendered so far is returned with `finalDOMState: \"still-loading\"` and billed at\nthe base cost of 1 credit.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -754,10 +867,10 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "use-main-content-only",
@@ -767,7 +880,7 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load. Min: 0. Max: 30000 (30 seconds). When combined with timeoutMS, timeoutMS must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
+			Usage:     "Optional browser wait time in milliseconds after initial page load. Min: 0. Max: 30000 (30 seconds). When combined with timeoutOpts, timeoutOpts.milliseconds must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
 			QueryPath: "waitForMs",
 		},
 		&requestflag.Flag[string]{
@@ -800,6 +913,18 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Name:       "pdf.start",
 			Usage:      "First 1-based PDF page to parse. When omitted, parsing starts at the first page.",
 			InnerField: "start",
+		},
+	},
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results. "return-partial" requires milliseconds of at least 15000.`,
+			InnerField: "behavior",
 		},
 	},
 })
@@ -847,14 +972,14 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load before collecting images. Min: 0. Max: 30000 (30 seconds). When combined with timeoutMS, timeoutMS must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
+			Usage:     "Optional browser wait time in milliseconds after initial page load before collecting images. Min: 0. Max: 30000 (30 seconds). When combined with timeoutOpts, timeoutOpts.milliseconds must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
 			QueryPath: "waitForMs",
 		},
 	},
@@ -881,6 +1006,18 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Name:       "enrichment.resolution",
 			Usage:      "Measure image width and height when possible.",
 			InnerField: "resolution",
+		},
+	},
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results. "return-partial" requires milliseconds of at least 15000.`,
+			InnerField: "behavior",
 		},
 	},
 })
@@ -974,10 +1111,10 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "use-main-content-only",
@@ -987,7 +1124,7 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load before converting the page to Markdown. Min: 0. Max: 30000 (30 seconds). When combined with timeoutMS, timeoutMS must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
+			Usage:     "Optional browser wait time in milliseconds after initial page load before converting the page to Markdown. Min: 0. Max: 30000 (30 seconds). When combined with timeoutOpts, timeoutOpts.milliseconds must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
 			QueryPath: "waitForMs",
 		},
 		&requestflag.Flag[string]{
@@ -1022,9 +1159,21 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 			InnerField: "start",
 		},
 	},
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results. "return-partial" requires milliseconds of at least 15000.`,
+			InnerField: "behavior",
+		},
+	},
 })
 
-var webWebScrapeSitemap = cli.Command{
+var webWebScrapeSitemap = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-sitemap",
 	Usage:   "Crawl an entire website's sitemap and return all discovered page URLs. Set\n`includeSubdomains=true` to also discover public pages and sitemaps on child\nhosts such as `docs.example.com` or `brand.example.com`. Pass `search` to have\nthe discovered URLs filtered down to the pages about a phrase (for example\n`pricing and plans` or `api authentication docs`), most relevant first — a\nsearched crawl scans the whole sitemap and costs 2 credits instead of 1.",
 	Suggest: true,
@@ -1067,10 +1216,10 @@ var webWebScrapeSitemap = cli.Command{
 			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
 			QueryPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:      "timeout-ms",
-			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			QueryPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:      "url-regex",
@@ -1086,7 +1235,20 @@ var webWebScrapeSitemap = cli.Command{
 	},
 	Action:          handleWebWebScrapeSitemap,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
 func handleWebAnswers(ctx context.Context, cmd *cli.Command) error {
 	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)

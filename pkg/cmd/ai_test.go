@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/context-dot-dev/context-dev-cli/internal/mocktest"
+	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
 )
 
 func TestAIExtractProduct(t *testing.T) {
@@ -19,7 +20,25 @@ func TestAIExtractProduct(t *testing.T) {
 			"--max-age-ms", "0",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(aiExtractProduct)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"ai", "extract-product",
+			"--url", "https://example.com",
+			"--max-age-ms", "0",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 
@@ -31,7 +50,9 @@ func TestAIExtractProduct(t *testing.T) {
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +
-			"timeoutMS: 1000\n")
+			"timeoutOpts:\n" +
+			"  milliseconds: 1000\n" +
+			"  behavior: fail\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -52,7 +73,26 @@ func TestAIExtractProducts(t *testing.T) {
 			"--max-products", "1",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(aiExtractProducts)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"ai", "extract-products",
+			"--domain", "domain",
+			"--max-age-ms", "0",
+			"--max-products", "1",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 
@@ -65,7 +105,9 @@ func TestAIExtractProducts(t *testing.T) {
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +
-			"timeoutMS: 1000\n")
+			"timeoutOpts:\n" +
+			"  milliseconds: 1000\n" +
+			"  behavior: fail\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",

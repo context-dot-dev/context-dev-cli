@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/context-dot-dev/context-dev-cli/internal/mocktest"
+	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
 )
 
 func TestBrandRetrieve(t *testing.T) {
@@ -22,7 +23,28 @@ func TestBrandRetrieve(t *testing.T) {
 			"--max-speed=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(brandRetrieve)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"brand", "retrieve",
+			"--domain", "xxx",
+			"--type", "by_domain",
+			"--force-language", "afrikaans",
+			"--max-age-ms", "0",
+			"--max-speed=true",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 
@@ -37,7 +59,9 @@ func TestBrandRetrieve(t *testing.T) {
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +
-			"timeoutMS: 1000\n")
+			"timeoutOpts:\n" +
+			"  milliseconds: 1000\n" +
+			"  behavior: fail\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -58,7 +82,26 @@ func TestBrandRetrieveSimplified(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--theme", "light",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(brandRetrieveSimplified)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"brand", "retrieve-simplified",
+			"--domain", "xxx",
+			"--max-age-ms", "0",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--theme", "light",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 }

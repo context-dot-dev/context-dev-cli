@@ -14,7 +14,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var aiExtractProduct = cli.Command{
+var aiExtractProduct = requestflag.WithInnerFlags(cli.Command{
 	Name:    "extract-product",
 	Usage:   "Given a single URL, determines if it is a product page and extracts the product\ninformation.",
 	Suggest: true,
@@ -36,17 +36,30 @@ var aiExtractProduct = cli.Command{
 			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "timeout-ms",
-			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			BodyPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:     "timeout-opts",
+			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			BodyPath: "timeoutOpts",
 		},
 	},
 	Action:          handleAIExtractProduct,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
-var aiExtractProducts = cli.Command{
+var aiExtractProducts = requestflag.WithInnerFlags(cli.Command{
 	Name:    "extract-products",
 	Usage:   "Extract product information from a brand's website. We will analyze the website\nand return a list of products with details such as name, description, image,\npricing, features, and more.",
 	Suggest: true,
@@ -72,10 +85,10 @@ var aiExtractProducts = cli.Command{
 			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "timeout-ms",
-			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			BodyPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:     "timeout-opts",
+			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			BodyPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:     "direct-url",
@@ -85,7 +98,20 @@ var aiExtractProducts = cli.Command{
 	},
 	Action:          handleAIExtractProducts,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
 func handleAIExtractProduct(ctx context.Context, cmd *cli.Command) error {
 	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)

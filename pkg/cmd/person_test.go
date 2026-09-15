@@ -24,7 +24,7 @@ func TestPeopleEnrich(t *testing.T) {
 			"--social-url", "https://www.linkedin.com/in/ada-lovelace/",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
 		)
 	})
 
@@ -52,7 +52,8 @@ func TestPeopleEnrich(t *testing.T) {
 			"--social-url", "https://www.linkedin.com/in/ada-lovelace/",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 
@@ -82,7 +83,9 @@ func TestPeopleEnrich(t *testing.T) {
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +
-			"timeoutMS: 1000\n")
+			"timeoutOpts:\n" +
+			"  milliseconds: 1000\n" +
+			"  behavior: fail\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",

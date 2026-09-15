@@ -14,7 +14,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var utilityPrefetch = cli.Command{
+var utilityPrefetch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "prefetch",
 	Usage:   "Signal that you may fetch data soon to improve latency. The type field selects\nwhat to prefetch ('brand' queues a brand data fetch, 'styleguide' queues a\nstyleguide extraction) and identifier carries exactly one lookup key: a domain,\nor an email whose domain is extracted and validated (free email providers and\ndisposable email addresses are not allowed).",
 	Suggest: true,
@@ -36,15 +36,28 @@ var utilityPrefetch = cli.Command{
 			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
 			BodyPath: "tags",
 		},
-		&requestflag.Flag[int64]{
-			Name:     "timeout-ms",
-			Usage:    "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
-			BodyPath: "timeoutMS",
+		&requestflag.Flag[map[string]any]{
+			Name:     "timeout-opts",
+			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			BodyPath: "timeoutOpts",
 		},
 	},
 	Action:          handleUtilityPrefetch,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. This endpoint supports "fail": return 408 REQUEST_TIMEOUT without charging credits.`,
+			InnerField: "behavior",
+		},
+	},
+})
 
 func handleUtilityPrefetch(ctx context.Context, cmd *cli.Command) error {
 	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)

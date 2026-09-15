@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/context-dot-dev/context-dev-cli/internal/mocktest"
+	"github.com/context-dot-dev/context-dev-cli/internal/requestflag"
 )
 
 func TestUtilityPrefetch(t *testing.T) {
@@ -19,7 +20,25 @@ func TestUtilityPrefetch(t *testing.T) {
 			"--type", "brand",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(utilityPrefetch)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"utility", "prefetch",
+			"--identifier", "{domain: xxx}",
+			"--type", "brand",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 
@@ -32,7 +51,9 @@ func TestUtilityPrefetch(t *testing.T) {
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +
-			"timeoutMS: 1000\n")
+			"timeoutOpts:\n" +
+			"  milliseconds: 1000\n" +
+			"  behavior: fail\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",

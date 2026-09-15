@@ -21,7 +21,26 @@ func TestWebAnswers(t *testing.T) {
 			"--mode", "fast",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(webAnswers)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"web", "answers",
+			"--task", "Find the pricing page URL and plan names for context.dev.",
+			"--json-format", "{pricing_page_url: bar, plans: bar}",
+			"--mode", "fast",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 
@@ -36,7 +55,9 @@ func TestWebAnswers(t *testing.T) {
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +
-			"timeoutMS: 1000\n")
+			"timeoutOpts:\n" +
+			"  milliseconds: 1000\n" +
+			"  behavior: fail\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -67,7 +88,7 @@ func TestWebExtract(t *testing.T) {
 			"--stop-after-ms", "10000",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
 			"--wait-for-ms", "0",
 		)
 	})
@@ -98,7 +119,8 @@ func TestWebExtract(t *testing.T) {
 			"--stop-after-ms", "10000",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 			"--wait-for-ms", "0",
 		)
 	})
@@ -131,7 +153,9 @@ func TestWebExtract(t *testing.T) {
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +
-			"timeoutMS: 1000\n" +
+			"timeoutOpts:\n" +
+			"  milliseconds: 1000\n" +
+			"  behavior: fail\n" +
 			"waitForMs: 0\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
@@ -152,7 +176,25 @@ func TestWebExtractCompetitors(t *testing.T) {
 			"--num-competitors", "1",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(webExtractCompetitors)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"web", "extract-competitors",
+			"--domain", "xxx",
+			"--num-competitors", "1",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 }
@@ -169,7 +211,26 @@ func TestWebExtractFonts(t *testing.T) {
 			"--max-age-ms", "0",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(webExtractFonts)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"web", "extract-fonts",
+			"--direct-url", "https://example.com",
+			"--domain", "xxx",
+			"--max-age-ms", "0",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 }
@@ -187,7 +248,27 @@ func TestWebExtractStyleguide(t *testing.T) {
 			"--max-age-ms", "0",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(webExtractStyleguide)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"web", "extract-styleguide",
+			"--color-scheme", "light",
+			"--direct-url", "https://example.com",
+			"--domain", "xxx",
+			"--max-age-ms", "0",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 }
@@ -211,7 +292,7 @@ func TestWebScreenshot(t *testing.T) {
 			"--scroll-offset", "0",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1",
+			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
 			"--viewport", "{height: 240, width: 240}",
 			"--wait-for-ms", "0",
 			"--zdr", "enabled",
@@ -239,7 +320,8 @@ func TestWebScreenshot(t *testing.T) {
 			"--scroll-offset", "0",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1",
+			"--timeout-opts.milliseconds", "1",
+			"--timeout-opts.behavior", "fail",
 			"--viewport.height", "240",
 			"--viewport.width", "240",
 			"--wait-for-ms", "0",
@@ -260,12 +342,12 @@ func TestWebSearch(t *testing.T) {
 			"--exclude-domain", "string",
 			"--freshness", "last_24_hours",
 			"--include-domain", "string",
-			"--markdown-options", "{enabled: true, includeFrames: true, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutMS: 1000, useMainContentOnly: true, waitForMs: 0}",
+			"--markdown-options", "{enabled: true, includeFrames: true, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutOpts: {milliseconds: 1, behavior: fail}, useMainContentOnly: true, waitForMs: 0}",
 			"--num-results", "10",
 			"--query-fanout=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
 		)
 	})
 
@@ -290,14 +372,15 @@ func TestWebSearch(t *testing.T) {
 			"--markdown-options.max-age-ms", "0",
 			"--markdown-options.pdf", "{end: 1, shouldParse: true, start: 1}",
 			"--markdown-options.shorten-base64-images=true",
-			"--markdown-options.timeout-ms", "1000",
+			"--markdown-options.timeout-opts", "{milliseconds: 1, behavior: fail}",
 			"--markdown-options.use-main-content-only=true",
 			"--markdown-options.wait-for-ms", "0",
 			"--num-results", "10",
 			"--query-fanout=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 		)
 	})
 
@@ -322,7 +405,9 @@ func TestWebSearch(t *testing.T) {
 			"    shouldParse: true\n" +
 			"    start: 1\n" +
 			"  shortenBase64Images: true\n" +
-			"  timeoutMS: 1000\n" +
+			"  timeoutOpts:\n" +
+			"    milliseconds: 1\n" +
+			"    behavior: fail\n" +
 			"  useMainContentOnly: true\n" +
 			"  waitForMs: 0\n" +
 			"numResults: 10\n" +
@@ -330,7 +415,9 @@ func TestWebSearch(t *testing.T) {
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +
-			"timeoutMS: 1000\n")
+			"timeoutOpts:\n" +
+			"  milliseconds: 1000\n" +
+			"  behavior: fail\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -363,7 +450,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--stop-after-ms", "10000",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
 			"--url-regex", "^https?://[^/]+/blog/",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
@@ -400,7 +487,8 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--stop-after-ms", "10000",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1000",
+			"--timeout-opts.milliseconds", "1000",
+			"--timeout-opts.behavior", "fail",
 			"--url-regex", "^https?://[^/]+/blog/",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
@@ -435,7 +523,9 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +
-			"timeoutMS: 1000\n" +
+			"timeoutOpts:\n" +
+			"  milliseconds: 1000\n" +
+			"  behavior: fail\n" +
 			"urlRegex: ^https?://[^/]+/blog/\n" +
 			"useMainContentOnly: true\n" +
 			"waitForMs: 0\n" +
@@ -460,7 +550,27 @@ func TestWebWebScrapeBytes(t *testing.T) {
 			"--headers", "{foo: J!}",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1",
+			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
+			"--zdr", "enabled",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(webWebScrapeBytes)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"web", "web-scrape-bytes",
+			"--url", "https://example.com",
+			"--country", "de",
+			"--headers", "{foo: J!}",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1",
+			"--timeout-opts.behavior", "fail",
 			"--zdr", "enabled",
 		)
 	})
@@ -485,7 +595,7 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--settle-animations=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1",
+			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
 			"--zdr", "enabled",
@@ -516,7 +626,8 @@ func TestWebWebScrapeHTML(t *testing.T) {
 			"--settle-animations=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1",
+			"--timeout-opts.milliseconds", "1",
+			"--timeout-opts.behavior", "fail",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
 			"--zdr", "enabled",
@@ -539,7 +650,7 @@ func TestWebWebScrapeImages(t *testing.T) {
 			"--max-age-ms", "0",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1",
+			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
 			"--wait-for-ms", "0",
 		)
 	})
@@ -564,7 +675,8 @@ func TestWebWebScrapeImages(t *testing.T) {
 			"--max-age-ms", "0",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1",
+			"--timeout-opts.milliseconds", "1",
+			"--timeout-opts.behavior", "fail",
 			"--wait-for-ms", "0",
 		)
 	})
@@ -593,7 +705,7 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--shorten-base64-images=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1",
+			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
 			"--zdr", "enabled",
@@ -628,7 +740,8 @@ func TestWebWebScrapeMd(t *testing.T) {
 			"--shorten-base64-images=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1",
+			"--timeout-opts.milliseconds", "1",
+			"--timeout-opts.behavior", "fail",
 			"--use-main-content-only=true",
 			"--wait-for-ms", "0",
 			"--zdr", "enabled",
@@ -651,7 +764,31 @@ func TestWebWebScrapeSitemap(t *testing.T) {
 			"--sitemap-url", "https://example.com",
 			"--tag", "production",
 			"--tag", "team-alpha",
-			"--timeout-ms", "1",
+			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
+			"--url-regex", "^https?://[^/]+/blog/",
+			"--zdr", "enabled",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(webWebScrapeSitemap)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"web", "web-scrape-sitemap",
+			"--domain", "xxx",
+			"--headers", "{foo: J!}",
+			"--include-subdomains=true",
+			"--max-links", "1",
+			"--search", "help center and troubleshooting articles",
+			"--sitemap-url", "https://example.com",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1",
+			"--timeout-opts.behavior", "fail",
 			"--url-regex", "^https?://[^/]+/blog/",
 			"--zdr", "enabled",
 		)
