@@ -448,6 +448,24 @@ func TestWebWebCrawlMd(t *testing.T) {
 	})
 }
 
+func TestWebWebScrapeBytes(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"web", "web-scrape-bytes",
+			"--url", "https://example.com",
+			"--country", "de",
+			"--headers", "{foo: J!}",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-ms", "1",
+			"--zdr", "enabled",
+		)
+	})
+}
+
 func TestWebWebScrapeHTML(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {

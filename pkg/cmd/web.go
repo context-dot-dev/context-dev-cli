@@ -647,6 +647,48 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 	},
 })
 
+var webWebScrapeBytes = cli.Command{
+	Name:    "web-scrape-bytes",
+	Usage:   "Downloads a resource and returns its bytes as base64. Supports images, PDFs,\nHTML pages, and any other content type without image conversion, text\nextraction, or character-encoding changes. HTTP compression is decoded before\nbase64 encoding. HTML is the original HTTP response; JavaScript is not rendered.\nFollows public redirects and retries failed downloads through ISP and\nresidential proxies, with a direct fallback. When country is specified, only a\nresidential proxy in that country is used. Supply headers such as Referer for\nimages that require a referring page. Downloads are not cached. Maximum decoded\nresource size: 20 MiB (20971520 bytes), before base64 encoding. Successful\nrequests cost 1 credit; errors are not billed.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "url",
+			Usage:     "Full HTTP(S) URL of the resource to download, such as an image, PDF, or page.",
+			Required:  true,
+			QueryPath: "url",
+		},
+		&requestflag.Flag[string]{
+			Name:      "country",
+			Usage:     "Fetch the target page through a residential proxy in this country (ISO 3166-1 alpha-2).",
+			QueryPath: "country",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:      "headers",
+			Usage:     "Optional outbound HTTP headers, such as Referer, Cookie, or Authorization. Send as a JSON object or deep-object query params such as headers[Referer]=https://example.com/. Host, Content-Length, and hop-by-hop transport headers are rejected. Authorization and cookies are removed when a redirect changes origin.",
+			QueryPath: "headers",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
+		},
+		&requestflag.Flag[int64]{
+			Name:      "timeout-ms",
+			Usage:     "Optional timeout in milliseconds for the request. If the request takes longer than this value, it will be aborted with a 408 status code. Maximum allowed value is 300000ms (5 minutes).",
+			QueryPath: "timeoutMS",
+		},
+		&requestflag.Flag[string]{
+			Name:      "zdr",
+			Usage:     "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Default:   "disabled",
+			QueryPath: "zdr",
+		},
+	},
+	Action:          handleWebWebScrapeBytes,
+	HideHelpCommand: true,
+}
+
 var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-html",
 	Usage:   "Scrapes the given URL and returns the raw HTML content of the page. The base\nrequest costs 1 credit; requests with browser actions cost 2 credits.",
@@ -1370,6 +1412,47 @@ func handleWebWebCrawlMd(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "web web-crawl-md",
+		Transform:      transform,
+	})
+}
+
+func handleWebWebScrapeBytes(ctx context.Context, cmd *cli.Command) error {
+	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := contextdev.WebWebScrapeBytesParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Web.WebScrapeBytes(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "web web-scrape-bytes",
 		Transform:      transform,
 	})
 }

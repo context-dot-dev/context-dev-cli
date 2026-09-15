@@ -105,6 +105,7 @@ func init() {
 					&webScreenshot,
 					&webSearch,
 					&webWebCrawlMd,
+					&webWebScrapeBytes,
 					&webWebScrapeHTML,
 					&webWebScrapeImages,
 					&webWebScrapeMd,
