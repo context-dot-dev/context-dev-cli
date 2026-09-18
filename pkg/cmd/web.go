@@ -804,7 +804,7 @@ var webWebScrapeBytes = requestflag.WithInnerFlags(cli.Command{
 
 var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-html",
-	Usage:   "Scrapes the given URL and returns the raw HTML content of the page. The base\nrequest costs 1 credit; requests with browser actions cost 2 credits. A request\nthat hits its timeoutOpts.milliseconds deadline fails with 408 and is not\nbilled, unless timeoutOpts.behavior=return-partial is set — then the page as\nrendered so far is returned with `finalDOMState: \"still-loading\"` and billed at\nthe base cost of 1 credit.",
+	Usage:   "Scrapes the given URL and returns the HTML content of the page. Optional\nextractRules return deterministic structured data in extracted using CSS\nselectors, attributes, lists, and nested rules, without an LLM or additional\ncredits. Rules run on the returned HTML after selector and main-content\nfiltering. Send extractRules as a JSON-encoded query parameter. The base request\ncosts 1 credit; requests with browser actions cost 2 credits. A request that\nhits its timeoutOpts.milliseconds deadline fails with 408 and is not billed,\nunless timeoutOpts.behavior=return-partial is set — then the page as rendered so\nfar is returned with `finalDOMState: \"still-loading\"` and billed at the base\ncost of 1 credit.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -827,6 +827,11 @@ var webWebScrapeHTML = requestflag.WithInnerFlags(cli.Command{
 			Name:      "exclude-selector",
 			Usage:     `CSS selectors to remove from the result. Applied after includeSelectors. Exclusion takes precedence: an element matching both is removed. Examples: "nav", "footer", ".ad-banner", "[aria-hidden=true]".`,
 			QueryPath: "excludeSelectors",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:      "extract-rules",
+			Usage:     `Optional CSS extraction rules applied to the returned HTML after selector and main-content filtering. Use selector strings ("h1", "a@href") or objects with selector, type (item or list), and output (text, html, @attribute, or nested rules). Text whitespace is normalized; html includes the matched element; attributes are returned as written. Missing items are null and missing lists are empty. CSS only; XPath is not supported. Maximum: 100 fields across 5 levels. Send a JSON-encoded string in the extractRules query parameter.`,
+			QueryPath: "extractRules",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "headers",
