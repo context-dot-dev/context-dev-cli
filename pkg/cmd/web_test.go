@@ -766,6 +766,59 @@ func TestWebWebScrapeMd(t *testing.T) {
 	})
 }
 
+func TestWebWebScrapeScreenshot(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"web", "web-scrape-screenshot",
+			"--url", "https://example.com",
+			"--clear-popups=true",
+			"--color-scheme", "light",
+			"--country", "de",
+			"--full-screenshot", "true",
+			"--handle-cookie-popup=true",
+			"--max-age-ms", "0",
+			"--scroll-offset", "0",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
+			"--viewport", "{height: 240, width: 240}",
+			"--wait-for-ms", "0",
+			"--zdr", "enabled",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(webWebScrapeScreenshot)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"web", "web-scrape-screenshot",
+			"--url", "https://example.com",
+			"--clear-popups=true",
+			"--color-scheme", "light",
+			"--country", "de",
+			"--full-screenshot", "true",
+			"--handle-cookie-popup=true",
+			"--max-age-ms", "0",
+			"--scroll-offset", "0",
+			"--tag", "production",
+			"--tag", "team-alpha",
+			"--timeout-opts.milliseconds", "1",
+			"--timeout-opts.behavior", "fail",
+			"--viewport.height", "240",
+			"--viewport.width", "240",
+			"--wait-for-ms", "0",
+			"--zdr", "enabled",
+		)
+	})
+}
+
 func TestWebWebScrapeSitemap(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {

@@ -1213,6 +1213,112 @@ var webWebScrapeMd = requestflag.WithInnerFlags(cli.Command{
 	},
 })
 
+var webWebScrapeScreenshot = requestflag.WithInnerFlags(cli.Command{
+	Name:    "web-scrape-screenshot",
+	Usage:   "Capture the given HTTP or HTTPS URL with configurable viewport, full-page\ncapture, wait time, popup handling, theme, scroll offset, cache age, country,\nand request timeout. Defaults to a 1920x1080 viewport, a 3-second wait, and a\ncache age of 1 day. With timeoutOpts.behavior=return-partial, a screenshot of\nthe page rendered so far may be returned; inspect finalDOMState to identify an\nincomplete render. Successful requests cost 1 credit; errors are not billed.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:      "url",
+			Required:  true,
+			QueryPath: "url",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "clear-popups",
+			Usage:     "Optional parameter for comprehensive popup cleanup. If 'true', the browser dismisses detected cookie/consent UI and clears other detected obstructive popups and overlays before capture. If 'false' or not provided, this parameter requests no cleanup; handleCookiePopup can still request cookie/consent handling independently.",
+			Default:   false,
+			QueryPath: "clearPopups",
+		},
+		&requestflag.Flag[string]{
+			Name:      "color-scheme",
+			Usage:     "Optional parameter to choose the site's visual theme in the screenshot. Use 'light' or 'dark' when the site offers both appearances.",
+			QueryPath: "colorScheme",
+		},
+		&requestflag.Flag[string]{
+			Name:      "country",
+			Usage:     "Fetch the target page through a residential proxy in this country (ISO 3166-1 alpha-2).",
+			QueryPath: "country",
+		},
+		&requestflag.Flag[string]{
+			Name:      "full-screenshot",
+			Usage:     "Optional parameter to determine screenshot type. If 'true', takes a full page screenshot capturing all content. If 'false' or not provided, takes a viewport screenshot (standard browser view).",
+			QueryPath: "fullScreenshot",
+		},
+		&requestflag.Flag[bool]{
+			Name:      "handle-cookie-popup",
+			Usage:     "Optional parameter to control cookie/consent popup handling. If 'true', we dismiss cookie banner before capture. If 'false' or not provided, captures the page without that step.",
+			Default:   false,
+			QueryPath: "handleCookiePopup",
+		},
+		&requestflag.Flag[*int64]{
+			Name:      "max-age-ms",
+			Usage:     "Return a cached screenshot if a prior screenshot for the same parameters exists and is younger than this many milliseconds. Defaults to 1 day (86400000 ms) when omitted. Max is 30 days (2592000000 ms). Set to 0 to always capture fresh.",
+			Default:   requestflag.Ptr[int64](86400000),
+			QueryPath: "maxAgeMs",
+		},
+		&requestflag.Flag[*int64]{
+			Name:      "scroll-offset",
+			Usage:     "Optional vertical scroll offset in pixels for capturing a long page in viewport-sized chunks. When provided, the full page is captured once and the returned image is the viewport-sized slice that begins at this Y offset (e.g. request scrollOffset=0, then 1080, then 2160 to walk a 1920x1080 landing page top to bottom). The final slice may be shorter than the viewport height. Takes precedence over fullScreenshot. Max: 100000.",
+			QueryPath: "scrollOffset",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "tag",
+			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			QueryPath: "tags",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:      "timeout-opts",
+			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			QueryPath: "timeoutOpts",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:      "viewport",
+			Usage:     "Optional browser viewport dimensions for the screenshot. Defaults to 1920x1080.",
+			Default:   map[string]any{"width": 1920, "height": 1080},
+			QueryPath: "viewport",
+		},
+		&requestflag.Flag[*int64]{
+			Name:      "wait-for-ms",
+			Usage:     "Optional browser wait time in milliseconds after initial page load before taking the screenshot. Min: 0. Max: 30000 (30 seconds). Defaults to 3000 ms when omitted. When combined with timeoutOpts, timeoutOpts.milliseconds must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
+			Default:   requestflag.Ptr[int64](3000),
+			QueryPath: "waitForMs",
+		},
+		&requestflag.Flag[string]{
+			Name:      "zdr",
+			Usage:     "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Default:   "disabled",
+			QueryPath: "zdr",
+		},
+	},
+	Action:          handleWebWebScrapeScreenshot,
+	HideHelpCommand: true,
+}, map[string][]requestflag.HasOuterFlag{
+	"timeout-opts": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "timeout-opts.milliseconds",
+			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			InnerField: "milliseconds",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "timeout-opts.behavior",
+			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results. "return-partial" requires milliseconds of at least 5000.`,
+			InnerField: "behavior",
+		},
+	},
+	"viewport": {
+		&requestflag.InnerFlag[int64]{
+			Name:       "viewport.height",
+			Usage:      "Viewport height in pixels.",
+			InnerField: "height",
+		},
+		&requestflag.InnerFlag[int64]{
+			Name:       "viewport.width",
+			Usage:      "Viewport width in pixels.",
+			InnerField: "width",
+		},
+	},
+})
+
 var webWebScrapeSitemap = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-sitemap",
 	Usage:   "Crawl an entire website's sitemap and return all discovered page URLs. Set\n`includeSubdomains=true` to also discover public pages and sitemaps on child\nhosts such as `docs.example.com` or `brand.example.com`. Pass `search` to have\nthe discovered URLs filtered down to the pages about a phrase (for example\n`pricing and plans` or `api authentication docs`), most relevant first — a\nsearched crawl scans the whole sitemap and costs 2 credits instead of 1.",
@@ -1778,6 +1884,47 @@ func handleWebWebScrapeMd(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "web web-scrape-md",
+		Transform:      transform,
+	})
+}
+
+func handleWebWebScrapeScreenshot(ctx context.Context, cmd *cli.Command) error {
+	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := contextdev.WebWebScrapeScreenshotParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.Web.WebScrapeScreenshot(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "web web-scrape-screenshot",
 		Transform:      transform,
 	})
 }

@@ -109,6 +109,7 @@ func init() {
 					&webWebScrapeHTML,
 					&webWebScrapeImages,
 					&webWebScrapeMd,
+					&webWebScrapeScreenshot,
 					&webWebScrapeSitemap,
 				},
 			},
