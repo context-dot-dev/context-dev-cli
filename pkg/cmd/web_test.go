@@ -22,6 +22,7 @@ func TestWebAnswers(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -41,6 +42,7 @@ func TestWebAnswers(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1000",
 			"--timeout-opts.behavior", "fail",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -57,7 +59,8 @@ func TestWebAnswers(t *testing.T) {
 			"  - team-alpha\n" +
 			"timeoutOpts:\n" +
 			"  milliseconds: 1000\n" +
-			"  behavior: fail\n")
+			"  behavior: fail\n" +
+			"zdr: enabled\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -90,6 +93,7 @@ func TestWebExtract(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -122,6 +126,7 @@ func TestWebExtract(t *testing.T) {
 			"--timeout-opts.milliseconds", "1000",
 			"--timeout-opts.behavior", "fail",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -156,7 +161,8 @@ func TestWebExtract(t *testing.T) {
 			"timeoutOpts:\n" +
 			"  milliseconds: 1000\n" +
 			"  behavior: fail\n" +
-			"waitForMs: 0\n")
+			"waitForMs: 0\n" +
+			"zdr: enabled\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -177,6 +183,7 @@ func TestWebExtractCompetitors(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -195,6 +202,7 @@ func TestWebExtractCompetitors(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1000",
 			"--timeout-opts.behavior", "fail",
+			"--zdr", "enabled",
 		)
 	})
 }
@@ -249,6 +257,7 @@ func TestWebExtractStyleguide(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -269,6 +278,7 @@ func TestWebExtractStyleguide(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1",
 			"--timeout-opts.behavior", "fail",
+			"--zdr", "enabled",
 		)
 	})
 }
@@ -348,6 +358,7 @@ func TestWebSearch(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -381,6 +392,7 @@ func TestWebSearch(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1000",
 			"--timeout-opts.behavior", "fail",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -417,7 +429,8 @@ func TestWebSearch(t *testing.T) {
 			"  - team-alpha\n" +
 			"timeoutOpts:\n" +
 			"  milliseconds: 1000\n" +
-			"  behavior: fail\n")
+			"  behavior: fail\n" +
+			"zdr: enabled\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
@@ -654,6 +667,7 @@ func TestWebWebScrapeImages(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -680,6 +694,7 @@ func TestWebWebScrapeImages(t *testing.T) {
 			"--timeout-opts.milliseconds", "1",
 			"--timeout-opts.behavior", "fail",
 			"--wait-for-ms", "0",
+			"--zdr", "enabled",
 		)
 	})
 }

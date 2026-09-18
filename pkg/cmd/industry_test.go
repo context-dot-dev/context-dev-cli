@@ -22,6 +22,7 @@ func TestIndustryRetrieveNaics(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -41,6 +42,7 @@ func TestIndustryRetrieveNaics(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1000",
 			"--timeout-opts.behavior", "fail",
+			"--zdr", "enabled",
 		)
 	})
 }
@@ -59,6 +61,7 @@ func TestIndustryRetrieveSic(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
 			"--type", "original_sic",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -79,6 +82,7 @@ func TestIndustryRetrieveSic(t *testing.T) {
 			"--timeout-opts.milliseconds", "1000",
 			"--timeout-opts.behavior", "fail",
 			"--type", "original_sic",
+			"--zdr", "enabled",
 		)
 	})
 }

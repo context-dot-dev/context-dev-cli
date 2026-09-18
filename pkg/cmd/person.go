@@ -53,6 +53,11 @@ var peopleEnrich = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
 			BodyPath: "timeoutOpts",
 		},
+		&requestflag.Flag[string]{
+			Name:     "zdr",
+			Usage:    "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			BodyPath: "zdr",
+		},
 	},
 	Action:          handlePeopleEnrich,
 	HideHelpCommand: true,
