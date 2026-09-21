@@ -783,7 +783,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 
 var webWebScrapeBytes = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-bytes",
-	Usage:   "Downloads a resource and returns its bytes as base64. Without waitForMs, returns\nthe original HTTP response without image conversion, text extraction, or\ncharacter-encoding changes. HTTP compression is decoded before base64 encoding.\nSupply waitForMs to render HTML with JavaScript in the browser and return the\nresulting HTML as UTF-8 bytes after the wait. Non-HTML resources, including\nimages and PDFs, keep their original bytes and do not incur a browser wait.\nFollows public redirects and retries failed downloads through ISP and\nresidential proxies, with a direct fallback. When country is specified, only a\nresidential proxy in that country is used. Supply headers such as Referer for\nimages that require a referring page. Downloads are not cached. Maximum decoded\nresource size: 20 MiB (20971520 bytes), before base64 encoding. Successful\nrequests cost 1 credit; errors are not billed.",
+	Usage:   "Downloads a resource and returns its bytes as base64. Without waitForMs, returns\nthe original HTTP response without image conversion, text extraction, or\ncharacter-encoding changes. HTTP compression is decoded before base64 encoding.\nSupply waitForMs to render HTML with JavaScript in the browser and return the\nresulting HTML as UTF-8 bytes after the wait. Non-HTML resources, including\nimages and PDFs, keep their original bytes and do not incur a browser wait.\nFollows public redirects and retries failed downloads through ISP and\nresidential proxies, with a direct fallback. When country is specified, only a\nresidential proxy in that country is used. Supply headers such as Referer for\nimages that require a referring page. Cached results are reused according to\nmaxAgeMs (default: 1 day; maximum: 30 days). Set maxAgeMs=0 to fetch fresh and\nrefresh the cache. Cache identity includes the exact URL, country, waitForMs,\nand normalized outbound headers. Credential-bearing headers and zero data\nretention bypass cache reads and writes. cache_metadata reports hit, miss, or\nzdr and the cached result age in milliseconds. Maximum decoded resource size: 20\nMiB (20971520 bytes), before base64 encoding. Successful requests cost 1 credit;\nerrors are not billed.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -799,8 +799,14 @@ var webWebScrapeBytes = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "headers",
-			Usage:     "Optional outbound HTTP headers, such as Referer, Cookie, or Authorization. Send as a JSON object or deep-object query params such as headers[Referer]=https://example.com/. Host, Content-Length, and hop-by-hop transport headers are rejected. Authorization and cookies are removed when a redirect changes origin.",
+			Usage:     "Optional outbound HTTP headers, such as Referer, Cookie, or Authorization. Send as a JSON object or deep-object query params such as headers[Referer]=https://example.com/. Host, Content-Length, and hop-by-hop transport headers are rejected. Authorization and cookies are removed when a redirect changes origin. Credential-bearing headers bypass cache reads and writes; other headers are included in the cache key.",
 			QueryPath: "headers",
+		},
+		&requestflag.Flag[*int64]{
+			Name:      "max-age-ms",
+			Usage:     "Return a cached result if a prior scrape for the same parameters exists and is younger than this many milliseconds. Defaults to 1 day (86400000 ms) when omitted. Max is 30 days (2592000000 ms). Set to 0 to always scrape fresh.",
+			Default:   requestflag.Ptr[int64](86400000),
+			QueryPath: "maxAgeMs",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
@@ -988,6 +994,11 @@ var webWebScrapeImages = requestflag.WithInnerFlags(cli.Command{
 			Name:      "action",
 			Usage:     "Optional browser actions executed in array order after the page loads and before content is captured. Requires a paid plan. Send a JSON array in the query parameter. Maximum: 5 actions.",
 			QueryPath: "actions",
+		},
+		&requestflag.Flag[string]{
+			Name:      "country",
+			Usage:     "Fetch the target page through a residential proxy in this country (ISO 3166-1 alpha-2).",
+			QueryPath: "country",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "dedupe",
