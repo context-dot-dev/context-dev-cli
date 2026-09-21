@@ -778,7 +778,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 
 var webWebScrapeBytes = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-scrape-bytes",
-	Usage:   "Downloads a resource and returns its bytes as base64. Supports images, PDFs,\nHTML pages, and any other content type without image conversion, text\nextraction, or character-encoding changes. HTTP compression is decoded before\nbase64 encoding. HTML is the original HTTP response; JavaScript is not rendered.\nFollows public redirects and retries failed downloads through ISP and\nresidential proxies, with a direct fallback. When country is specified, only a\nresidential proxy in that country is used. Supply headers such as Referer for\nimages that require a referring page. Downloads are not cached. Maximum decoded\nresource size: 20 MiB (20971520 bytes), before base64 encoding. Successful\nrequests cost 1 credit; errors are not billed.",
+	Usage:   "Downloads a resource and returns its bytes as base64. Without waitForMs, returns\nthe original HTTP response without image conversion, text extraction, or\ncharacter-encoding changes. HTTP compression is decoded before base64 encoding.\nSupply waitForMs to render HTML with JavaScript in the browser and return the\nresulting HTML as UTF-8 bytes after the wait. Non-HTML resources, including\nimages and PDFs, keep their original bytes and do not incur a browser wait.\nFollows public redirects and retries failed downloads through ISP and\nresidential proxies, with a direct fallback. When country is specified, only a\nresidential proxy in that country is used. Supply headers such as Referer for\nimages that require a referring page. Downloads are not cached. Maximum decoded\nresource size: 20 MiB (20971520 bytes), before base64 encoding. Successful\nrequests cost 1 credit; errors are not billed.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -806,6 +806,11 @@ var webWebScrapeBytes = requestflag.WithInnerFlags(cli.Command{
 			Name:      "timeout-opts",
 			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
 			QueryPath: "timeoutOpts",
+		},
+		&requestflag.Flag[*int64]{
+			Name:      "wait-for-ms",
+			Usage:     "Optional browser wait time after initial page load, in milliseconds (0–30000; 0 uses 500). When supplied, HTML is rendered with JavaScript and returned as UTF-8 bytes. Other resources keep their original bytes without a browser wait. Omit to download the original HTTP response. When combined with timeoutOpts, timeoutOpts.milliseconds must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
+			QueryPath: "waitForMs",
 		},
 		&requestflag.Flag[string]{
 			Name:      "zdr",

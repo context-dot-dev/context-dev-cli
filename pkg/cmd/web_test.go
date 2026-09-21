@@ -564,6 +564,7 @@ func TestWebWebScrapeBytes(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
+			"--wait-for-ms", "0",
 			"--zdr", "enabled",
 		)
 	})
@@ -584,6 +585,7 @@ func TestWebWebScrapeBytes(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1",
 			"--timeout-opts.behavior", "fail",
+			"--wait-for-ms", "0",
 			"--zdr", "enabled",
 		)
 	})
