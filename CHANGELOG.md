@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.11.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.10.0...v1.11.0) (2026-09-22)
+
+
+### Features
+
+* **api:** enable ZDR on remaining AI endpoints via OpenAI ([#1099](https://github.com/context-dot-dev/context-dev-cli/issues/1099)) ([cd708ca](https://github.com/context-dot-dev/context-dev-cli/commit/cd708cab6ed78bd33d9d6237f09cbc38e45347d4))
+* **billing:** charge for 404s and skip fraud accounting ([#1152](https://github.com/context-dot-dev/context-dev-cli/issues/1152)) ([da081b1](https://github.com/context-dot-dev/context-dev-cli/commit/da081b109221008938d7e9665584fcbbedc3a49c))
+* **scrape:** add cache age support to byte downloads ([#1171](https://github.com/context-dot-dev/context-dev-cli/issues/1171)) ([5f66062](https://github.com/context-dot-dev/context-dev-cli/commit/5f66062092a3fa099f0cd043915e726f315c0de5))
+* **scrape:** add CSS extraction rules to HTML scraping ([#1146](https://github.com/context-dot-dev/context-dev-cli/issues/1146)) ([7312544](https://github.com/context-dot-dev/context-dev-cli/commit/7312544df2c45bcc1a83b53385349c5c0f587280))
+* **scrape:** align timeout options and public SDK methods ([#1207](https://github.com/context-dot-dev/context-dev-cli/issues/1207)) ([b022ea7](https://github.com/context-dot-dev/context-dev-cli/commit/b022ea7a62ec6e043d354c691ddaa16df07f1b2b))
+* **scrape:** support country for image scraping ([#1172](https://github.com/context-dot-dev/context-dev-cli/issues/1172)) ([5f66062](https://github.com/context-dot-dev/context-dev-cli/commit/5f66062092a3fa099f0cd043915e726f315c0de5))
+* **scrape:** support custom screenshot headers ([#1169](https://github.com/context-dot-dev/context-dev-cli/issues/1169)) ([efaf864](https://github.com/context-dot-dev/context-dev-cli/commit/efaf86495456996b4b0e7f21eb1f7608da6ff1e6))
+* **scrape:** support waitForMs for byte downloads ([#1170](https://github.com/context-dot-dev/context-dev-cli/issues/1170)) ([0d84fa4](https://github.com/context-dot-dev/context-dev-cli/commit/0d84fa4da25faa2ba9687880140bf82e6868199b))
+* **web:** add URL-based scrape screenshot endpoint ([#1150](https://github.com/context-dot-dev/context-dev-cli/issues/1150)) ([7309030](https://github.com/context-dot-dev/context-dev-cli/commit/730903032b70d9bbd6026d005946170cd79ef560))
+
+
+### Bug Fixes
+
+* **api:** lower partial scrape timeout minimum to five seconds ([#1118](https://github.com/context-dot-dev/context-dev-cli/issues/1118)) ([29338a1](https://github.com/context-dot-dev/context-dev-cli/commit/29338a15ff1b82c1c1908af5db66c6011461814d))
+
 ## [1.10.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.9.0...v1.10.0) (2026-09-15)
 
 
