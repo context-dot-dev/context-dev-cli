@@ -128,56 +128,6 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 	},
 })
 
-var brandRetrieveSimplified = requestflag.WithInnerFlags(cli.Command{
-	Name:    "retrieve-simplified",
-	Usage:   "Returns a simplified version of brand data containing only essential\ninformation: domain, title, colors, logos, and backdrops. Optimized for faster\nresponses and reduced data transfer.",
-	Suggest: true,
-	Flags: []cli.Flag{
-		&requestflag.Flag[string]{
-			Name:      "domain",
-			Usage:     "Domain name to retrieve simplified brand data for",
-			Required:  true,
-			QueryPath: "domain",
-		},
-		&requestflag.Flag[*int64]{
-			Name:      "max-age-ms",
-			Usage:     "Maximum age in milliseconds for cached brand data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Set to 0 to always perform a hard refresh. Negative values are clamped to 0; values above 1 year (31536000000 ms) are clamped to 1 year.",
-			Default:   requestflag.Ptr[int64](7776000000),
-			QueryPath: "maxAgeMs",
-		},
-		&requestflag.Flag[[]string]{
-			Name:      "tag",
-			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
-			QueryPath: "tags",
-		},
-		&requestflag.Flag[string]{
-			Name:      "theme",
-			Usage:     "Optional theme preference used when selecting brand assets.",
-			QueryPath: "theme",
-		},
-		&requestflag.Flag[map[string]any]{
-			Name:      "timeout-opts",
-			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
-			QueryPath: "timeoutOpts",
-		},
-	},
-	Action:          handleBrandRetrieveSimplified,
-	HideHelpCommand: true,
-}, map[string][]requestflag.HasOuterFlag{
-	"timeout-opts": {
-		&requestflag.InnerFlag[int64]{
-			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
-			InnerField: "milliseconds",
-		},
-		&requestflag.InnerFlag[string]{
-			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
-			InnerField: "behavior",
-		},
-	},
-})
-
 var brandSearch = cli.Command{
 	Name:    "search",
 	Usage:   "Search indexed brands by name or domain",
@@ -254,47 +204,6 @@ func handleBrandRetrieve(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "brand retrieve",
-		Transform:      transform,
-	})
-}
-
-func handleBrandRetrieveSimplified(ctx context.Context, cmd *cli.Command) error {
-	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	params := contextdev.BrandGetSimplifiedParams{}
-
-	var res []byte
-	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Brand.GetSimplified(ctx, params, options...)
-	if err != nil {
-		return err
-	}
-
-	obj := gjson.ParseBytes(res)
-	format := cmd.Root().String("format")
-	explicitFormat := cmd.Root().IsSet("format")
-	transform := cmd.Root().String("transform")
-	return ShowJSON(obj, ShowJSONOpts{
-		ExplicitFormat: explicitFormat,
-		Format:         format,
-		RawOutput:      cmd.Root().Bool("raw-output"),
-		Title:          "brand retrieve-simplified",
 		Transform:      transform,
 	})
 }

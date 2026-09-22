@@ -98,28 +98,11 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&webAnswers,
-					&webExtract,
 					&webExtractCompetitors,
-					&webExtractFonts,
 					&webExtractStyleguide,
 					&webScreenshot,
 					&webSearch,
 					&webWebCrawlMd,
-					&webWebScrapeBytes,
-					&webWebScrapeHTML,
-					&webWebScrapeImages,
-					&webWebScrapeMd,
-					&webWebScrapeScreenshot,
-					&webWebScrapeSitemap,
-				},
-			},
-			{
-				Name:     "ai",
-				Category: "API RESOURCE",
-				Suggest:  true,
-				Commands: []*cli.Command{
-					&aiExtractProduct,
-					&aiExtractProducts,
 				},
 			},
 			{
@@ -128,7 +111,6 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&brandRetrieve,
-					&brandRetrieveSimplified,
 					&brandSearch,
 				},
 			},

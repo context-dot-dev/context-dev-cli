@@ -70,42 +70,6 @@ func TestBrandRetrieve(t *testing.T) {
 	})
 }
 
-func TestBrandRetrieveSimplified(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
-	t.Run("regular flags", func(t *testing.T) {
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"brand", "retrieve-simplified",
-			"--domain", "xxx",
-			"--max-age-ms", "0",
-			"--tag", "production",
-			"--tag", "team-alpha",
-			"--theme", "light",
-			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
-		)
-	})
-
-	t.Run("inner flags", func(t *testing.T) {
-		// Check that inner flags have been set up correctly
-		requestflag.CheckInnerFlags(brandRetrieveSimplified)
-
-		// Alternative argument passing style using inner flags
-		mocktest.TestRunMockTestWithFlags(
-			t,
-			"--api-key", "string",
-			"brand", "retrieve-simplified",
-			"--domain", "xxx",
-			"--max-age-ms", "0",
-			"--tag", "production",
-			"--tag", "team-alpha",
-			"--theme", "light",
-			"--timeout-opts.milliseconds", "1000",
-			"--timeout-opts.behavior", "fail",
-		)
-	})
-}
-
 func TestBrandSearch(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	t.Run("regular flags", func(t *testing.T) {
