@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.12.0...v1.12.1) (2026-09-26)
+
+
+### Bug Fixes
+
+* **openapi:** document exclusive news filters ([#1265](https://github.com/context-dot-dev/context-dev-cli/issues/1265)) ([2ed83fb](https://github.com/context-dot-dev/context-dev-cli/commit/2ed83fb006e021cfd3117bb1c8ebd7dd6b7faca4))
+
 ## [1.12.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.11.0...v1.12.0) (2026-09-22)
 
 
