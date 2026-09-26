@@ -16,7 +16,7 @@ import (
 
 var newsSearch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "search",
-	Usage:   "Searches live and historical company news for one company, identified in\nsearchBy by name, domain, ticker (optionally disambiguated by exchange), or\nISIN. Results can be filtered by publisher domain, publisher country, article\nlanguage, article type, and published-at date, and include stable story IDs,\nsource metadata, verified entity relevance, and cursor pagination.",
+	Usage:   "Searches live and historical company news for one company, identified in\nsearchBy by name, domain, ticker (optionally disambiguated by exchange), or\nISIN. Results can be filtered by one of publisher domain, publisher country,\narticle language, or article type, optionally combined with a published-at date\nrange, and include stable story IDs, source metadata, verified entity relevance,\nand cursor pagination.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
@@ -32,7 +32,7 @@ var newsSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "filter-by",
-			Usage:    "Optional result filters.",
+			Usage:    "Optional result filters. Use at most one of sourceDomain, sourceCountry, articleLanguage, or articleType. A date range may accompany that category; date.from must not exceed date.to.",
 			BodyPath: "filterBy",
 		},
 		&requestflag.Flag[int64]{
@@ -81,7 +81,7 @@ var newsSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "filter-by.date",
-			Usage:      "Published-at window in epoch milliseconds.",
+			Usage:      "Published-at window in epoch milliseconds. from must be before or equal to to.",
 			InnerField: "date",
 		},
 		&requestflag.InnerFlag[[]string]{
