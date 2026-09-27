@@ -211,7 +211,7 @@ func TestWebSearch(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"web", "search",
-			"--query", "x",
+			"--query", "Stripe API authentication",
 			"--country", "af",
 			"--exclude-domain", "string",
 			"--freshness", "last_24_hours",
@@ -235,7 +235,7 @@ func TestWebSearch(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"web", "search",
-			"--query", "x",
+			"--query", "Stripe API authentication",
 			"--country", "af",
 			"--exclude-domain", "string",
 			"--freshness", "last_24_hours",
@@ -263,7 +263,7 @@ func TestWebSearch(t *testing.T) {
 	t.Run("piping data", func(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
-			"query: x\n" +
+			"query: Stripe API authentication\n" +
 			"country: af\n" +
 			"excludeDomains:\n" +
 			"  - string\n" +
@@ -320,7 +320,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--include-selector", "string",
 			"--max-age-ms", "0",
 			"--max-depth", "0",
-			"--max-pages", "1",
+			"--max-pages", "10",
 			"--pdf", "{end: 1, ocr: true, shouldParse: true, start: 1}",
 			"--settle-animations=true",
 			"--shorten-base64-images=true",
@@ -354,7 +354,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--include-selector", "string",
 			"--max-age-ms", "0",
 			"--max-depth", "0",
-			"--max-pages", "1",
+			"--max-pages", "10",
 			"--pdf.end", "1",
 			"--pdf.ocr=true",
 			"--pdf.should-parse=true",
@@ -388,7 +388,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"  - string\n" +
 			"maxAgeMs: 0\n" +
 			"maxDepth: 0\n" +
-			"maxPages: 1\n" +
+			"maxPages: 10\n" +
 			"pdf:\n" +
 			"  end: 1\n" +
 			"  ocr: true\n" +

@@ -16,7 +16,7 @@ import (
 
 var logsRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get one logged API call, including its request input and response body.",
+	Usage:   "Retrieve a request’s metadata, retained input, and response.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -32,7 +32,7 @@ var logsRetrieve = cli.Command{
 
 var logsList = cli.Command{
 	Name:    "list",
-	Usage:   "List your organization's API requests, newest first. Defaults to the last 24\nhours.",
+	Usage:   "List your organization’s request logs with filters and pagination. Logs also\ninclude batch settlements and monitor runs.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{

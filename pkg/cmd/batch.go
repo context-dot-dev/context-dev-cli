@@ -16,12 +16,12 @@ import (
 
 var batchRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Check progress, and get download links once the batch finishes.",
+	Usage:   "Get batch progress and result download links. Result files are deleted 7 days\nafter the batch finishes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "batch-id",
-			Usage:     "ID of the batch to retrieve or cancel.",
+			Usage:     "Batch ID.",
 			Required:  true,
 			PathParam: "batch_id",
 		},
@@ -32,7 +32,7 @@ var batchRetrieve = cli.Command{
 
 var batchList = cli.Command{
 	Name:    "list",
-	Usage:   "List your batches from newest to oldest. Filter by status or continue with a\ncursor.",
+	Usage:   "List your batches, newest first, with optional filters.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -72,12 +72,12 @@ var batchList = cli.Command{
 
 var batchDelete = cli.Command{
 	Name:    "delete",
-	Usage:   "Permanently delete a finished batch and its stored results. Active batches must\nsettle first.",
+	Usage:   "Permanently delete a finished batch and its results. Its webhook deliveries can\nno longer be retried.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "batch-id",
-			Usage:     "ID of the batch to retrieve or cancel.",
+			Usage:     "Batch ID.",
 			Required:  true,
 			PathParam: "batch_id",
 		},
@@ -88,12 +88,12 @@ var batchDelete = cli.Command{
 
 var batchCancel = cli.Command{
 	Name:    "cancel",
-	Usage:   "Stop a batch from starting new pages. In-progress pages finish, and unused\ncredits are refunded.",
+	Usage:   "Stop a batch from starting new pages. Pages already in progress finish before\nthe batch becomes cancelled.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "batch-id",
-			Usage:     "ID of the batch to retrieve or cancel.",
+			Usage:     "Batch ID.",
 			Required:  true,
 			PathParam: "batch_id",
 		},
@@ -104,12 +104,12 @@ var batchCancel = cli.Command{
 
 var batchGetResults = cli.Command{
 	Name:    "get-results",
-	Usage:   "Page through a finished batch's results as JSON instead of downloading the\nNDJSON files.",
+	Usage:   "Page through a finished batch’s results as JSON. Results remain available for 7\ndays.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "batch-id",
-			Usage:     "ID of the batch to retrieve or cancel.",
+			Usage:     "Batch ID.",
 			Required:  true,
 			PathParam: "batch_id",
 		},
@@ -130,7 +130,7 @@ var batchGetResults = cli.Command{
 
 var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 	Name:    "submit",
-	Usage:   "Scrape 25K URLs or crawl large websites asynchronously.",
+	Usage:   "Scrape up to 25,000 URLs, or crawl a site, asynchronously. Poll the batch ID or\nreceive a webhook when it finishes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
@@ -146,7 +146,7 @@ var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "webhook",
-			Usage:    "Completion webhook settings. Cannot be combined with webhookUrl. Omitting retry preserves legacy delivery; retry: {} opts into durable retries.",
+			Usage:    "Where to send the batch's final-status event. Omit `retry` for one attempt; `{}` uses the default retry schedule.",
 			BodyPath: "webhook",
 		},
 		&requestflag.Flag[string]{
@@ -156,7 +156,7 @@ var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:       "idempotency-key",
-			Usage:      "Any string unique to this submission. Retries with the same key return the original batch.",
+			Usage:      "Unique key per submission. Retrying with the same key and body returns the original batch; a different body returns `409`.",
 			HeaderPath: "Idempotency-Key",
 		},
 	},
@@ -166,6 +166,7 @@ var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 	"webhook": {
 		&requestflag.InnerFlag[string]{
 			Name:       "webhook.url",
+			Usage:      "Public HTTP(S) URL that receives batch completion, failure, or cancellation events.",
 			InnerField: "url",
 		},
 		&requestflag.InnerFlag[map[string]any]{

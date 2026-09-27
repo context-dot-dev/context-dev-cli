@@ -16,46 +16,52 @@ import (
 
 var peopleEnrich = requestflag.WithInnerFlags(cli.Command{
 	Name:    "enrich",
-	Usage:   "Finds and normalizes the best available person candidate from additive identity\nclues, then assigns an identity match score from 0 to 100. Available on all paid\nplans. Successful requests cost 20 credits. Disposable and free email addresses\n(like gmail.com, yahoo.com) will throw a 422 error.",
+	Usage:   "Find a person from identity clues and return their profile with a match score.\nRequires a paid plan; free or disposable email addresses return 422.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "company",
+			Usage:    "Company context to help identify the person. Provide a name or domain.",
 			BodyPath: "company",
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "education",
+			Usage:    "Education history to help distinguish people with similar names.",
 			BodyPath: "education",
 		},
 		&requestflag.Flag[string]{
 			Name:     "email",
+			Usage:    "Email address of the person to find.",
 			BodyPath: "email",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "location",
+			Usage:    "Location context to help identify the person. Provide a city, region, or country.",
 			BodyPath: "location",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "name",
+			Usage:    "Person name. Without an email or person-profile URL, provide both first and last name plus company, education, or location.",
 			BodyPath: "name",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "social-url",
+			Usage:    "Public profile URLs for the person. A person-profile URL can identify the person without a name.",
 			BodyPath: "social_urls",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "timeout-opts",
-			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:    "Request deadline and what to return when it passes.",
 			BodyPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:     "zdr",
-			Usage:    "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Usage:    "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			BodyPath: "zdr",
 		},
 	},
@@ -65,64 +71,75 @@ var peopleEnrich = requestflag.WithInnerFlags(cli.Command{
 	"company": {
 		&requestflag.InnerFlag[string]{
 			Name:       "company.domain",
+			Usage:      "Website domain of a company associated with the person.",
 			InnerField: "domain",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "company.name",
+			Usage:      "Name of a company associated with the person.",
 			InnerField: "name",
 		},
 	},
 	"education": {
 		&requestflag.InnerFlag[string]{
 			Name:       "education.degree",
+			Usage:      "Degree or qualification earned.",
 			InnerField: "degree",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "education.field-of-study",
+			Usage:      "Subject or major studied.",
 			InnerField: "field_of_study",
 		},
 		&requestflag.InnerFlag[int64]{
 			Name:       "education.graduation-year",
+			Usage:      "Four-digit graduation year.",
 			InnerField: "graduation_year",
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "education.institution",
+			Usage:      "School or university, identified by name or domain.",
 			InnerField: "institution",
 		},
 	},
 	"location": {
 		&requestflag.InnerFlag[string]{
 			Name:       "location.city",
+			Usage:      "City associated with the person.",
 			InnerField: "city",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "location.country",
+			Usage:      "Country associated with the person.",
 			InnerField: "country",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "location.region",
+			Usage:      "State, province, or region associated with the person.",
 			InnerField: "region",
 		},
 	},
 	"name": {
 		&requestflag.InnerFlag[string]{
 			Name:       "name.first",
+			Usage:      "First or given name.",
 			InnerField: "first",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "name.last",
+			Usage:      "Last or family name.",
 			InnerField: "last",
 		},
 	},
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
 			InnerField: "behavior",
 		},
 	},

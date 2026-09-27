@@ -16,7 +16,7 @@ import (
 
 var utilityPrefetch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "prefetch",
-	Usage:   "Signal that you may fetch data soon to improve latency. The type field selects\nwhat to prefetch ('brand' queues a brand data fetch, 'styleguide' queues a\nstyleguide extraction) and identifier carries exactly one lookup key: a domain,\nor an email whose domain is extracted and validated (free email providers and\ndisposable email addresses are not allowed).",
+	Usage:   "Queue brand or styleguide data so a later lookup can return sooner.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
@@ -27,18 +27,18 @@ var utilityPrefetch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
-			Usage:    "What to prefetch: 'brand' warms the brand data cache, 'styleguide' warms the styleguide cache.",
+			Usage:    "Data to prefetch.",
 			Required: true,
 			BodyPath: "type",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "timeout-opts",
-			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:    "Request deadline and what to return when it passes.",
 			BodyPath: "timeoutOpts",
 		},
 	},
@@ -48,12 +48,12 @@ var utilityPrefetch = requestflag.WithInnerFlags(cli.Command{
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. This endpoint supports "fail": return 408 REQUEST_TIMEOUT without charging credits.`,
+			Usage:      `Only "fail" is supported: return 408 at the deadline.`,
 			InnerField: "behavior",
 		},
 	},

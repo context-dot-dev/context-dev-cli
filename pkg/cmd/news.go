@@ -16,7 +16,7 @@ import (
 
 var newsSearch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "search",
-	Usage:   "Searches live and historical company news for one company, identified in\nsearchBy by name, domain, ticker (optionally disambiguated by exchange), or\nISIN. Results can be filtered by one of publisher domain, publisher country,\narticle language, or article type, optionally combined with a published-at date\nrange, and include stable story IDs, source metadata, verified entity relevance,\nand cursor pagination.",
+	Usage:   "Find company news by name, domain, ticker, or ISIN. Filter articles and continue\nthrough results with a cursor.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
@@ -49,7 +49,7 @@ var newsSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
 		},
 	},

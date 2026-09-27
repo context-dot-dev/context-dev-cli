@@ -16,7 +16,7 @@ func TestUtilityPrefetch(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"utility", "prefetch",
-			"--identifier", "{domain: xxx}",
+			"--identifier", "{domain: stripe.com}",
 			"--type", "brand",
 			"--tag", "production",
 			"--tag", "team-alpha",
@@ -33,7 +33,7 @@ func TestUtilityPrefetch(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"utility", "prefetch",
-			"--identifier", "{domain: xxx}",
+			"--identifier", "{domain: stripe.com}",
 			"--type", "brand",
 			"--tag", "production",
 			"--tag", "team-alpha",
@@ -46,7 +46,7 @@ func TestUtilityPrefetch(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"identifier:\n" +
-			"  domain: xxx\n" +
+			"  domain: stripe.com\n" +
 			"type: brand\n" +
 			"tags:\n" +
 			"  - production\n" +

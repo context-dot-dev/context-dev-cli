@@ -16,7 +16,7 @@ import (
 
 var webhooksDeliveriesRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get a webhook delivery, including its status and latest attempt.",
+	Usage:   "Retrieve a webhook delivery’s status and original payload.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -27,7 +27,7 @@ var webhooksDeliveriesRetrieve = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
 			QueryPath: "tags",
 		},
 	},
@@ -37,7 +37,7 @@ var webhooksDeliveriesRetrieve = cli.Command{
 
 var webhooksDeliveriesList = cli.Command{
 	Name:    "list",
-	Usage:   "List your batch or monitor webhook deliveries, newest first.",
+	Usage:   "List batch and monitor webhook deliveries from the last 30 days.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -74,7 +74,7 @@ var webhooksDeliveriesList = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[string]{
@@ -94,7 +94,7 @@ var webhooksDeliveriesList = cli.Command{
 
 var webhooksDeliveriesListAttempts = cli.Command{
 	Name:    "list-attempts",
-	Usage:   "List delivery attempts, newest first.",
+	Usage:   "List a delivery’s attempts, newest first.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -116,7 +116,7 @@ var webhooksDeliveriesListAttempts = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
 			QueryPath: "tags",
 		},
 	},
@@ -126,7 +126,7 @@ var webhooksDeliveriesListAttempts = cli.Command{
 
 var webhooksDeliveriesRetry = cli.Command{
 	Name:    "retry",
-	Usage:   "Retry a webhook delivery within seven days of creation.",
+	Usage:   "Resend the original payload using the source’s current URL and secret. Available\nfor 7 days after the event.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -137,12 +137,12 @@ var webhooksDeliveriesRetry = cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "force",
-			Usage:    "Resend a delivery that already succeeded.",
+			Usage:    "Resend even if the delivery already succeeded. Defaults to false.",
 			BodyPath: "force",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[string]{

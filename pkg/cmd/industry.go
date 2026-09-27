@@ -16,7 +16,7 @@ import (
 
 var industryRetrieveNaics = requestflag.WithInnerFlags(cli.Command{
 	Name:    "retrieve-naics",
-	Usage:   "Classify any brand into 2022 NAICS industry codes from its domain or name.",
+	Usage:   "Classify a company into NAICS industry codes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -39,17 +39,17 @@ var industryRetrieveNaics = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "timeout-opts",
-			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:     "Request deadline and what to return when it passes.",
 			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:      "zdr",
-			Usage:     "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Usage:     "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			Default:   "disabled",
 			QueryPath: "zdr",
 		},
@@ -60,12 +60,12 @@ var industryRetrieveNaics = requestflag.WithInnerFlags(cli.Command{
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
 			InnerField: "behavior",
 		},
 	},
@@ -73,7 +73,7 @@ var industryRetrieveNaics = requestflag.WithInnerFlags(cli.Command{
 
 var industryRetrieveSic = requestflag.WithInnerFlags(cli.Command{
 	Name:    "retrieve-sic",
-	Usage:   "Classify any brand into Standard Industrial Classification (SIC) codes from its\ndomain or name. Choose between the original SIC system (`original_sic`) or the\nlatest SIC list maintained by the SEC (`latest_sec`).",
+	Usage:   "Classify a company into SIC industry codes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -96,23 +96,23 @@ var industryRetrieveSic = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "timeout-opts",
-			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:     "Request deadline and what to return when it passes.",
 			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:      "type",
-			Usage:     "Which SIC dataset to classify against. `original_sic` uses the 1987 Standard Industrial Classification system; `latest_sec` uses the current SIC list as published by the SEC. Defaults to `original_sic`.",
+			Usage:     "SIC dataset: `original_sic` (1987) or `latest_sec` (current SEC list).",
 			Default:   "original_sic",
 			QueryPath: "type",
 		},
 		&requestflag.Flag[string]{
 			Name:      "zdr",
-			Usage:     "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Usage:     "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			Default:   "disabled",
 			QueryPath: "zdr",
 		},
@@ -123,12 +123,12 @@ var industryRetrieveSic = requestflag.WithInnerFlags(cli.Command{
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
 			InnerField: "behavior",
 		},
 	},

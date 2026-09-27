@@ -16,7 +16,7 @@ func TestNewsSearch(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"news", "search",
-			"--search-by", "{entity: {name: xx, type: name}, type: entity}",
+			"--search-by", "{entity: {domain: stripe.com, type: domain}, type: entity}",
 			"--cursor", "cursor",
 			"--filter-by", "{articleLanguage: [ar], articleType: [editorial], date: {from: 0, to: 0}, sourceCountry: [ae], sourceDomain: [x]}",
 			"--limit", "1",
@@ -35,7 +35,7 @@ func TestNewsSearch(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"news", "search",
-			"--search-by.entity", "{name: xx, type: name}",
+			"--search-by.entity", "{domain: stripe.com, type: domain}",
 			"--search-by.type", "entity",
 			"--cursor", "cursor",
 			"--filter-by.article-language", "[ar]",
@@ -55,8 +55,8 @@ func TestNewsSearch(t *testing.T) {
 		pipeData := []byte("" +
 			"searchBy:\n" +
 			"  entity:\n" +
-			"    name: xx\n" +
-			"    type: name\n" +
+			"    domain: stripe.com\n" +
+			"    type: domain\n" +
 			"  type: entity\n" +
 			"cursor: cursor\n" +
 			"filterBy:\n" +

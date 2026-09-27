@@ -16,38 +16,38 @@ import (
 
 var webAnswers = requestflag.WithInnerFlags(cli.Command{
 	Name:    "answers",
-	Usage:   "Researches the live web and returns a sourced answer in your requested JSON\nshape. Select fast for a smaller research budget at 10 credits or ultra for\ndeeper reasoning at 100 credits. Defaults to ultra. Fast research is limited to\n30 seconds and ultra to 50 seconds; timeoutOpts.milliseconds can shorten either\ndeadline.",
+	Usage:   "Research the web and return a sourced answer in your JSON shape. Choose `fast`\nfor a short task or `ultra` for deeper research.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "task",
-			Usage:    `What to research and answer, in plain language. Naming a domain in the task (for example "pricing on context.dev") makes the agent read that site before it searches.`,
+			Usage:    "Research task. Name a domain to have it read before searching.",
 			Required: true,
 			BodyPath: "task",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "json-format",
-			Usage:    `An example object with placeholder values (for example {"pricing_page_url": "", "plans": [{"name": "", "price": 0}]}). Object keys and value types are preserved; unknown values may be null. Empty arrays accept any JSON items. Defaults to {"result": ""}. Maximum 8 levels, 500 values, and 16000 characters.`,
+			Usage:    "Example answer object, not JSON Schema. Up to 8 levels, 500 values, and 16000 characters; unknowns may be null.",
 			BodyPath: "json_format",
 		},
 		&requestflag.Flag[string]{
 			Name:     "mode",
-			Usage:    "Research level: fast uses a smaller model and research budget for 10 credits; ultra uses deeper reasoning and research for 100 credits. Defaults to ultra. Only successful requests consume credits.",
+			Usage:    "`fast` for short tasks; `ultra` for deeper research (default).",
 			BodyPath: "mode",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "timeout-opts",
-			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:    "Request deadline and what to return when it passes.",
 			BodyPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:     "zdr",
-			Usage:    "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Usage:    "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			BodyPath: "zdr",
 		},
 	},
@@ -57,12 +57,12 @@ var webAnswers = requestflag.WithInnerFlags(cli.Command{
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
 			InnerField: "behavior",
 		},
 	},
@@ -87,17 +87,17 @@ var webExtractCompetitors = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "timeout-opts",
-			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:     "Request deadline and what to return when it passes.",
 			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:      "zdr",
-			Usage:     "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Usage:     "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			Default:   "disabled",
 			QueryPath: "zdr",
 		},
@@ -108,12 +108,12 @@ var webExtractCompetitors = requestflag.WithInnerFlags(cli.Command{
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
 			InnerField: "behavior",
 		},
 	},
@@ -121,7 +121,7 @@ var webExtractCompetitors = requestflag.WithInnerFlags(cli.Command{
 
 var webExtractStyleguide = requestflag.WithInnerFlags(cli.Command{
 	Name:    "extract-styleguide",
-	Usage:   "Extract a comprehensive design system from a website including colors,\ntypography, spacing, shadows, and UI components.",
+	Usage:   "Extract colors, typography, spacing, and component styles from a website.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -131,7 +131,7 @@ var webExtractStyleguide = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "direct-url",
-			Usage:     "A specific URL to fetch the styleguide from directly, bypassing domain resolution (e.g., 'https://example.com/design-system'). When provided, the styleguide is extracted from this exact URL. You must provide either 'domain' or 'directUrl', but not both.",
+			Usage:     "Exact URL to inspect. Provide either `domain` or `directUrl`, not both.",
 			QueryPath: "directUrl",
 		},
 		&requestflag.Flag[string]{
@@ -141,23 +141,23 @@ var webExtractStyleguide = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
-			Usage:     "Maximum age in milliseconds for cached brand data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Set to 0 to always perform a hard refresh. Negative values are clamped to 0; values above 1 year (31536000000 ms) are clamped to 1 year.",
+			Usage:     "Maximum age of cached brand data in ms. Defaults to 3 months; clamped to 0–1 year. `0` refreshes.",
 			Default:   requestflag.Ptr[int64](7776000000),
 			QueryPath: "maxAgeMs",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "timeout-opts",
-			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:     "Request deadline and what to return when it passes.",
 			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:      "zdr",
-			Usage:     "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Usage:     "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			Default:   "disabled",
 			QueryPath: "zdr",
 		},
@@ -168,12 +168,12 @@ var webExtractStyleguide = requestflag.WithInnerFlags(cli.Command{
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results. "return-partial" requires milliseconds of at least 5000.`,
+			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag. "return-partial" requires at least 5000 ms.`,
 			InnerField: "behavior",
 		},
 	},
@@ -197,7 +197,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
-			Usage:     "Fetch the target page through a residential proxy in this country (ISO 3166-1 alpha-2).",
+			Usage:     "Fetch from this country (ISO 3166-1 alpha-2).",
 			QueryPath: "country",
 		},
 		&requestflag.Flag[string]{
@@ -244,12 +244,12 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "timeout-opts",
-			Usage:     "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:     "Request deadline and what to return when it passes.",
 			QueryPath: "timeoutOpts",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -266,7 +266,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "zdr",
-			Usage:     "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Usage:     "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			Default:   "disabled",
 			QueryPath: "zdr",
 		},
@@ -277,12 +277,12 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results. "return-partial" requires milliseconds of at least 5000.`,
+			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag. "return-partial" requires at least 5000 ms.`,
 			InnerField: "behavior",
 		},
 	},
@@ -302,7 +302,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 
 var webSearch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "search",
-	Usage:   "Search the web and optionally scrape each result to Markdown in one round-trip.",
+	Usage:   "Search the web and optionally return page content with each result.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -344,22 +344,22 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "query-fanout",
-			Usage:    "Expand the query into multiple parallel variants for broader recall.",
+			Usage:    "Currently has no effect.",
 			BodyPath: "queryFanout",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "timeout-opts",
-			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:    "Request deadline and what to return when it passes.",
 			BodyPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
 			Name:     "zdr",
-			Usage:    "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Usage:    "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			Default:  "disabled",
 			BodyPath: "zdr",
 		},
@@ -405,7 +405,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "markdown-options.timeout-opts",
-			Usage:      "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:      "Request deadline and what to return when it passes.",
 			InnerField: "timeoutOpts",
 		},
 		&requestflag.InnerFlag[bool]{
@@ -422,12 +422,12 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
 			InnerField: "behavior",
 		},
 	},
@@ -435,23 +435,23 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 
 var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-crawl-md",
-	Usage:   "Performs a crawl starting from a given URL, extracts page content as Markdown,\nand returns results for all crawled pages.",
+	Usage:   "Crawl a website and return page content as Markdown. Use a batch for crawls\nbeyond 500 pages.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "url",
-			Usage:    "The starting URL for the crawl (must include http:// or https:// protocol)",
+			Usage:    "Start URL, including `http://` or `https://`.",
 			Required: true,
 			BodyPath: "url",
 		},
 		&requestflag.Flag[string]{
 			Name:     "country",
-			Usage:    "Fetch the target page through a residential proxy in this country (ISO 3166-1 alpha-2).",
+			Usage:    "Fetch from this country (ISO 3166-1 alpha-2).",
 			BodyPath: "country",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "exclude-selector",
-			Usage:    `CSS selectors to remove before each crawled page is converted to Markdown. Applied after includeSelectors. Exclusion takes precedence: an element matching both is removed. Examples: "nav", "footer", ".ad-banner", "[aria-hidden=true]".`,
+			Usage:    "Remove matching elements after inclusions. Exclusions take precedence.",
 			BodyPath: "excludeSelectors",
 		},
 		&requestflag.Flag[bool]{
@@ -480,12 +480,12 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "include-selector",
-			Usage:    `CSS selectors. When provided, only matching HTML subtrees (and their descendants) are kept before each crawled page is converted to Markdown. When omitted, the entire document is kept. Examples: "article.main", "#content", "[role=main]".`,
+			Usage:    "Keep matching HTML subtrees before converting each page to Markdown.",
 			BodyPath: "includeSelectors",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "max-age-ms",
-			Usage:    "Return a cached result if a prior scrape for the same parameters exists and is younger than this many milliseconds. Defaults to 1 day (86400000 ms) when omitted. Max is 30 days (2592000000 ms). Set to 0 to always scrape fresh.",
+			Usage:    "Maximum cache age in milliseconds. Defaults to 1 day; `0` fetches fresh.",
 			Default:  86400000,
 			BodyPath: "maxAgeMs",
 		},
@@ -496,19 +496,19 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "max-pages",
-			Usage:    "Maximum number of pages to crawl. Hard cap: 500.",
+			Usage:    "Maximum pages to crawl.",
 			Default:  100,
 			BodyPath: "maxPages",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "pdf",
-			Usage:    "PDF parsing controls. Use start/end to limit text extraction and embedded-image detection/OCR to an inclusive 1-based page range.",
+			Usage:    "PDF handling. `start`/`end` limit parsing to an inclusive, 1-based page range.",
 			Default:  map[string]any{"shouldParse": true, "ocr": false},
 			BodyPath: "pdf",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "settle-animations",
-			Usage:    "When true, waits briefly for CSS and transition animations to settle before extracting each crawled page. Defaults to false. This adds a bit of latency in exchange for more stable output on animated pages.",
+			Usage:    "Wait briefly for CSS animations and transitions to settle before reading each page.",
 			Default:  false,
 			BodyPath: "settleAnimations",
 		},
@@ -520,18 +520,18 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "stop-after-ms",
-			Usage:    "Soft time budget for the crawl in milliseconds. After each scrape, the crawler checks the elapsed time and, if exceeded, returns the pages collected so far instead of continuing. Min: 10000 (10s). Max: 110000 (110s). Default: 80000 (80s).",
+			Usage:    "Soft crawl deadline in milliseconds. Returns pages collected before the next deadline check.",
 			Default:  80000,
 			BodyPath: "stopAfterMs",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "timeout-opts",
-			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:    "Request deadline and what to return when it passes.",
 			BodyPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
@@ -553,7 +553,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "zdr",
-			Usage:    "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Usage:    "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			Default:  "disabled",
 			BodyPath: "zdr",
 		},
@@ -569,7 +569,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.ocr",
-			Usage:      "When true, OCR the selected PDF pages that have no usable text layer (scans), replacing each recovered page's text with the OCR result while pages with a real text layer keep it. Billed at 1 credit per page OCR actually recovered, on top of the base request cost.",
+			Usage:      "Read scanned PDF pages with OCR; preserve pages that already contain text.",
 			InnerField: "ocr",
 		},
 		&requestflag.InnerFlag[bool]{
@@ -586,12 +586,12 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
 			InnerField: "behavior",
 		},
 	},

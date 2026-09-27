@@ -18,7 +18,7 @@ import (
 
 var parseHandle = requestflag.WithInnerFlags(cli.Command{
 	Name:    "handle",
-	Usage:   "Converts raw text, source code, web/data, PDF, Microsoft Office, and image bytes\ninto LLM-usable Markdown.",
+	Usage:   "Convert uploaded file bytes into Markdown and optional HTML.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -51,7 +51,7 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:      "ocr",
-			Usage:     "When true for PDF inputs, OCR the selected pages that have no usable text layer (scans), replacing each recovered page's text with the OCR result while pages with a real text layer keep it. pdf.start/pdf.end limit the inclusive page range. Billed at 1 credit per page OCR actually recovered, on top of the base request cost. When false, no OCR runs.",
+			Usage:     "Read text from images and scanned PDF pages. PDF page ranges still apply.",
 			Default:   false,
 			QueryPath: "ocr",
 		},
@@ -68,7 +68,7 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[bool]{
@@ -79,7 +79,7 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "zdr",
-			Usage:     "Set to enabled to bypass shared caches and omit request and response content from retained usage logs. Asset uploads are skipped, so hosted image URLs are omitted. Requires zero data retention to be enabled for your organization (contact support@context.dev), otherwise the request fails with ZDR_NOT_ENABLED. Successful ZDR responses include X-Context-ZDR: true.",
+			Usage:     "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			Default:   "disabled",
 			QueryPath: "zdr",
 		},

@@ -16,7 +16,7 @@ import (
 
 var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 	Name:    "retrieve",
-	Usage:   "Retrieve logos, backdrops, colors, industry, description, and more. Provide\nexactly one lookup identifier in the request body: a domain, company name, email\naddress, stock ticker, transaction descriptor, or direct URL. Note:\n`by_direct_url` fetches brand data only from the provided URL — not from the\nentire internet.",
+	Usage:   "Retrieve logos, colors, company details, and social links using one lookup\nidentifier. A direct URL limits extraction to that page.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -37,7 +37,7 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "max-age-ms",
-			Usage:    "Maximum age in milliseconds for cached brand data before the API performs a hard refresh. Defaults to 3 months (7776000000 ms). Set to 0 to always perform a hard refresh. Negative values are clamped to 0; values above 1 year (31536000000 ms) are clamped to 1 year.",
+			Usage:    "Maximum age of cached brand data in ms. Defaults to 3 months; clamped to 0–1 year. `0` refreshes.",
 			BodyPath: "maxAgeMs",
 		},
 		&requestflag.Flag[bool]{
@@ -47,12 +47,12 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Optional tags for tracking usage. Up to 20 tags, each 1 to 50 characters.",
+			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "timeout-opts",
-			Usage:    "Optional request deadline and behavior on timeout. For GET requests, use timeoutOpts[milliseconds]=30000&timeoutOpts[behavior]=fail or a JSON-encoded timeoutOpts object.",
+			Usage:    "Request deadline and what to return when it passes.",
 			BodyPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
@@ -117,12 +117,12 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",
-			Usage:      "Request deadline in milliseconds. Maximum: 300000 (5 minutes).",
+			Usage:      "Deadline in milliseconds.",
 			InnerField: "milliseconds",
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `What to do at the deadline. "fail" returns 408 REQUEST_TIMEOUT without charging credits. "return-partial" returns usable results collected so far; if none are available, the request still fails without charging credits. Partial results are not cached as complete results.`,
+			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
 			InnerField: "behavior",
 		},
 	},
@@ -130,7 +130,7 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 
 var brandSearch = cli.Command{
 	Name:    "search",
-	Usage:   "Search indexed brands by name or domain",
+	Usage:   "Find up to 10 brands by name or domain, ordered by popularity. Use the returned\ndomain to retrieve a full brand profile.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -153,7 +153,7 @@ var brandSearch = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated tags for tracking request usage. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
