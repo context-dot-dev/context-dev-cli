@@ -21,7 +21,7 @@ var webAnswers = requestflag.WithInnerFlags(cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "task",
-			Usage:    "Research task. Name a domain to have it read before searching.",
+			Usage:    "Research task. The agent selects company/profile lookups, web searches, or page reads. Include domains or URLs to focus the research.",
 			Required: true,
 			BodyPath: "task",
 		},
@@ -32,7 +32,7 @@ var webAnswers = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "mode",
-			Usage:    "`fast` for short tasks; `ultra` for deeper research (default).",
+			Usage:    "`fast` prioritizes speed, with extra verification for people and companies; `ultra` supports deeper research (default).",
 			BodyPath: "mode",
 		},
 		&requestflag.Flag[[]string]{
