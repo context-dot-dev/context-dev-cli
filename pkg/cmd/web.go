@@ -302,7 +302,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 
 var webSearch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "search",
-	Usage:   "Search the web and optionally return page content with each result.",
+	Usage:   "Search the web and optionally return page content or relevant passages with each\nresult.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -325,6 +325,11 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Name:     "freshness",
 			Usage:    "Restrict results to content published within this window.",
 			BodyPath: "freshness",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "highlights-options",
+			Usage:    "Passages from each result page that are relevant to the query. Pages are read with the `markdownOptions` settings.",
+			BodyPath: "highlightsOptions",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "include-domain",
@@ -367,10 +372,22 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleWebSearch,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
+	"highlights-options": {
+		&requestflag.InnerFlag[bool]{
+			Name:       "highlights-options.enabled",
+			Usage:      "Return relevant passages for each result. Adds 1 credit per 10 results.",
+			InnerField: "enabled",
+		},
+		&requestflag.InnerFlag[int64]{
+			Name:       "highlights-options.max-characters",
+			Usage:      "Maximum combined length of passages per result.",
+			InnerField: "maxCharacters",
+		},
+	},
 	"markdown-options": {
 		&requestflag.InnerFlag[bool]{
 			Name:       "markdown-options.enabled",
-			Usage:      "Scrape each result to Markdown. Off by default to keep search cheap and fast.",
+			Usage:      "Scrape each result to Markdown. Adds 1 credit per 10 results.",
 			InnerField: "enabled",
 		},
 		&requestflag.InnerFlag[bool]{
@@ -390,7 +407,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[int64]{
 			Name:       "markdown-options.max-age-ms",
-			Usage:      "Cache TTL in ms for scraped Markdown keyed by URL + options. Default 1 day, max 30 days. Set to 0 to force a fresh scrape.",
+			Usage:      "Cache TTL in ms for scraped Markdown keyed by URL + options. Default 15 days, max 30 days. Set to 0 to force a fresh scrape.",
 			InnerField: "maxAgeMs",
 		},
 		&requestflag.InnerFlag[map[string]any]{
