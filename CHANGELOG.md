@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.13.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.12.0...v1.13.0) (2026-09-29)
+
+
+### Features
+
+* **answers:** route people and company research with faster answers ([#1336](https://github.com/context-dot-dev/context-dev-cli/issues/1336)) ([89aa64e](https://github.com/context-dot-dev/context-dev-cli/commit/89aa64eab8bd67244f8cb3c3c8a6135eec6d028b))
+* **monitors:** support browser actions on page monitors ([#1365](https://github.com/context-dot-dev/context-dev-cli/issues/1365)) ([1cf2e4a](https://github.com/context-dot-dev/context-dev-cli/commit/1cf2e4a95e62219aa6c70ceafed49d9d133ea70d))
+* **scrape:** default POST /web/scrape deadline to 90s ([#1428](https://github.com/context-dot-dev/context-dev-cli/issues/1428)) ([a3d1b58](https://github.com/context-dot-dev/context-dev-cli/commit/a3d1b5805b673c421b3e97e54d614881e214ec2d))
+* **search:** add highlights to web search and bill page reads per 10 results ([#1387](https://github.com/context-dot-dev/context-dev-cli/issues/1387)) ([b5ffb30](https://github.com/context-dot-dev/context-dev-cli/commit/b5ffb309e99c714c38946f528eccb26ed9d3f792))
+* **web-search:** extend page cache defaults ([#1408](https://github.com/context-dot-dev/context-dev-cli/issues/1408)) ([4cb3f9c](https://github.com/context-dot-dev/context-dev-cli/commit/4cb3f9c58f33795255532994e6c2e48a5245164a))
+
+
+### Bug Fixes
+
+* **api:** document search domain limits and clarify scrape parameter errors ([#1388](https://github.com/context-dot-dev/context-dev-cli/issues/1388)) ([6635afc](https://github.com/context-dot-dev/context-dev-cli/commit/6635afc3531000dc1baab3e7633ea0010002d3e8))
+* **openapi:** document exclusive news filters ([#1265](https://github.com/context-dot-dev/context-dev-cli/issues/1265)) ([2ed83fb](https://github.com/context-dot-dev/context-dev-cli/commit/2ed83fb006e021cfd3117bb1c8ebd7dd6b7faca4))
+
+
+### Documentation
+
+* **openapi:** complete concise API reference metadata ([#1329](https://github.com/context-dot-dev/context-dev-cli/issues/1329)) ([3fc839d](https://github.com/context-dot-dev/context-dev-cli/commit/3fc839d159980463cf821a727458358f740a1787))
+
 ## [1.12.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.11.0...v1.12.0) (2026-09-22)
 
 
