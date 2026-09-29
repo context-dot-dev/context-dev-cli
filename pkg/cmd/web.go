@@ -318,7 +318,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "exclude-domain",
-			Usage:    `Blocklist — drop results from these domains. Example: ["pinterest.com", "reddit.com"].`,
+			Usage:    `Blocklist — drop results from these domains. Up to 100 domains. Example: ["pinterest.com", "reddit.com"].`,
 			BodyPath: "excludeDomains",
 		},
 		&requestflag.Flag[string]{
@@ -333,7 +333,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "include-domain",
-			Usage:    `Allowlist — only return results from these domains. Example: ["arxiv.org", "github.com"].`,
+			Usage:    `Allowlist — only return results from these domains. Up to 100 domains. Example: ["arxiv.org", "github.com"].`,
 			BodyPath: "includeDomains",
 		},
 		&requestflag.Flag[map[string]any]{
