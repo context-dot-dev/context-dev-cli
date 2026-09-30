@@ -90,12 +90,12 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 	"pdf": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "pdf.end",
-			Usage:      "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to start when both are provided.",
+			Usage:      "Last PDF page to parse (1-based, inclusive). Defaults to the final page. Must be >= start.",
 			InnerField: "end",
 		},
 		&requestflag.InnerFlag[int64]{
 			Name:       "pdf.start",
-			Usage:      "First 1-based PDF page to parse. When omitted, parsing starts at the first page.",
+			Usage:      "First 1-based PDF page to parse.",
 			InnerField: "start",
 		},
 	},

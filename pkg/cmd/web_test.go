@@ -213,10 +213,10 @@ func TestWebSearch(t *testing.T) {
 			"web", "search",
 			"--query", "Stripe API authentication",
 			"--country", "af",
-			"--exclude-domain", "string",
+			"--exclude-domain", "xxx",
 			"--freshness", "last_24_hours",
 			"--highlights-options", "{enabled: true, maxCharacters: 100}",
-			"--include-domain", "string",
+			"--include-domain", "xxx",
 			"--markdown-options", "{enabled: true, includeFrames: true, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutOpts: {milliseconds: 1, behavior: fail}, useMainContentOnly: true, waitForMs: 0}",
 			"--num-results", "10",
 			"--query-fanout=true",
@@ -238,11 +238,11 @@ func TestWebSearch(t *testing.T) {
 			"web", "search",
 			"--query", "Stripe API authentication",
 			"--country", "af",
-			"--exclude-domain", "string",
+			"--exclude-domain", "xxx",
 			"--freshness", "last_24_hours",
 			"--highlights-options.enabled=true",
 			"--highlights-options.max-characters", "100",
-			"--include-domain", "string",
+			"--include-domain", "xxx",
 			"--markdown-options.enabled=true",
 			"--markdown-options.include-frames=true",
 			"--markdown-options.include-images=true",
@@ -269,13 +269,13 @@ func TestWebSearch(t *testing.T) {
 			"query: Stripe API authentication\n" +
 			"country: af\n" +
 			"excludeDomains:\n" +
-			"  - string\n" +
+			"  - xxx\n" +
 			"freshness: last_24_hours\n" +
 			"highlightsOptions:\n" +
 			"  enabled: true\n" +
 			"  maxCharacters: 100\n" +
 			"includeDomains:\n" +
-			"  - string\n" +
+			"  - xxx\n" +
 			"markdownOptions:\n" +
 			"  enabled: true\n" +
 			"  includeFrames: true\n" +
@@ -318,12 +318,12 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"web", "web-crawl-md",
 			"--url", "https://example.com",
 			"--country", "de",
-			"--exclude-selector", "string",
+			"--exclude-selector", "[x]",
 			"--follow-subdomains=true",
 			"--include-frames=true",
 			"--include-images=true",
 			"--include-links=true",
-			"--include-selector", "string",
+			"--include-selector", "[x]",
 			"--max-age-ms", "0",
 			"--max-depth", "0",
 			"--max-pages", "10",
@@ -352,12 +352,12 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"web", "web-crawl-md",
 			"--url", "https://example.com",
 			"--country", "de",
-			"--exclude-selector", "string",
+			"--exclude-selector", "[x]",
 			"--follow-subdomains=true",
 			"--include-frames=true",
 			"--include-images=true",
 			"--include-links=true",
-			"--include-selector", "string",
+			"--include-selector", "[x]",
 			"--max-age-ms", "0",
 			"--max-depth", "0",
 			"--max-pages", "10",
@@ -385,13 +385,13 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"url: https://example.com\n" +
 			"country: de\n" +
 			"excludeSelectors:\n" +
-			"  - string\n" +
+			"  - x\n" +
 			"followSubdomains: true\n" +
 			"includeFrames: true\n" +
 			"includeImages: true\n" +
 			"includeLinks: true\n" +
 			"includeSelectors:\n" +
-			"  - string\n" +
+			"  - x\n" +
 			"maxAgeMs: 0\n" +
 			"maxDepth: 0\n" +
 			"maxPages: 10\n" +

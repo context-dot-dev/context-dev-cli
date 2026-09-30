@@ -138,6 +138,7 @@ var webhooksDeliveriesRetry = cli.Command{
 		&requestflag.Flag[bool]{
 			Name:     "force",
 			Usage:    "Resend even if the delivery already succeeded. Defaults to false.",
+			Default:  false,
 			BodyPath: "force",
 		},
 		&requestflag.Flag[[]string]{

@@ -62,7 +62,7 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "country-gl",
-			Usage:    "Optional country code hint (GL parameter) to specify the country when looking up by company name.",
+			Usage:    "Two-letter ISO 3166-1 alpha-2 country code (GL parameter) used to localize search.",
 			BodyPath: "country_gl",
 		},
 		&requestflag.Flag[string]{
@@ -77,7 +77,7 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "ticker-exchange",
-			Usage:    "Optional stock exchange for the ticker. Defaults to NASDAQ if not specified.",
+			Usage:    "Stock exchange code.",
 			BodyPath: "ticker_exchange",
 		},
 		&requestflag.Flag[string]{

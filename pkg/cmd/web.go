@@ -405,14 +405,14 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Keep hyperlinks in the Markdown.",
 			InnerField: "includeLinks",
 		},
-		&requestflag.InnerFlag[int64]{
+		&requestflag.InnerFlag[*int64]{
 			Name:       "markdown-options.max-age-ms",
 			Usage:      "Maximum cache age in milliseconds for result page content. Defaults to 180 days (15552000000 ms) when Markdown is requested, or 365 days (31536000000 ms) when only highlights are requested. Explicit values override either default. Maximum: 365 days. Set to 0 to force a fresh scrape.",
 			InnerField: "maxAgeMs",
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "markdown-options.pdf",
-			Usage:      "PDF handling. Use start/end to bound text extraction and OCR to a page range.",
+			Usage:      "PDF handling. `start`/`end` limit parsing to an inclusive, 1-based page range.",
 			InnerField: "pdf",
 		},
 		&requestflag.InnerFlag[bool]{
@@ -430,7 +430,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Strip nav, header, footer, and sidebar — keep only the primary article content.",
 			InnerField: "useMainContentOnly",
 		},
-		&requestflag.InnerFlag[int64]{
+		&requestflag.InnerFlag[*int64]{
 			Name:       "markdown-options.wait-for-ms",
 			Usage:      "Extra wait after page load before rendering, in ms (0–30000). Useful for JS-heavy pages.",
 			InnerField: "waitForMs",
@@ -466,7 +466,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Fetch from this country (ISO 3166-1 alpha-2).",
 			BodyPath: "country",
 		},
-		&requestflag.Flag[[]string]{
+		&requestflag.Flag[any]{
 			Name:     "exclude-selector",
 			Usage:    "Remove matching elements after inclusions. Exclusions take precedence.",
 			BodyPath: "excludeSelectors",
@@ -495,15 +495,15 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Default:  true,
 			BodyPath: "includeLinks",
 		},
-		&requestflag.Flag[[]string]{
+		&requestflag.Flag[any]{
 			Name:     "include-selector",
 			Usage:    "Keep matching HTML subtrees before converting each page to Markdown.",
 			BodyPath: "includeSelectors",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:     "max-age-ms",
 			Usage:    "Maximum cache age in milliseconds. Defaults to 1 day; `0` fetches fresh.",
-			Default:  86400000,
+			Default:  requestflag.Ptr[int64](86400000),
 			BodyPath: "maxAgeMs",
 		},
 		&requestflag.Flag[int64]{
@@ -562,10 +562,10 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Default:  false,
 			BodyPath: "useMainContentOnly",
 		},
-		&requestflag.Flag[int64]{
+		&requestflag.Flag[*int64]{
 			Name:     "wait-for-ms",
 			Usage:    "Browser wait time in milliseconds after initial page load for each crawled page. Defaults to 3500 (3.5 seconds). Min: 0. Max: 30000 (30 seconds).",
-			Default:  3500,
+			Default:  requestflag.Ptr[int64](3500),
 			BodyPath: "waitForMs",
 		},
 		&requestflag.Flag[string]{
@@ -581,12 +581,12 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 	"pdf": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "pdf.end",
-			Usage:      "Last 1-based PDF page to parse. When omitted, parsing ends at the last page. Must be greater than or equal to start when both are provided.",
+			Usage:      "Last PDF page to parse (1-based, inclusive). Defaults to the final page. Must be >= start.",
 			InnerField: "end",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.ocr",
-			Usage:      "Read scanned PDF pages with OCR; preserve pages that already contain text.",
+			Usage:      "Read scanned PDF pages with OCR; preserve pages that already have text.",
 			InnerField: "ocr",
 		},
 		&requestflag.InnerFlag[bool]{
@@ -596,7 +596,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[int64]{
 			Name:       "pdf.start",
-			Usage:      "First 1-based PDF page to parse. When omitted, parsing starts at the first page.",
+			Usage:      "First 1-based PDF page to parse.",
 			InnerField: "start",
 		},
 	},

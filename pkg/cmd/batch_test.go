@@ -70,7 +70,7 @@ func TestBatchGetResults(t *testing.T) {
 			"--api-key", "string",
 			"batch", "get-results",
 			"--batch-id", "batch_9f2c8a",
-			"--cursor", "cursor",
+			"--cursor", "321669910225:155771193",
 			"--limit", "1",
 		)
 	})
@@ -87,7 +87,7 @@ func TestBatchSubmit(t *testing.T) {
 			"--tag", "docs",
 			"--tag", "competitor",
 			"--webhook", "{url: https://example.com, retry: {delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}}",
-			"--webhook-url", "webhookUrl",
+			"--webhook-url", "https://example.com",
 			"--idempotency-key", "Idempotency-Key",
 		)
 	})
@@ -106,7 +106,7 @@ func TestBatchSubmit(t *testing.T) {
 			"--tag", "competitor",
 			"--webhook.url", "https://example.com",
 			"--webhook.retry", "{delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}",
-			"--webhook-url", "webhookUrl",
+			"--webhook-url", "https://example.com",
 			"--idempotency-key", "Idempotency-Key",
 		)
 	})
@@ -160,7 +160,7 @@ func TestBatchSubmit(t *testing.T) {
 			"      - 7200\n" +
 			"      - 21600\n" +
 			"      - 57600\n" +
-			"webhookUrl: webhookUrl\n")
+			"webhookUrl: https://example.com\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",

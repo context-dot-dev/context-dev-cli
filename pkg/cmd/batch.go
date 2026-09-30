@@ -43,6 +43,7 @@ var batchList = cli.Command{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
 			Usage:     "Batches per page. Defaults to 25.",
+			Default:   25,
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
@@ -60,9 +61,9 @@ var batchList = cli.Command{
 			Usage:     "Filter by status.",
 			QueryPath: "status",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:      "tags",
-			Usage:     "Comma-separated list of tags to filter by (matches batches having any of them).",
+			Usage:     "Tags to filter by (matches batches having any of them). Pass repeated `tags` params or one comma-separated list, e.g. `tags=docs,competitor`.",
 			QueryPath: "tags",
 		},
 	},
@@ -121,6 +122,7 @@ var batchGetResults = cli.Command{
 		&requestflag.Flag[int64]{
 			Name:      "limit",
 			Usage:     "Records per page. Defaults to 25. A page can close early so its payload stays under ~8 MB; rely on next_cursor rather than counting records.",
+			Default:   25,
 			QueryPath: "limit",
 		},
 	},
