@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.13.0...v1.13.1) (2026-09-30)
+
+
+### Bug Fixes
+
+* **api:** derive OpenAPI request docs from runtime Zod schemas ([#1421](https://github.com/context-dot-dev/context-dev-cli/issues/1421)) ([9d63939](https://github.com/context-dot-dev/context-dev-cli/commit/9d63939d08a20d32642a84788bf47d2c971979ff))
+
 ## [1.13.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.12.0...v1.13.0) (2026-09-29)
 
 
