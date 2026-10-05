@@ -56,10 +56,17 @@ func TestGetCompletions_HiddenCommand(t *testing.T) {
 		},
 	}
 
-	result := GetCompletions(CompletionStyleBash, root, []string{""})
+	t.Run("with empty string prefix", func(t *testing.T) {
+		result := GetCompletions(CompletionStyleBash, root, []string{""})
+		assert.Len(t, result.Completions, 1)
+		assert.Equal(t, "visible", result.Completions[0].Name)
+	})
 
-	assert.Len(t, result.Completions, 1)
-	assert.Equal(t, "visible", result.Completions[0].Name)
+	t.Run("with empty args slice", func(t *testing.T) {
+		result := GetCompletions(CompletionStyleBash, root, []string{})
+		assert.Len(t, result.Completions, 1)
+		assert.Equal(t, "visible", result.Completions[0].Name)
+	})
 }
 
 func TestGetCompletions_NestedSubcommand(t *testing.T) {
