@@ -316,6 +316,12 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Two-letter ISO 3166-1 alpha-2 country code to localize results to a specific country (maps to Google's `gl` parameter). Example: \"us\", \"gb\", \"de\".",
 			BodyPath: "country",
 		},
+		&requestflag.Flag[*int64]{
+			Name:     "description-max-characters",
+			Usage:    "Maximum length of each result's `description`, in characters.",
+			Default:  nil,
+			BodyPath: "descriptionMaxCharacters",
+		},
 		&requestflag.Flag[[]string]{
 			Name:     "exclude-domain",
 			Usage:    `Blocklist — drop results from these domains. Up to 100 domains. Example: ["pinterest.com", "reddit.com"].`,

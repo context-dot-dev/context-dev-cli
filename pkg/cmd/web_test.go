@@ -213,6 +213,7 @@ func TestWebSearch(t *testing.T) {
 			"web", "search",
 			"--query", "Stripe API authentication",
 			"--country", "af",
+			"--description-max-characters", "0",
 			"--exclude-domain", "xxx",
 			"--freshness", "last_24_hours",
 			"--highlights-options", "{enabled: true, maxCharacters: 100}",
@@ -238,6 +239,7 @@ func TestWebSearch(t *testing.T) {
 			"web", "search",
 			"--query", "Stripe API authentication",
 			"--country", "af",
+			"--description-max-characters", "0",
 			"--exclude-domain", "xxx",
 			"--freshness", "last_24_hours",
 			"--highlights-options.enabled=true",
@@ -268,6 +270,7 @@ func TestWebSearch(t *testing.T) {
 		pipeData := []byte("" +
 			"query: Stripe API authentication\n" +
 			"country: af\n" +
+			"descriptionMaxCharacters: 0\n" +
 			"excludeDomains:\n" +
 			"  - xxx\n" +
 			"freshness: last_24_hours\n" +
