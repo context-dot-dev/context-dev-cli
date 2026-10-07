@@ -16,7 +16,7 @@ import (
 
 var batchRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get batch progress and result download links. Result files are deleted 7 days\nafter the batch finishes.",
+	Usage:   "Get batch progress and result download links. Result files are deleted 180 days\nafter the batch finishes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -105,7 +105,7 @@ var batchCancel = cli.Command{
 
 var batchGetResults = cli.Command{
 	Name:    "get-results",
-	Usage:   "Page through a finished batch’s results as JSON. Results remain available for 7\ndays.",
+	Usage:   "Page through a finished batch’s results as JSON. Results remain available for\n180 days.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
