@@ -220,6 +220,18 @@ func TestFormatJSON(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, `{"a":1}`+"\n", string(formatted))
 	})
+
+	t.Run("YAMLFormat", func(t *testing.T) {
+		t.Parallel()
+
+		res := gjson.Parse(`{"name":"alice","age":30}`)
+		// Test with Stdout: nil to ensure it does not panic on nil Stdout
+		formatted, err := formatJSON(res, ShowJSONOpts{Format: "yaml"})
+		require.NoError(t, err)
+		require.NotEmpty(t, formatted)
+		require.Contains(t, string(formatted), "name: alice")
+		require.Contains(t, string(formatted), "age: 30")
+	})
 }
 
 func TestShowJSONIterator(t *testing.T) {
