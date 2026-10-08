@@ -1,4 +1,4 @@
-# Context Dev CLI
+# Context.dev CLI
 
 The official CLI for the [Context Dev REST API](https://docs.context.dev/).
 
@@ -50,7 +50,7 @@ context-dev [resource] <command> [flags...]
 ```sh
 context-dev brand retrieve \
   --api-key 'My API Key' \
-  --domain REPLACE_ME \
+  --domain example.com \
   --type by_domain
 ```
 
