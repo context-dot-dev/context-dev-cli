@@ -1,6 +1,6 @@
 # Context Dev CLI
 
-The official CLI for the [Context Dev REST API](https://docs.context.dev/).
+Scrape, crawl, search and screenshot the web from your terminal with [Context.dev](https://context.dev), the web scraping API for AI agents and LLMs. Output is LLM-ready markdown or JSON.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
