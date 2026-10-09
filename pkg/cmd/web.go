@@ -393,7 +393,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 	"markdown-options": {
 		&requestflag.InnerFlag[bool]{
 			Name:       "markdown-options.enabled",
-			Usage:      "Scrape each result to Markdown. Adds 1 credit per 10 results.",
+			Usage:      "Scrape each result to Markdown. Adds 1 credit per result with Markdown.",
 			InnerField: "enabled",
 		},
 		&requestflag.InnerFlag[bool]{
