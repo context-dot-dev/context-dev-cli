@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.14.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.13.1...v1.14.0) (2026-10-09)
+
+
+### Features
+
+* **batches:** keep batch result files for 180 days ([#1638](https://github.com/context-dot-dev/context-dev-cli/issues/1638)) ([a63190d](https://github.com/context-dot-dev/context-dev-cli/commit/a63190db1976e55c6f108bf8d00aab9f5fbf9f34))
+* **search:** /web/search - for news results extend description with matching passages from article. ([563d59d](https://github.com/context-dot-dev/context-dev-cli/commit/563d59d3ebc0ff8ddd40c20fac1e82b843ecf2d5))
+* **web-search:** charge markdown per delivered page ([#1729](https://github.com/context-dot-dev/context-dev-cli/issues/1729)) ([d408dfc](https://github.com/context-dot-dev/context-dev-cli/commit/d408dfc3871e492825a6fbf6998de72e2db7ddcd))
+
+
+### Documentation
+
+* **sdks:** lead generated READMEs with Context.dev scraping ([#1669](https://github.com/context-dot-dev/context-dev-cli/issues/1669)) ([4d9adde](https://github.com/context-dot-dev/context-dev-cli/commit/4d9adde80335dfd702a23a3c4729dca5b35d4bf9))
+
 ## [1.13.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.13.0...v1.13.1) (2026-09-30)
 
 
