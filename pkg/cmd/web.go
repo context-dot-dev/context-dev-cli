@@ -349,7 +349,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "num-results",
-			Usage:    "Number of results to request and return (10–100). Defaults to 10.",
+			Usage:    "Number of results to request and return (1–100). Defaults to 10.",
 			Default:  10,
 			BodyPath: "numResults",
 		},
