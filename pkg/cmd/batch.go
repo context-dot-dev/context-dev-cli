@@ -56,6 +56,12 @@ var batchList = cli.Command{
 			Usage:     "`prefix` for as-you-type prefix matching (default), `exact` for full-token matching.",
 			QueryPath: "search_type",
 		},
+		&requestflag.Flag[bool]{
+			Name:      "should-include-unified",
+			Usage:     "Include batches submitted with Scrape Anything formats. Defaults to false.",
+			Default:   false,
+			QueryPath: "shouldIncludeUnified",
+		},
 		&requestflag.Flag[string]{
 			Name:      "status",
 			Usage:     "Filter by status.",
@@ -105,7 +111,7 @@ var batchCancel = cli.Command{
 
 var batchGetResults = cli.Command{
 	Name:    "get-results",
-	Usage:   "Page through a finished batch’s results as JSON. Results remain available for\n180 days.",
+	Usage:   "Page through a finished batch’s results as JSON. Each record contains result\nwith the same outputs and per-format errors as POST /web/scrape. Results remain\navailable for 180 days.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -132,7 +138,7 @@ var batchGetResults = cli.Command{
 
 var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 	Name:    "submit",
-	Usage:   "Scrape up to 25,000 URLs, or crawl a site, asynchronously. Poll the batch ID or\nreceive a webhook when it finishes.",
+	Usage:   "Scrape up to 100,000 URLs, or crawl a site, asynchronously using the same\nformats and scrape parameters as POST /web/scrape. Choose Markdown, HTML,\nscreenshots, images, bytes, parsed fields, products, highlights, and JSON. Poll\nthe batch ID or receive a webhook when it finishes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{

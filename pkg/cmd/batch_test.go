@@ -32,6 +32,7 @@ func TestBatchList(t *testing.T) {
 			"--limit", "1",
 			"--q", "batch_1a2b",
 			"--search-type", "exact",
+			"--should-include-unified=true",
 			"--status", "queued",
 			"--tags", "docs,competitor",
 		)
@@ -83,7 +84,7 @@ func TestBatchSubmit(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"batch", "submit",
-			"--input", "{data: {format: markdown, urls: [{url: https://example.com/products/anvil, itemId: sku-1, meta: {category: bar}}, {url: https://example.com/products/hammer, itemId: sku-2, meta: {foo: bar}}], options: {country: de, excludeSelectors: [x], includeHTML: true, includeImages: true, includeLinks: true, includeSelectors: [x], maxAgeMs: 0, pdf: {end: 1, ocr: true, shouldParse: true, start: 1}, settleAnimations: true, shortenBase64Images: true, useMainContentOnly: true, waitForMs: 0}}, mode: scrape}",
+			"--input", "{data: {formats: {bytes: true, highlights: true, html: true, images: true, json: true, markdown: true, parse: true, product: true, screenshot: true}, urls: [{url: https://example.com/products/anvil, itemId: sku-1, meta: {category: bar}}, {url: https://example.com/products/hammer, itemId: sku-2, meta: {foo: bar}}], highlightsParams: {query: x, maxCharacters: 100}, imageParams: {dedupe: none, enrich: [dimensions]}, jsonParams: {schema: {type: bar, properties: bar, required: bar, additionalProperties: bar}, instructions: instructions}, markdownParams: {includeImages: true, includeLinks: true, inlineImages: placeholder}, maxAgeMs: 0, parseParams: {rules: {title: h1, links: {selector: a, output: '@href', type: list}}, type: custom}, productParams: {dedupeImages: true}, screenshotParams: {area: viewport, format: png}, sharedParams: {actions: [{action: Click the product details tab, type: perform}], country: US, dismissCookies: true, dismissPopups: true, excludeSelectors: [P], headers: {Accept-Language: en-US}, includeFrames: true, includeSelectors: [P], mainContentOnly: true, parsers: {pdf: {endPage: 1, ocr: 'off', startPage: 1}}, profile: {profileId: prof_210b9798eb53baa4e69d31c1071cf03d, type: existing}, settleAnimations: true, theme: light, viewport: {height: 240, width: 240}, waitFor: 500}, tags: [production, team-alpha], timeoutOpts: {milliseconds: 1, behavior: fail}, zdr: disabled}, mode: scrape}",
 			"--tag", "docs",
 			"--tag", "competitor",
 			"--webhook", "{url: https://example.com, retry: {delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}}",
@@ -101,7 +102,7 @@ func TestBatchSubmit(t *testing.T) {
 			t,
 			"--api-key", "string",
 			"batch", "submit",
-			"--input", "{data: {format: markdown, urls: [{url: https://example.com/products/anvil, itemId: sku-1, meta: {category: bar}}, {url: https://example.com/products/hammer, itemId: sku-2, meta: {foo: bar}}], options: {country: de, excludeSelectors: [x], includeHTML: true, includeImages: true, includeLinks: true, includeSelectors: [x], maxAgeMs: 0, pdf: {end: 1, ocr: true, shouldParse: true, start: 1}, settleAnimations: true, shortenBase64Images: true, useMainContentOnly: true, waitForMs: 0}}, mode: scrape}",
+			"--input", "{data: {formats: {bytes: true, highlights: true, html: true, images: true, json: true, markdown: true, parse: true, product: true, screenshot: true}, urls: [{url: https://example.com/products/anvil, itemId: sku-1, meta: {category: bar}}, {url: https://example.com/products/hammer, itemId: sku-2, meta: {foo: bar}}], highlightsParams: {query: x, maxCharacters: 100}, imageParams: {dedupe: none, enrich: [dimensions]}, jsonParams: {schema: {type: bar, properties: bar, required: bar, additionalProperties: bar}, instructions: instructions}, markdownParams: {includeImages: true, includeLinks: true, inlineImages: placeholder}, maxAgeMs: 0, parseParams: {rules: {title: h1, links: {selector: a, output: '@href', type: list}}, type: custom}, productParams: {dedupeImages: true}, screenshotParams: {area: viewport, format: png}, sharedParams: {actions: [{action: Click the product details tab, type: perform}], country: US, dismissCookies: true, dismissPopups: true, excludeSelectors: [P], headers: {Accept-Language: en-US}, includeFrames: true, includeSelectors: [P], mainContentOnly: true, parsers: {pdf: {endPage: 1, ocr: 'off', startPage: 1}}, profile: {profileId: prof_210b9798eb53baa4e69d31c1071cf03d, type: existing}, settleAnimations: true, theme: light, viewport: {height: 240, width: 240}, waitFor: 500}, tags: [production, team-alpha], timeoutOpts: {milliseconds: 1, behavior: fail}, zdr: disabled}, mode: scrape}",
 			"--tag", "docs",
 			"--tag", "competitor",
 			"--webhook.url", "https://example.com",
@@ -116,7 +117,16 @@ func TestBatchSubmit(t *testing.T) {
 		pipeData := []byte("" +
 			"input:\n" +
 			"  data:\n" +
-			"    format: markdown\n" +
+			"    formats:\n" +
+			"      bytes: true\n" +
+			"      highlights: true\n" +
+			"      html: true\n" +
+			"      images: true\n" +
+			"      json: true\n" +
+			"      markdown: true\n" +
+			"      parse: true\n" +
+			"      product: true\n" +
+			"      screenshot: true\n" +
 			"    urls:\n" +
 			"      - url: https://example.com/products/anvil\n" +
 			"        itemId: sku-1\n" +
@@ -126,25 +136,74 @@ func TestBatchSubmit(t *testing.T) {
 			"        itemId: sku-2\n" +
 			"        meta:\n" +
 			"          foo: bar\n" +
-			"    options:\n" +
-			"      country: de\n" +
-			"      excludeSelectors:\n" +
-			"        - x\n" +
-			"      includeHTML: true\n" +
+			"    highlightsParams:\n" +
+			"      query: x\n" +
+			"      maxCharacters: 100\n" +
+			"    imageParams:\n" +
+			"      dedupe: none\n" +
+			"      enrich:\n" +
+			"        - dimensions\n" +
+			"    jsonParams:\n" +
+			"      schema:\n" +
+			"        type: bar\n" +
+			"        properties: bar\n" +
+			"        required: bar\n" +
+			"        additionalProperties: bar\n" +
+			"      instructions: instructions\n" +
+			"    markdownParams:\n" +
 			"      includeImages: true\n" +
 			"      includeLinks: true\n" +
+			"      inlineImages: placeholder\n" +
+			"    maxAgeMs: 0\n" +
+			"    parseParams:\n" +
+			"      rules:\n" +
+			"        title: h1\n" +
+			"        links:\n" +
+			"          selector: a\n" +
+			"          output: '@href'\n" +
+			"          type: list\n" +
+			"      type: custom\n" +
+			"    productParams:\n" +
+			"      dedupeImages: true\n" +
+			"    screenshotParams:\n" +
+			"      area: viewport\n" +
+			"      format: png\n" +
+			"    sharedParams:\n" +
+			"      actions:\n" +
+			"        - action: Click the product details tab\n" +
+			"          type: perform\n" +
+			"      country: US\n" +
+			"      dismissCookies: true\n" +
+			"      dismissPopups: true\n" +
+			"      excludeSelectors:\n" +
+			"        - P\n" +
+			"      headers:\n" +
+			"        Accept-Language: en-US\n" +
+			"      includeFrames: true\n" +
 			"      includeSelectors:\n" +
-			"        - x\n" +
-			"      maxAgeMs: 0\n" +
-			"      pdf:\n" +
-			"        end: 1\n" +
-			"        ocr: true\n" +
-			"        shouldParse: true\n" +
-			"        start: 1\n" +
+			"        - P\n" +
+			"      mainContentOnly: true\n" +
+			"      parsers:\n" +
+			"        pdf:\n" +
+			"          endPage: 1\n" +
+			"          ocr: 'off'\n" +
+			"          startPage: 1\n" +
+			"      profile:\n" +
+			"        profileId: prof_210b9798eb53baa4e69d31c1071cf03d\n" +
+			"        type: existing\n" +
 			"      settleAnimations: true\n" +
-			"      shortenBase64Images: true\n" +
-			"      useMainContentOnly: true\n" +
-			"      waitForMs: 0\n" +
+			"      theme: light\n" +
+			"      viewport:\n" +
+			"        height: 240\n" +
+			"        width: 240\n" +
+			"      waitFor: 500\n" +
+			"    tags:\n" +
+			"      - production\n" +
+			"      - team-alpha\n" +
+			"    timeoutOpts:\n" +
+			"      milliseconds: 1\n" +
+			"      behavior: fail\n" +
+			"    zdr: disabled\n" +
 			"  mode: scrape\n" +
 			"tags:\n" +
 			"  - docs\n" +
