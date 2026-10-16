@@ -18,7 +18,7 @@ func TestNewsSearch(t *testing.T) {
 			"news", "search",
 			"--search-by", "{entity: {domain: stripe.com, type: domain}, type: entity}",
 			"--cursor", "cursor",
-			"--filter-by", "{articleLanguage: [ar], articleType: [editorial], date: {from: 0, to: 0}, sourceCountry: [ae], sourceDomain: [x]}",
+			"--filter-by", "{articleLanguage: [am], articleType: [editorial], date: {from: 0, to: 0}, sourceCountry: [ae], sourceDomain: [x]}",
 			"--limit", "1",
 			"--sort-by", "{type: relevance}",
 			"--tag", "production",
@@ -38,7 +38,7 @@ func TestNewsSearch(t *testing.T) {
 			"--search-by.entity", "{domain: stripe.com, type: domain}",
 			"--search-by.type", "entity",
 			"--cursor", "cursor",
-			"--filter-by.article-language", "[ar]",
+			"--filter-by.article-language", "[am]",
 			"--filter-by.article-type", "[editorial]",
 			"--filter-by.date", "{from: 0, to: 0}",
 			"--filter-by.source-country", "[ae]",
@@ -61,7 +61,7 @@ func TestNewsSearch(t *testing.T) {
 			"cursor: cursor\n" +
 			"filterBy:\n" +
 			"  articleLanguage:\n" +
-			"    - ar\n" +
+			"    - am\n" +
 			"  articleType:\n" +
 			"    - editorial\n" +
 			"  date:\n" +

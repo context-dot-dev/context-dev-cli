@@ -218,6 +218,7 @@ func TestWebSearch(t *testing.T) {
 			"--freshness", "last_24_hours",
 			"--highlights-options", "{enabled: true, maxCharacters: 100}",
 			"--include-domain", "xxx",
+			"--languages", "all",
 			"--markdown-options", "{enabled: true, includeFrames: true, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutOpts: {milliseconds: 1, behavior: fail}, useMainContentOnly: true, waitForMs: 0}",
 			"--num-results", "10",
 			"--query-fanout=true",
@@ -245,6 +246,7 @@ func TestWebSearch(t *testing.T) {
 			"--highlights-options.enabled=true",
 			"--highlights-options.max-characters", "100",
 			"--include-domain", "xxx",
+			"--languages", "all",
 			"--markdown-options.enabled=true",
 			"--markdown-options.include-frames=true",
 			"--markdown-options.include-images=true",
@@ -279,6 +281,7 @@ func TestWebSearch(t *testing.T) {
 			"  maxCharacters: 100\n" +
 			"includeDomains:\n" +
 			"  - xxx\n" +
+			"languages: all\n" +
 			"markdownOptions:\n" +
 			"  enabled: true\n" +
 			"  includeFrames: true\n" +

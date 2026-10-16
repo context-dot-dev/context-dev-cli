@@ -342,6 +342,12 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Usage:    `Allowlist — only return results from these domains. Up to 100 domains. Example: ["arxiv.org", "github.com"].`,
 			BodyPath: "includeDomains",
 		},
+		&requestflag.Flag[any]{
+			Name:     "languages",
+			Usage:    "Languages to return results in, as BCP 47 language codes such as `en` or `de`, or \"all\" for any language. Defaults to \"all\". Example: [\"en\", \"de\"].",
+			Default:  "all",
+			BodyPath: "languages",
+		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "markdown-options",
 			Usage:    "Inline Markdown scraping for each result. Set `enabled: true` to activate.",
