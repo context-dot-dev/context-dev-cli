@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.14.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.13.1...v1.14.0) (2026-10-17)
+
+
+### Features
+
+* **batches:** keep batch result files for 180 days ([#1638](https://github.com/context-dot-dev/context-dev-cli/issues/1638)) ([a63190d](https://github.com/context-dot-dev/context-dev-cli/commit/a63190db1976e55c6f108bf8d00aab9f5fbf9f34))
+* **batch:** support Scrape Anything batches up to 100k URLs ([#1883](https://github.com/context-dot-dev/context-dev-cli/issues/1883)) ([403f0b2](https://github.com/context-dot-dev/context-dev-cli/commit/403f0b2c6bc0829d489f77820706306b0892d210))
+* **brand:** add search metadata and country and language filters ([#1945](https://github.com/context-dot-dev/context-dev-cli/issues/1945)) ([62df7fe](https://github.com/context-dot-dev/context-dev-cli/commit/62df7fe640328a3d22cc1b9e8cf8f67dcb21dc28))
+* **search:** /web/search - for news results extend description with matching passages from article. ([563d59d](https://github.com/context-dot-dev/context-dev-cli/commit/563d59d3ebc0ff8ddd40c20fac1e82b843ecf2d5))
+* **search:** add languages filter to web search ([#1833](https://github.com/context-dot-dev/context-dev-cli/issues/1833)) ([90701fc](https://github.com/context-dot-dev/context-dev-cli/commit/90701fca61494842859958c9d33c62f6d6f495b0))
+* **search:** allow requesting a single result ([#1880](https://github.com/context-dot-dev/context-dev-cli/issues/1880)) ([fc43a74](https://github.com/context-dot-dev/context-dev-cli/commit/fc43a74e9c16576ec16142f674813b7567ea4601))
+* **web-search:** charge markdown per delivered page ([#1729](https://github.com/context-dot-dev/context-dev-cli/issues/1729)) ([d408dfc](https://github.com/context-dot-dev/context-dev-cli/commit/d408dfc3871e492825a6fbf6998de72e2db7ddcd))
+
+
+### Documentation
+
+* **sdks:** lead generated READMEs with Context.dev scraping ([#1669](https://github.com/context-dot-dev/context-dev-cli/issues/1669)) ([4d9adde](https://github.com/context-dot-dev/context-dev-cli/commit/4d9adde80335dfd702a23a3c4729dca5b35d4bf9))
+
 ## [1.13.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.13.0...v1.13.1) (2026-09-30)
 
 
