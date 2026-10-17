@@ -79,6 +79,8 @@ func TestBrandSearch(t *testing.T) {
 			"brand", "search",
 			"--query", "x",
 			"--autocomplete=true",
+			"--country", "US",
+			"--language", "afrikaans",
 			"--query-by", "name",
 			"--tag", "production",
 			"--tag", "team-alpha",

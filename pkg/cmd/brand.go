@@ -130,7 +130,7 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 
 var brandSearch = cli.Command{
 	Name:    "search",
-	Usage:   "Find up to 10 brands by name or domain, ordered by popularity. Use the returned\ndomain to retrieve a full brand profile.",
+	Usage:   "Find up to 10 brands by name or domain, ordered by popularity. Optionally filter\nby country and primary language; both filters must match when provided together.\nResults include description, country, and language when available. Use the\nreturned domain to retrieve a full brand profile.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -144,6 +144,16 @@ var brandSearch = cli.Command{
 			Usage:     "Whether the search term matches by prefix, so partial words match as they are typed (e.g. 'nik' matches Nike). Set to false to match whole words only.",
 			Default:   true,
 			QueryPath: "autocomplete",
+		},
+		&requestflag.Flag[string]{
+			Name:      "country",
+			Usage:     "Only return brands in this country, as an uppercase ISO 3166-1 alpha-2 code such as US or GB.",
+			QueryPath: "country",
+		},
+		&requestflag.Flag[string]{
+			Name:      "language",
+			Usage:     "Only return brands with this primary language, such as english or french.",
+			QueryPath: "language",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "query-by",
