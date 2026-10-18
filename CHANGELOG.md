@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.14.0...v1.15.0) (2026-10-18)
+
+
+### Features
+
+* **people:** allow enrichment on free plans ([#1961](https://github.com/context-dot-dev/context-dev-cli/issues/1961)) ([28cee50](https://github.com/context-dot-dev/context-dev-cli/commit/28cee504b98775250d6655f3dabc413881d42fd8))
+
 ## [1.14.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.13.1...v1.14.0) (2026-10-17)
 
 
