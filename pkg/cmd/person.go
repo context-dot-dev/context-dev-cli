@@ -16,7 +16,7 @@ import (
 
 var peopleEnrich = requestflag.WithInnerFlags(cli.Command{
 	Name:    "enrich",
-	Usage:   "Find a person from identity clues and return their profile with a match score.\nRequires a paid plan; free or disposable email addresses return 422.",
+	Usage:   "Find a person from identity clues and return their profile with a match score.\nAvailable on all plans; free or disposable email addresses return 422.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
