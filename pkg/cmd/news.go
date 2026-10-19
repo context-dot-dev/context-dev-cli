@@ -16,12 +16,12 @@ import (
 
 var newsSearch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "search",
-	Usage:   "Find company news by name, domain, ticker, or ISIN. Filter articles and continue\nthrough results with a cursor.",
+	Usage:   "Find news about a company by name, domain, ticker, or ISIN, or search all news\nwith a natural-language query. Filter articles and continue through results with\na cursor.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "search-by",
-			Usage:    "What to search for.",
+			Usage:    "What to search for: a specific company, or a natural-language query across all news.",
 			Required: true,
 			BodyPath: "searchBy",
 		},
@@ -43,8 +43,7 @@ var newsSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "sort-by",
-			Usage:    "Result ordering. Defaults to newest.",
-			Default:  map[string]any{"type": "newest"},
+			Usage:    "Result ordering. Defaults to newest for entity searches. Natural-language searches are always ordered by relevance.",
 			BodyPath: "sortBy",
 		},
 		&requestflag.Flag[[]string]{
@@ -56,18 +55,6 @@ var newsSearch = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleNewsSearch,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
-	"search-by": {
-		&requestflag.InnerFlag[map[string]any]{
-			Name:       "search-by.entity",
-			Usage:      "The company to search news for, identified by name, domain, ticker, or ISIN.",
-			InnerField: "entity",
-		},
-		&requestflag.InnerFlag[string]{
-			Name:       "search-by.type",
-			Usage:      "How to search. Only entity search is supported.",
-			InnerField: "type",
-		},
-	},
 	"filter-by": {
 		&requestflag.InnerFlag[[]string]{
 			Name:       "filter-by.article-language",
