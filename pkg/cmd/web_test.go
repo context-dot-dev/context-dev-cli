@@ -325,6 +325,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--url", "https://example.com",
 			"--country", "de",
 			"--exclude-selector", "[x]",
+			"--exclude-url-regex", "/tag/|/author/",
 			"--follow-subdomains=true",
 			"--include-frames=true",
 			"--include-images=true",
@@ -359,6 +360,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--url", "https://example.com",
 			"--country", "de",
 			"--exclude-selector", "[x]",
+			"--exclude-url-regex", "/tag/|/author/",
 			"--follow-subdomains=true",
 			"--include-frames=true",
 			"--include-images=true",
@@ -392,6 +394,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"country: de\n" +
 			"excludeSelectors:\n" +
 			"  - x\n" +
+			"excludeUrlRegex: /tag/|/author/\n" +
 			"followSubdomains: true\n" +
 			"includeFrames: true\n" +
 			"includeImages: true\n" +

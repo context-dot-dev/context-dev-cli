@@ -483,6 +483,11 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Remove matching elements after inclusions. Exclusions take precedence.",
 			BodyPath: "excludeSelectors",
 		},
+		&requestflag.Flag[string]{
+			Name:     "exclude-url-regex",
+			Usage:    "RE2 regex pattern. URLs matching this pattern are never followed or scraped, even when they match urlRegex. The starting URL is always scraped.",
+			BodyPath: "excludeUrlRegex",
+		},
 		&requestflag.Flag[bool]{
 			Name:     "follow-subdomains",
 			Usage:    "When true, follow links on subdomains of the starting URL's domain (e.g. docs.example.com when starting from example.com). www and apex are always treated as equivalent.",
