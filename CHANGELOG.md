@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.16.0...v1.17.0) (2026-10-19)
+
+
+### Features
+
+* **crawl:** add exclude URL regex to crawl and sitemap endpoints ([#1982](https://github.com/context-dot-dev/context-dev-cli/issues/1982)) ([70096c2](https://github.com/context-dot-dev/context-dev-cli/commit/70096c2b04297fdf7827e4fa7d937b69dbe45878))
+
 ## [1.16.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.15.0...v1.16.0) (2026-10-19)
 
 
