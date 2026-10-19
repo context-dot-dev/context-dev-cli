@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.15.0...v1.16.0) (2026-10-19)
+
+
+### Features
+
+* **news:** add natural-language search to POST /news/search ([#1975](https://github.com/context-dot-dev/context-dev-cli/issues/1975)) ([b9fdc24](https://github.com/context-dot-dev/context-dev-cli/commit/b9fdc241fcf37d84f848514c5f02eee4510f7560))
+
 ## [1.15.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.14.0...v1.15.0) (2026-10-18)
 
 
