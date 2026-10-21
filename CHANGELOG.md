@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.18.0...v1.18.1) (2026-10-21)
+
+
+### Bug Fixes
+
+* **openapi:** document request_id and key_metadata on every response in one place ([#2042](https://github.com/context-dot-dev/context-dev-cli/issues/2042)) ([d5a84d7](https://github.com/context-dot-dev/context-dev-cli/commit/d5a84d70c84415ceb67b3b4776b2087ca90e0841))
+
 ## [1.18.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.17.0...v1.18.0) (2026-10-21)
 
 
