@@ -485,7 +485,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "exclude-url-regex",
-			Usage:    "RE2 regex pattern. URLs matching this pattern are never followed or scraped, even when they match urlRegex. The starting URL is always scraped.",
+			Usage:    "Regex pattern. URLs matching this pattern are never followed or scraped, even when they match urlRegex. The starting URL is always scraped.",
 			BodyPath: "excludeUrlRegex",
 		},
 		&requestflag.Flag[bool]{
@@ -502,13 +502,13 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "include-images",
-			Usage:    "Include image references in the Markdown output Only applies to `html-conversion` extractions.",
+			Usage:    "Include image references in the Markdown output (`html-conversion` only).",
 			Default:  false,
 			BodyPath: "includeImages",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "include-links",
-			Usage:    "Preserve hyperlinks in the Markdown output Only applies to `html-conversion` extractions.",
+			Usage:    "Preserve hyperlinks in the Markdown output (`html-conversion` only).",
 			Default:  true,
 			BodyPath: "includeLinks",
 		},
@@ -548,13 +548,13 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "shorten-base64-images",
-			Usage:    "Truncate base64-encoded image data in the Markdown output Only applies to `html-conversion` extractions.",
+			Usage:    "Truncate base64-encoded image data in the Markdown output (`html-conversion` only).",
 			Default:  true,
 			BodyPath: "shortenBase64Images",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "source-preference",
-			Usage:    "Where the Markdown should come from, in order of preference; the first usable source wins. `html-conversion` converts the page HTML, and counts as unusable when the conversion has almost no content (under 200 characters). `markdown-direct` uses the official Markdown version the page publishes through, returned as the site serves it. Defaults to `[\"html-conversion\", \"markdown-direct\"]`. With only `markdown-direct`, a page that publishes no Markdown fails with `NO_PUBLISHED_MARKDOWN` and is not billed. Requests with include or exclude selectors never use `markdown-direct`, so they must include `html-conversion`.",
+			Usage:    "Markdown sources in order of preference: `html-conversion` converts the page HTML, `markdown-direct` uses Markdown the site publishes.",
 			Default:  []string{"html-conversion", "markdown-direct"},
 			BodyPath: "sourcePreference",
 		},
