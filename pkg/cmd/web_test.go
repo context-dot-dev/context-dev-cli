@@ -337,6 +337,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--pdf", "{end: 1, ocr: true, shouldParse: true, start: 1}",
 			"--settle-animations=true",
 			"--shorten-base64-images=true",
+			"--source-preference", "html-conversion",
 			"--stop-after-ms", "10000",
 			"--tag", "production",
 			"--tag", "team-alpha",
@@ -375,6 +376,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--pdf.start", "1",
 			"--settle-animations=true",
 			"--shorten-base64-images=true",
+			"--source-preference", "html-conversion",
 			"--stop-after-ms", "10000",
 			"--tag", "production",
 			"--tag", "team-alpha",
@@ -411,6 +413,8 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"  start: 1\n" +
 			"settleAnimations: true\n" +
 			"shortenBase64Images: true\n" +
+			"sourcePreference:\n" +
+			"  - html-conversion\n" +
 			"stopAfterMs: 10000\n" +
 			"tags:\n" +
 			"  - production\n" +

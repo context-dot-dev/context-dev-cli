@@ -502,13 +502,13 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "include-images",
-			Usage:    "Include image references in the Markdown output",
+			Usage:    "Include image references in the Markdown output Only applies to `html-conversion` extractions.",
 			Default:  false,
 			BodyPath: "includeImages",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "include-links",
-			Usage:    "Preserve hyperlinks in the Markdown output",
+			Usage:    "Preserve hyperlinks in the Markdown output Only applies to `html-conversion` extractions.",
 			Default:  true,
 			BodyPath: "includeLinks",
 		},
@@ -548,9 +548,15 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "shorten-base64-images",
-			Usage:    "Truncate base64-encoded image data in the Markdown output",
+			Usage:    "Truncate base64-encoded image data in the Markdown output Only applies to `html-conversion` extractions.",
 			Default:  true,
 			BodyPath: "shortenBase64Images",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "source-preference",
+			Usage:    "Where the Markdown should come from, in order of preference; the first usable source wins. `html-conversion` converts the page HTML, and counts as unusable when the conversion has almost no content (under 200 characters). `markdown-direct` uses the official Markdown version the page publishes through, returned as the site serves it. Defaults to `[\"html-conversion\", \"markdown-direct\"]`. With only `markdown-direct`, a page that publishes no Markdown fails with `NO_PUBLISHED_MARKDOWN` and is not billed. Requests with include or exclude selectors never use `markdown-direct`, so they must include `html-conversion`.",
+			Default:  []string{"html-conversion", "markdown-direct"},
+			BodyPath: "sourcePreference",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "stop-after-ms",
