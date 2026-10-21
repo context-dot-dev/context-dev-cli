@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.19.0...v1.19.1) (2026-10-21)
+
+
+### Documentation
+
+* **openapi:** unify regex wording and shorten sourcePreference descriptions ([#2051](https://github.com/context-dot-dev/context-dev-cli/issues/2051)) ([e4e8b47](https://github.com/context-dot-dev/context-dev-cli/commit/e4e8b478ad6b55fb6059f5ab1deb5b80c057e2a2))
+
 ## [1.19.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.18.1...v1.19.0) (2026-10-21)
 
 
