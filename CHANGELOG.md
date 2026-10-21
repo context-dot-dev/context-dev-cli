@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.18.1...v1.19.0) (2026-10-21)
+
+
+### Features
+
+* **scrape:** add sourcePreference to choose between HTML conversion and published Markdown ([#2010](https://github.com/context-dot-dev/context-dev-cli/issues/2010)) ([fcdf0a1](https://github.com/context-dot-dev/context-dev-cli/commit/fcdf0a17ac9a9ffa7fd786e1cf1ec767986183a1))
+
 ## [1.18.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.18.0...v1.18.1) (2026-10-21)
 
 
