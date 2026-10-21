@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.17.0...v1.18.0) (2026-10-21)
+
+
+### Features
+
+* **company-search:** prepare public response contract ([#2021](https://github.com/context-dot-dev/context-dev-cli/issues/2021)) ([2aebf21](https://github.com/context-dot-dev/context-dev-cli/commit/2aebf210f72f171fa351b37c2d904a42993d3a9a))
+
 ## [1.17.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.16.0...v1.17.0) (2026-10-19)
 
 
