@@ -181,6 +181,7 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&peopleEnrich,
+					&peopleSearch,
 				},
 			},
 			{

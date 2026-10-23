@@ -145,6 +145,55 @@ var peopleEnrich = requestflag.WithInnerFlags(cli.Command{
 	},
 })
 
+var peopleSearch = requestflag.WithInnerFlags(cli.Command{
+	Name:    "search",
+	Usage:   "Find people with a natural-language query.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[string]{
+			Name:     "query",
+			Usage:    "Describe the people to find.",
+			Required: true,
+			BodyPath: "query",
+		},
+		&requestflag.Flag[string]{
+			Name:     "cursor",
+			Usage:    "Use next_cursor with the same query and filters to fetch the next page.",
+			BodyPath: "cursor",
+		},
+		&requestflag.Flag[map[string]any]{
+			Name:     "filters",
+			Usage:    "Additional constraints every result must match.",
+			BodyPath: "filters",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "tag",
+			Usage:    "Labels for filtering usage in the dashboard.",
+			BodyPath: "tags",
+		},
+	},
+	Action:          handlePeopleSearch,
+	HideHelpCommand: true,
+}, map[string][]requestflag.HasOuterFlag{
+	"filters": {
+		&requestflag.InnerFlag[[]string]{
+			Name:       "filters.countries",
+			Usage:      "Countries people live in as two-letter codes, such as US or GB.",
+			InnerField: "countries",
+		},
+		&requestflag.InnerFlag[int64]{
+			Name:       "filters.years-of-experience-max",
+			Usage:      "Maximum years of professional experience.",
+			InnerField: "years_of_experience_max",
+		},
+		&requestflag.InnerFlag[int64]{
+			Name:       "filters.years-of-experience-min",
+			Usage:      "Minimum years of professional experience.",
+			InnerField: "years_of_experience_min",
+		},
+	},
+})
+
 func handlePeopleEnrich(ctx context.Context, cmd *cli.Command) error {
 	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -182,6 +231,47 @@ func handlePeopleEnrich(ctx context.Context, cmd *cli.Command) error {
 		Format:         format,
 		RawOutput:      cmd.Root().Bool("raw-output"),
 		Title:          "people enrich",
+		Transform:      transform,
+	})
+}
+
+func handlePeopleSearch(ctx context.Context, cmd *cli.Command) error {
+	client := contextdev.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		ApplicationJSON,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	params := contextdev.PersonSearchParams{}
+
+	var res []byte
+	options = append(options, option.WithResponseBodyInto(&res))
+	_, err = client.People.Search(ctx, params, options...)
+	if err != nil {
+		return err
+	}
+
+	obj := gjson.ParseBytes(res)
+	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
+	transform := cmd.Root().String("transform")
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "people search",
 		Transform:      transform,
 	})
 }

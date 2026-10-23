@@ -96,3 +96,58 @@ func TestPeopleEnrich(t *testing.T) {
 		)
 	})
 }
+
+func TestPeopleSearch(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	t.Run("regular flags", func(t *testing.T) {
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"people", "search",
+			"--query", "VPs of sales at solar companies in California",
+			"--cursor", "cursor",
+			"--filters", "{countries: [SE], years_of_experience_max: 0, years_of_experience_min: 0}",
+			"--tag", "production",
+			"--tag", "team-alpha",
+		)
+	})
+
+	t.Run("inner flags", func(t *testing.T) {
+		// Check that inner flags have been set up correctly
+		requestflag.CheckInnerFlags(peopleSearch)
+
+		// Alternative argument passing style using inner flags
+		mocktest.TestRunMockTestWithFlags(
+			t,
+			"--api-key", "string",
+			"people", "search",
+			"--query", "VPs of sales at solar companies in California",
+			"--cursor", "cursor",
+			"--filters.countries", "[SE]",
+			"--filters.years-of-experience-max", "0",
+			"--filters.years-of-experience-min", "0",
+			"--tag", "production",
+			"--tag", "team-alpha",
+		)
+	})
+
+	t.Run("piping data", func(t *testing.T) {
+		// Test piping YAML data over stdin
+		pipeData := []byte("" +
+			"query: VPs of sales at solar companies in California\n" +
+			"cursor: cursor\n" +
+			"filters:\n" +
+			"  countries:\n" +
+			"    - SE\n" +
+			"  years_of_experience_max: 0\n" +
+			"  years_of_experience_min: 0\n" +
+			"tags:\n" +
+			"  - production\n" +
+			"  - team-alpha\n")
+		mocktest.TestRunMockTestWithPipeAndFlags(
+			t, pipeData,
+			"--api-key", "string",
+			"people", "search",
+		)
+	})
+}
