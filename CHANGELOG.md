@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.19.1...v1.20.0) (2026-10-26)
+
+
+### Features
+
+* **people:** publish people search in the API specification ([#2094](https://github.com/context-dot-dev/context-dev-cli/issues/2094)) ([a4ebbf1](https://github.com/context-dot-dev/context-dev-cli/commit/a4ebbf18af3825489773684de04a2e974f4e05b5))
+
 ## [1.19.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.19.0...v1.19.1) (2026-10-21)
 
 
