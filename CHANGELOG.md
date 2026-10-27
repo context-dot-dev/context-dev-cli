@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.22.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.21.1...v1.22.0) (2026-10-27)
+
+
+### Features
+
+* **parse:** mark PDF page numbers inline in Markdown with includeNumberedPages ([#2110](https://github.com/context-dot-dev/context-dev-cli/issues/2110)) ([56653ad](https://github.com/context-dot-dev/context-dev-cli/commit/56653ad48cadf607d345179a60b08dac28b04473))
+
+
+### Bug Fixes
+
+* **people:** split ultra people ranking on its strongest phrase signals ([#2209](https://github.com/context-dot-dev/context-dev-cli/issues/2209)) ([29fdba0](https://github.com/context-dot-dev/context-dev-cli/commit/29fdba02207215a66d76d0455c97ea1fdaf9e867))
+
 ## [1.21.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.21.0...v1.21.1) (2026-10-27)
 
 
