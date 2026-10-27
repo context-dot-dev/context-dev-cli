@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.20.0...v1.21.0) (2026-10-27)
+
+
+### Features
+
+* **people:** add ultra mode to people search ([#2149](https://github.com/context-dot-dev/context-dev-cli/issues/2149)) ([519ce28](https://github.com/context-dot-dev/context-dev-cli/commit/519ce28caa2dbf5bb5d04578fc52412414dee232))
+
 ## [1.20.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.19.1...v1.20.0) (2026-10-26)
 
 
