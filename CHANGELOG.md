@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.21.0...v1.21.1) (2026-10-27)
+
+
+### Documentation
+
+* **people:** note that complex ultra people searches can take up to 60 seconds ([#2206](https://github.com/context-dot-dev/context-dev-cli/issues/2206)) ([1486b9b](https://github.com/context-dot-dev/context-dev-cli/commit/1486b9bbaf9b344291159d73cbb4df1d9c5f2871))
+
 ## [1.21.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.20.0...v1.21.0) (2026-10-27)
 
 
