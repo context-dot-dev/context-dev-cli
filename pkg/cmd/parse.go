@@ -50,6 +50,12 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 			QueryPath: "includeLinks",
 		},
 		&requestflag.Flag[bool]{
+			Name:      "include-numbered-pages",
+			Usage:     "Start each PDF page in the Markdown with a `<!-- page N -->` line, where N is the original 1-based page number.",
+			Default:   false,
+			QueryPath: "includeNumberedPages",
+		},
+		&requestflag.Flag[bool]{
 			Name:      "ocr",
 			Usage:     "Read text from images and scanned PDF pages. PDF page ranges still apply.",
 			Default:   false,
