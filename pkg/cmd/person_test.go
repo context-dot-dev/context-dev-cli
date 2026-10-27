@@ -107,6 +107,7 @@ func TestPeopleSearch(t *testing.T) {
 			"--query", "VPs of sales at solar companies in California",
 			"--cursor", "cursor",
 			"--filters", "{countries: [SE], years_of_experience_max: 0, years_of_experience_min: 0}",
+			"--mode", "fast",
 			"--tag", "production",
 			"--tag", "team-alpha",
 		)
@@ -126,6 +127,7 @@ func TestPeopleSearch(t *testing.T) {
 			"--filters.countries", "[SE]",
 			"--filters.years-of-experience-max", "0",
 			"--filters.years-of-experience-min", "0",
+			"--mode", "fast",
 			"--tag", "production",
 			"--tag", "team-alpha",
 		)
@@ -141,6 +143,7 @@ func TestPeopleSearch(t *testing.T) {
 			"    - SE\n" +
 			"  years_of_experience_max: 0\n" +
 			"  years_of_experience_min: 0\n" +
+			"mode: fast\n" +
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n")

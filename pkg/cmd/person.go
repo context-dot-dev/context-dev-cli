@@ -152,19 +152,25 @@ var peopleSearch = requestflag.WithInnerFlags(cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "query",
-			Usage:    "Describe the people to find.",
+			Usage:    "Describe the people to find. Up to 500 characters in `fast` mode and 5000 in `ultra` mode.",
 			Required: true,
 			BodyPath: "query",
 		},
 		&requestflag.Flag[string]{
 			Name:     "cursor",
-			Usage:    "Use next_cursor with the same query and filters to fetch the next page.",
+			Usage:    "Use next_cursor with the same query, mode and filters to fetch the next page.",
 			BodyPath: "cursor",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "filters",
 			Usage:    "Additional constraints every result must match.",
 			BodyPath: "filters",
+		},
+		&requestflag.Flag[string]{
+			Name:     "mode",
+			Usage:    "`fast` matches people on basic criteria (e.g. their role, location or background); `ultra` plans a deeper search, judges each candidate against every criterion in the query and explains each match.",
+			Default:  "fast",
+			BodyPath: "mode",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
