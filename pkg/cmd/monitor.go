@@ -27,13 +27,13 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "target",
-			Usage:    "What to watch: a page, a sitemap, or data extracted from a site.",
+			Usage:    "What to watch: a page, a sitemap, data extracted from a site, or web search results.",
 			Required: true,
 			BodyPath: "target",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "change-detection",
-			Usage:    "How changes are judged. Defaults to `semantic` for extract targets and page targets with `instructions`, otherwise `exact`.",
+			Usage:    "How changes are judged. Defaults to `semantic` for extract and search targets and page targets with `instructions`, otherwise `exact`.",
 			BodyPath: "change_detection",
 		},
 		&requestflag.Flag[string]{
@@ -135,7 +135,7 @@ var monitorsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "change-detection",
-			Usage:    "How changes are judged. Defaults to `semantic` for extract targets and page targets with `instructions`, otherwise `exact`.",
+			Usage:    "How changes are judged. Defaults to `semantic` for extract and search targets and page targets with `instructions`, otherwise `exact`.",
 			BodyPath: "change_detection",
 		},
 		&requestflag.Flag[string]{
@@ -165,7 +165,7 @@ var monitorsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "target",
-			Usage:    "What to watch: a page, a sitemap, or data extracted from a site.",
+			Usage:    "What to watch: a page, a sitemap, data extracted from a site, or web search results.",
 			BodyPath: "target",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -245,7 +245,7 @@ var monitorsList = cli.Command{
 		},
 		&requestflag.Flag[any]{
 			Name:      "search-by",
-			Usage:     "Fields to search with `q`. Defaults to all fields; page and extract targets can have instructions.",
+			Usage:     "Fields to search with `q`. Defaults to all fields; page, extract, and search targets can have instructions, and `url` matches a search target’s query.",
 			QueryPath: "search_by",
 		},
 		&requestflag.Flag[string]{
