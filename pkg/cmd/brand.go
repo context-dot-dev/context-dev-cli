@@ -61,6 +61,11 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "timeoutOpts",
 		},
 		&requestflag.Flag[string]{
+			Name:     "zdr",
+			Usage:    "`enabled` disables request logs, usage logs, and traces. Brand data and hosted assets may still be stored. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
+			BodyPath: "zdr",
+		},
+		&requestflag.Flag[string]{
 			Name:     "name",
 			Usage:    "Company name to retrieve brand data for (e.g., 'Apple Inc').",
 			BodyPath: "name",

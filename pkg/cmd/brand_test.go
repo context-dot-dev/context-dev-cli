@@ -25,6 +25,7 @@ func TestBrandRetrieve(t *testing.T) {
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -47,6 +48,7 @@ func TestBrandRetrieve(t *testing.T) {
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1000",
 			"--timeout-opts.behavior", "fail",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -65,7 +67,8 @@ func TestBrandRetrieve(t *testing.T) {
 			"  - team-alpha\n" +
 			"timeoutOpts:\n" +
 			"  milliseconds: 1000\n" +
-			"  behavior: fail\n")
+			"  behavior: fail\n" +
+			"zdr: enabled\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
