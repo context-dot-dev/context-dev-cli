@@ -41,6 +41,11 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Always `web`. Optional.",
 			BodyPath: "mode",
 		},
+		&requestflag.Flag[[]string]{
+			Name:     "policy",
+			Usage:    "Access policy IDs to apply to every run.",
+			BodyPath: "policies",
+		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "schedule",
 			Usage:    "Run the monitor on a fixed interval defined by a frequency and a unit, e.g. every 6 hours or every 2 days. The total interval (frequency × unit) must be between 10 minutes and 1 year.",
@@ -137,6 +142,11 @@ var monitorsUpdate = requestflag.WithInnerFlags(cli.Command{
 			Name:     "name",
 			Usage:    "Display name for the monitor.",
 			BodyPath: "name",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "policy",
+			Usage:    "Access policy IDs to apply to every run. Send an empty list to remove them.",
+			BodyPath: "policies",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "schedule",

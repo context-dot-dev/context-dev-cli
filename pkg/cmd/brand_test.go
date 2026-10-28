@@ -21,6 +21,7 @@ func TestBrandRetrieve(t *testing.T) {
 			"--force-language", "afrikaans",
 			"--max-age-ms", "0",
 			"--max-speed=true",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
@@ -41,6 +42,7 @@ func TestBrandRetrieve(t *testing.T) {
 			"--force-language", "afrikaans",
 			"--max-age-ms", "0",
 			"--max-speed=true",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1000",
@@ -56,6 +58,8 @@ func TestBrandRetrieve(t *testing.T) {
 			"force_language: afrikaans\n" +
 			"maxAgeMs: 0\n" +
 			"maxSpeed: true\n" +
+			"policies:\n" +
+			"  - pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e\n" +
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +

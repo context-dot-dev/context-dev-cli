@@ -36,6 +36,11 @@ var webAnswers = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "mode",
 		},
 		&requestflag.Flag[[]string]{
+			Name:     "policy",
+			Usage:    "Access policy IDs to apply. A URL must pass every policy.",
+			BodyPath: "policies",
+		},
+		&requestflag.Flag[[]string]{
 			Name:     "tag",
 			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
@@ -144,6 +149,11 @@ var webExtractStyleguide = requestflag.WithInnerFlags(cli.Command{
 			Usage:     "Maximum age of cached brand data in ms. Defaults to 3 months; clamped to 0–1 year. `0` refreshes.",
 			Default:   requestflag.Ptr[int64](7776000000),
 			QueryPath: "maxAgeMs",
+		},
+		&requestflag.Flag[[]string]{
+			Name:      "policy",
+			Usage:     "Comma-separated access policy IDs to apply. A URL must pass every policy.",
+			QueryPath: "policies",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
@@ -359,6 +369,11 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Default:  10,
 			BodyPath: "numResults",
 		},
+		&requestflag.Flag[[]string]{
+			Name:     "policy",
+			Usage:    "Access policy IDs to apply. A URL must pass every policy.",
+			BodyPath: "policies",
+		},
 		&requestflag.Flag[bool]{
 			Name:     "query-fanout",
 			Usage:    "Currently has no effect.",
@@ -539,6 +554,11 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "PDF handling. `start`/`end` limit parsing to an inclusive, 1-based page range.",
 			Default:  map[string]any{"shouldParse": true, "ocr": false},
 			BodyPath: "pdf",
+		},
+		&requestflag.Flag[[]string]{
+			Name:     "policy",
+			Usage:    "Access policy IDs to apply. A URL must pass every policy.",
+			BodyPath: "policies",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "settle-animations",

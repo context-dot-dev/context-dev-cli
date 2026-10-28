@@ -46,6 +46,11 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "maxSpeed",
 		},
 		&requestflag.Flag[[]string]{
+			Name:     "policy",
+			Usage:    "Access policy IDs to apply. A URL must pass every policy.",
+			BodyPath: "policies",
+		},
+		&requestflag.Flag[[]string]{
 			Name:     "tag",
 			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",

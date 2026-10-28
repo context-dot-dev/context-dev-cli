@@ -19,6 +19,7 @@ func TestWebAnswers(t *testing.T) {
 			"--task", "Find the pricing page URL and plan names for context.dev.",
 			"--json-format", "{pricing_page_url: bar, plans: bar}",
 			"--mode", "fast",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
@@ -38,6 +39,7 @@ func TestWebAnswers(t *testing.T) {
 			"--task", "Find the pricing page URL and plan names for context.dev.",
 			"--json-format", "{pricing_page_url: bar, plans: bar}",
 			"--mode", "fast",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1000",
@@ -54,6 +56,8 @@ func TestWebAnswers(t *testing.T) {
 			"  pricing_page_url: bar\n" +
 			"  plans: bar\n" +
 			"mode: fast\n" +
+			"policies:\n" +
+			"  - pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e\n" +
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +
@@ -116,6 +120,7 @@ func TestWebExtractStyleguide(t *testing.T) {
 			"--direct-url", "https://example.com",
 			"--domain", "xxx",
 			"--max-age-ms", "0",
+			"--policy", "string",
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1, behavior: fail}",
@@ -136,6 +141,7 @@ func TestWebExtractStyleguide(t *testing.T) {
 			"--direct-url", "https://example.com",
 			"--domain", "xxx",
 			"--max-age-ms", "0",
+			"--policy", "string",
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1",
@@ -221,6 +227,7 @@ func TestWebSearch(t *testing.T) {
 			"--languages", "all",
 			"--markdown-options", "{enabled: true, includeFrames: true, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutOpts: {milliseconds: 1, behavior: fail}, useMainContentOnly: true, waitForMs: 0}",
 			"--num-results", "10",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--query-fanout=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
@@ -258,6 +265,7 @@ func TestWebSearch(t *testing.T) {
 			"--markdown-options.use-main-content-only=true",
 			"--markdown-options.wait-for-ms", "0",
 			"--num-results", "10",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--query-fanout=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
@@ -299,6 +307,8 @@ func TestWebSearch(t *testing.T) {
 			"  useMainContentOnly: true\n" +
 			"  waitForMs: 0\n" +
 			"numResults: 10\n" +
+			"policies:\n" +
+			"  - pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e\n" +
 			"queryFanout: true\n" +
 			"tags:\n" +
 			"  - production\n" +
@@ -335,6 +345,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--max-depth", "0",
 			"--max-pages", "10",
 			"--pdf", "{end: 1, ocr: true, shouldParse: true, start: 1}",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--settle-animations=true",
 			"--shorten-base64-images=true",
 			"--source-preference", "html-conversion",
@@ -374,6 +385,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--pdf.ocr=true",
 			"--pdf.should-parse=true",
 			"--pdf.start", "1",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--settle-animations=true",
 			"--shorten-base64-images=true",
 			"--source-preference", "html-conversion",
@@ -411,6 +423,8 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"  ocr: true\n" +
 			"  shouldParse: true\n" +
 			"  start: 1\n" +
+			"policies:\n" +
+			"  - pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e\n" +
 			"settleAnimations: true\n" +
 			"shortenBase64Images: true\n" +
 			"sourcePreference:\n" +

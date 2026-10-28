@@ -20,6 +20,7 @@ func TestMonitorsCreate(t *testing.T) {
 			"--target", `{type: page, url: https://acme.com/pricing, actions: [{do: wait, timeMs: 0}], exclude_selectors: [.carousel, '[id^="TA_"]'], include_selectors: ['#attraction-details'], instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}`,
 			"--change-detection", "{type: exact}",
 			"--mode", "web",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--schedule", "{frequency: 6, type: interval, unit: hours}",
 			"--tag", "pricing",
 			"--tag", "competitor",
@@ -40,6 +41,7 @@ func TestMonitorsCreate(t *testing.T) {
 			"--target", `{type: page, url: https://acme.com/pricing, actions: [{do: wait, timeMs: 0}], exclude_selectors: [.carousel, '[id^="TA_"]'], include_selectors: ['#attraction-details'], instructions: 'Report pricing or plan availability changes. Ignore counters, timestamps, testimonials, and navigation.', normalize_whitespace: true}`,
 			"--change-detection", "{type: exact}",
 			"--mode", "web",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--schedule.frequency", "6",
 			"--schedule.type", "interval",
 			"--schedule.unit", "hours",
@@ -73,6 +75,8 @@ func TestMonitorsCreate(t *testing.T) {
 			"change_detection:\n" +
 			"  type: exact\n" +
 			"mode: web\n" +
+			"policies:\n" +
+			"  - pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e\n" +
 			"schedule:\n" +
 			"  frequency: 6\n" +
 			"  type: interval\n" +
@@ -124,6 +128,7 @@ func TestMonitorsUpdate(t *testing.T) {
 			"--monitor-id", "mon_123",
 			"--change-detection", "{type: exact}",
 			"--name", "Acme pricing monitor",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--schedule", "{frequency: 1, type: interval, unit: hours}",
 			"--status", "active",
 			"--tag", "pricing",
@@ -145,6 +150,7 @@ func TestMonitorsUpdate(t *testing.T) {
 			"--monitor-id", "mon_123",
 			"--change-detection", "{type: exact}",
 			"--name", "Acme pricing monitor",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--schedule.frequency", "1",
 			"--schedule.type", "interval",
 			"--schedule.unit", "hours",
@@ -164,6 +170,8 @@ func TestMonitorsUpdate(t *testing.T) {
 			"change_detection:\n" +
 			"  type: exact\n" +
 			"name: Acme pricing monitor\n" +
+			"policies:\n" +
+			"  - pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e\n" +
 			"schedule:\n" +
 			"  frequency: 1\n" +
 			"  type: interval\n" +

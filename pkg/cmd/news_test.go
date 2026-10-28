@@ -20,6 +20,7 @@ func TestNewsSearch(t *testing.T) {
 			"--cursor", "cursor",
 			"--filter-by", "{articleLanguage: [am], articleType: [editorial], date: {from: 0, to: 0}, sourceCountry: [ae], sourceDomain: [x]}",
 			"--limit", "1",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--sort-by", "{type: relevance}",
 			"--tag", "production",
 			"--tag", "team-alpha",
@@ -43,6 +44,7 @@ func TestNewsSearch(t *testing.T) {
 			"--filter-by.source-country", "[ae]",
 			"--filter-by.source-domain", "[x]",
 			"--limit", "1",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--sort-by.type", "relevance",
 			"--tag", "production",
 			"--tag", "team-alpha",
@@ -71,6 +73,8 @@ func TestNewsSearch(t *testing.T) {
 			"  sourceDomain:\n" +
 			"    - x\n" +
 			"limit: 1\n" +
+			"policies:\n" +
+			"  - pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e\n" +
 			"sortBy:\n" +
 			"  type: relevance\n" +
 			"tags:\n" +

@@ -18,6 +18,7 @@ func TestUtilityPrefetch(t *testing.T) {
 			"utility", "prefetch",
 			"--identifier", "{domain: stripe.com}",
 			"--type", "brand",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
@@ -35,6 +36,7 @@ func TestUtilityPrefetch(t *testing.T) {
 			"utility", "prefetch",
 			"--identifier", "{domain: stripe.com}",
 			"--type", "brand",
+			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1000",
@@ -48,6 +50,8 @@ func TestUtilityPrefetch(t *testing.T) {
 			"identifier:\n" +
 			"  domain: stripe.com\n" +
 			"type: brand\n" +
+			"policies:\n" +
+			"  - pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e\n" +
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +

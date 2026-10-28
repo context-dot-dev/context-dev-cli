@@ -148,6 +148,11 @@ var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "input",
 		},
 		&requestflag.Flag[[]string]{
+			Name:     "policy",
+			Usage:    "Access policy IDs to apply to every page. A URL must pass every policy.",
+			BodyPath: "policies",
+		},
+		&requestflag.Flag[[]string]{
 			Name:     "tag",
 			Usage:    "Tags stored on the batch. Filter the batch list by them later.",
 			BodyPath: "tags",

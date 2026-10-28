@@ -41,6 +41,11 @@ var newsSearch = requestflag.WithInnerFlags(cli.Command{
 			Default:  10,
 			BodyPath: "limit",
 		},
+		&requestflag.Flag[[]string]{
+			Name:     "policy",
+			Usage:    "Access policy IDs to apply. A URL must pass every policy.",
+			BodyPath: "policies",
+		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "sort-by",
 			Usage:    "Result ordering. Defaults to newest for entity searches. Natural-language searches are always ordered by relevance.",
