@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.23.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.22.0...v1.23.0) (2026-10-28)
+
+
+### Features
+
+* **access-policies:** limit which websites API requests can reach ([#2213](https://github.com/context-dot-dev/context-dev-cli/issues/2213)) ([de6d2cb](https://github.com/context-dot-dev/context-dev-cli/commit/de6d2cbfc75b87734e147d17054e3453eae0a9c1))
+* **access-policies:** limit which websites API requests can reach ([#2213](https://github.com/context-dot-dev/context-dev-cli/issues/2213)) ([d834285](https://github.com/context-dot-dev/context-dev-cli/commit/d834285939f71ee9f02a7e64f88060d7336c0327))
+* **access-policies:** limit which websites API requests can reach ([#2213](https://github.com/context-dot-dev/context-dev-cli/issues/2213)) ([8bcacae](https://github.com/context-dot-dev/context-dev-cli/commit/8bcacae1949b95afcc1c768aacfb25836bfd4bd8))
+* **access-policies:** limit which websites API requests can reach ([#2213](https://github.com/context-dot-dev/context-dev-cli/issues/2213)) ([b45f902](https://github.com/context-dot-dev/context-dev-cli/commit/b45f902e1d99193a4f78c694934650220c246387))
+* **brand:** support log-free brand and styleguide requests ([#2231](https://github.com/context-dot-dev/context-dev-cli/issues/2231)) ([de6d2cb](https://github.com/context-dot-dev/context-dev-cli/commit/de6d2cbfc75b87734e147d17054e3453eae0a9c1))
+* **brand:** support log-free brand and styleguide requests ([#2231](https://github.com/context-dot-dev/context-dev-cli/issues/2231)) ([d834285](https://github.com/context-dot-dev/context-dev-cli/commit/d834285939f71ee9f02a7e64f88060d7336c0327))
+* **brand:** support log-free brand and styleguide requests ([#2231](https://github.com/context-dot-dev/context-dev-cli/issues/2231)) ([8bcacae](https://github.com/context-dot-dev/context-dev-cli/commit/8bcacae1949b95afcc1c768aacfb25836bfd4bd8))
+* **monitors:** add search target to watch the web for new developments ([#2215](https://github.com/context-dot-dev/context-dev-cli/issues/2215)) ([de6d2cb](https://github.com/context-dot-dev/context-dev-cli/commit/de6d2cbfc75b87734e147d17054e3453eae0a9c1))
+
+
+### Bug Fixes
+
+* **brand:** keep metadata-only usage logs for ZDR brand requests ([#2234](https://github.com/context-dot-dev/context-dev-cli/issues/2234)) ([de6d2cb](https://github.com/context-dot-dev/context-dev-cli/commit/de6d2cbfc75b87734e147d17054e3453eae0a9c1))
+* **brand:** keep metadata-only usage logs for ZDR brand requests ([#2234](https://github.com/context-dot-dev/context-dev-cli/issues/2234)) ([d834285](https://github.com/context-dot-dev/context-dev-cli/commit/d834285939f71ee9f02a7e64f88060d7336c0327))
+* **openapi:** keep legacy batch inputs in the spec as deprecated ([#2225](https://github.com/context-dot-dev/context-dev-cli/issues/2225)) ([de6d2cb](https://github.com/context-dot-dev/context-dev-cli/commit/de6d2cbfc75b87734e147d17054e3453eae0a9c1))
+* **openapi:** keep legacy batch inputs in the spec as deprecated ([#2225](https://github.com/context-dot-dev/context-dev-cli/issues/2225)) ([d834285](https://github.com/context-dot-dev/context-dev-cli/commit/d834285939f71ee9f02a7e64f88060d7336c0327))
+* **openapi:** keep legacy batch inputs in the spec as deprecated ([#2225](https://github.com/context-dot-dev/context-dev-cli/issues/2225)) ([8bcacae](https://github.com/context-dot-dev/context-dev-cli/commit/8bcacae1949b95afcc1c768aacfb25836bfd4bd8))
+* **openapi:** keep legacy batch inputs in the spec as deprecated ([#2225](https://github.com/context-dot-dev/context-dev-cli/issues/2225)) ([b45f902](https://github.com/context-dot-dev/context-dev-cli/commit/b45f902e1d99193a4f78c694934650220c246387))
+
 ## [1.22.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.21.1...v1.22.0) (2026-10-27)
 
 
