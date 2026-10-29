@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.23.0...v1.23.1) (2026-10-29)
+
+
+### Bug Fixes
+
+* **scrape:** derive the /web/scrape request spec from its zod schema ([#2044](https://github.com/context-dot-dev/context-dev-cli/issues/2044)) ([9d9a0d7](https://github.com/context-dot-dev/context-dev-cli/commit/9d9a0d73bd586e9ce7c7bcfd8090fc2f4e7066a8))
+
 ## [1.23.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.22.0...v1.23.0) (2026-10-28)
 
 
