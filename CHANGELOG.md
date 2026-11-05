@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.24.0...v1.24.1) (2026-11-05)
+
+
+### Documentation
+
+* **logs:** say that a request log appears a few seconds after the request ([#2564](https://github.com/context-dot-dev/context-dev-cli/issues/2564)) ([177caae](https://github.com/context-dot-dev/context-dev-cli/commit/177caaeff369bbf15957648f429c842207960cd5))
+
 ## [1.24.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.23.1...v1.24.0) (2026-11-05)
 
 
