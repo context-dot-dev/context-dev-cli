@@ -1225,3 +1225,29 @@ func TestApplyStdinDataToFlags(t *testing.T) {
 		assert.False(t, flag.IsSet())
 	})
 }
+
+func TestFlagPostParse_EnvVars(t *testing.T) {
+	t.Run("string flag with empty env var", func(t *testing.T) {
+		t.Setenv("TEST_EMPTY_STR", "")
+		flag := &Flag[string]{
+			Name:    "str-flag",
+			Sources: cli.EnvVars("TEST_EMPTY_STR"),
+		}
+		assert.NoError(t, flag.PreParse())
+		assert.NoError(t, flag.PostParse())
+		assert.True(t, flag.IsSet())
+		assert.Equal(t, "", flag.Get())
+	})
+
+	t.Run("bool flag with empty env var", func(t *testing.T) {
+		t.Setenv("TEST_EMPTY_BOOL", "")
+		flag := &Flag[bool]{
+			Name:    "bool-flag",
+			Sources: cli.EnvVars("TEST_EMPTY_BOOL"),
+		}
+		assert.NoError(t, flag.PreParse())
+		assert.NoError(t, flag.PostParse())
+		assert.True(t, flag.IsSet())
+		assert.Equal(t, false, flag.Get())
+	})
+}
