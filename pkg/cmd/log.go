@@ -16,7 +16,7 @@ import (
 
 var logsRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Retrieve a request’s metadata, retained input, and response.",
+	Usage:   "Retrieve a request’s metadata, retained input, and response. An entry becomes\nretrievable a few seconds after its request completes, so a 404 NOT_FOUND for a\nrequest that just finished means ingestion has not caught up yet; retry after a\nfew seconds.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
