@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.23.1...v1.24.0) (2026-11-05)
+
+
+### Features
+
+* **scrape:** add Tripadvisor reviews parser ([#2508](https://github.com/context-dot-dev/context-dev-cli/issues/2508)) ([3c2e330](https://github.com/context-dot-dev/context-dev-cli/commit/3c2e33014dce8b6ba7431072444394018de0db0e))
+
 ## [1.23.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.23.0...v1.23.1) (2026-10-29)
 
 
