@@ -33,7 +33,7 @@ func TestBatchList(t *testing.T) {
 			"--q", "batch_1a2b",
 			"--search-type", "exact",
 			"--should-include-unified=true",
-			"--status", "queued",
+			"--status", "pending",
 			"--tags", "docs,competitor",
 		)
 	})
