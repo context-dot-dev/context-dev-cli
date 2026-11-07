@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.24.1...v1.25.0) (2026-11-07)
+
+
+### Features
+
+* **batch:** accept lightweight submissions and queue pending work ([#2683](https://github.com/context-dot-dev/context-dev-cli/issues/2683)) ([140be90](https://github.com/context-dot-dev/context-dev-cli/commit/140be90f1d0df87d23df1d5898dd86a9617d2eae))
+
 ## [1.24.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.24.0...v1.24.1) (2026-11-05)
 
 
