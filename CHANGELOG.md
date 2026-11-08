@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.25.0...v1.26.0) (2026-11-08)
+
+
+### Features
+
+* **batch:** raise batch submissions to 2,500 per minute per organization ([#2734](https://github.com/context-dot-dev/context-dev-cli/issues/2734)) ([e06a001](https://github.com/context-dot-dev/context-dev-cli/commit/e06a0014ce50c79ad9006c66104972323dc1d410))
+
 ## [1.25.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.24.1...v1.25.0) (2026-11-07)
 
 
