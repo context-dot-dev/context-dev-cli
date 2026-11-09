@@ -18,7 +18,7 @@ import (
 
 var parseHandle = requestflag.WithInnerFlags(cli.Command{
 	Name:    "handle",
-	Usage:   "Convert uploaded file bytes into Markdown and optional HTML.",
+	Usage:   "Convert uploaded file bytes into Markdown and optional HTML. WARC and WARC.GZ\narchives combine HTTP response, resource, and conversion records in archive\norder. Revisit and segmented records are skipped. Decoded WARC content is\nlimited to 50 MiB.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -34,7 +34,7 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "extension",
-			Usage:     "Optional file extension hint, such as pdf, docx, xlsx, pptx, html, json, csv, md, py, rtf, jpg, png, or txt.",
+			Usage:     "Optional file extension hint, such as pdf, docx, xlsx, pptx, html, json, csv, md, py, rtf, jpg, png, txt, warc, or warc.gz.",
 			QueryPath: "extension",
 		},
 		&requestflag.Flag[bool]{
