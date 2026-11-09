@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.27.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.26.0...v1.27.0) (2026-11-09)
+
+
+### Features
+
+* **parse:** support WARC archives in parsing and scraping ([#2761](https://github.com/context-dot-dev/context-dev-cli/issues/2761)) ([2c4ef4b](https://github.com/context-dot-dev/context-dev-cli/commit/2c4ef4b28b8b40a9f8bd079ba3bf311a71ede93c))
+
 ## [1.26.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.25.0...v1.26.0) (2026-11-08)
 
 
