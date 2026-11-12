@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.27.0...v1.28.0) (2026-11-12)
+
+
+### Features
+
+* **zdr:** accept zero data retention on people search and company search ([#2852](https://github.com/context-dot-dev/context-dev-cli/issues/2852)) ([a586170](https://github.com/context-dot-dev/context-dev-cli/commit/a586170472c5ba3999aa9ebbeabeff05cf9457ff))
+
 ## [1.27.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.26.0...v1.27.0) (2026-11-09)
 
 
