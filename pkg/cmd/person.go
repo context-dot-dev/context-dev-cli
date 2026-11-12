@@ -177,6 +177,11 @@ var peopleSearch = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Labels for filtering usage in the dashboard.",
 			BodyPath: "tags",
 		},
+		&requestflag.Flag[string]{
+			Name:     "zdr",
+			Usage:    "`enabled` turns on zero data retention. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
+			BodyPath: "zdr",
+		},
 	},
 	Action:          handlePeopleSearch,
 	HideHelpCommand: true,

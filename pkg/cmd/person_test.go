@@ -110,6 +110,7 @@ func TestPeopleSearch(t *testing.T) {
 			"--mode", "fast",
 			"--tag", "production",
 			"--tag", "team-alpha",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -130,6 +131,7 @@ func TestPeopleSearch(t *testing.T) {
 			"--mode", "fast",
 			"--tag", "production",
 			"--tag", "team-alpha",
+			"--zdr", "enabled",
 		)
 	})
 
@@ -146,7 +148,8 @@ func TestPeopleSearch(t *testing.T) {
 			"mode: fast\n" +
 			"tags:\n" +
 			"  - production\n" +
-			"  - team-alpha\n")
+			"  - team-alpha\n" +
+			"zdr: enabled\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
