@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.28.0...v1.28.1) (2026-11-18)
+
+
+### Chores
+
+* run release-please centrally from brand-dev-server ([e04020a](https://github.com/context-dot-dev/context-dev-cli/commit/e04020a0531f20d70cfd587dfa0d059f82797b01))
+
 ## [1.28.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.27.0...v1.28.0) (2026-11-12)
 
 
