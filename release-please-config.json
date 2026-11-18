@@ -63,5 +63,7 @@
   "extra-files": [
     "pkg/cmd/version.go",
     "README.md"
-  ]
+  ],
+  "draft": true,
+  "force-tag-creation": true
 }

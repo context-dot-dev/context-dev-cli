@@ -62,6 +62,9 @@ archives:
       - completions/*
       - man/*/*
 
+release:
+  use_existing_draft: true
+
 snapshot:
   version_template: '{{ .Tag }}-next'
 
