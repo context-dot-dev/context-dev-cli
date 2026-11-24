@@ -21,7 +21,7 @@ var webAnswers = requestflag.WithInnerFlags(cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "task",
-			Usage:    "Research task. The agent selects company/profile lookups, web searches, or page reads. Include domains or URLs to focus the research.",
+			Usage:    "Research task, up to 2000 characters. The agent selects company/profile lookups, web searches, or page reads. Include domains or URLs to focus the research.",
 			Required: true,
 			BodyPath: "task",
 		},
