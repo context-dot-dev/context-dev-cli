@@ -43,7 +43,7 @@ var monitorsCreate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "policy",
-			Usage:    "Access policy IDs to apply to every run.",
+			Usage:    "Access policy IDs to apply to every run. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -145,7 +145,7 @@ var monitorsUpdate = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "policy",
-			Usage:    "Access policy IDs to apply to every run. Send an empty list to remove them.",
+			Usage:    "Access policy IDs to apply to every run. Send an empty list to remove them. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
 		&requestflag.Flag[map[string]any]{

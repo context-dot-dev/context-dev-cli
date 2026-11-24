@@ -47,7 +47,7 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "policy",
-			Usage:    "Access policy IDs to apply. A URL must pass every policy.",
+			Usage:    "Access policy IDs to apply. A URL must pass every policy. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
 		&requestflag.Flag[[]string]{
