@@ -259,6 +259,7 @@ func TestMonitorsGetCreditUsage(t *testing.T) {
 			"--api-key", "string",
 			"monitors", "get-credit-usage",
 			"--since", "'2026-06-01T00:00:00Z'",
+			"--tag", "pricing",
 			"--until", "'2026-06-28T00:00:00Z'",
 		)
 	})

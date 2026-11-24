@@ -296,13 +296,18 @@ var monitorsDelete = cli.Command{
 
 var monitorsGetCreditUsage = cli.Command{
 	Name:    "get-credit-usage",
-	Usage:   "Return usage per monitor, highest first, for up to the 10,000 most recent runs\nin the requested window.",
+	Usage:   "Return usage per monitor, highest first, for up to the 10,000 most recent runs\nin the requested window. Pass `tag` to report only the monitors that carry that\ntag, such as one customer’s monitors.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "since",
 			Usage:     "Only include items at or after this ISO 8601 timestamp.",
 			QueryPath: "since",
+		},
+		&requestflag.Flag[string]{
+			Name:      "tag",
+			Usage:     "Only include monitors that currently have this tag. Deleted monitors are left out.",
+			QueryPath: "tag",
 		},
 		&requestflag.Flag[any]{
 			Name:      "until",
