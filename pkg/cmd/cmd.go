@@ -193,6 +193,14 @@ func init() {
 				},
 			},
 			{
+				Name:     "scholar",
+				Category: "API RESOURCE",
+				Suggest:  true,
+				Commands: []*cli.Command{
+					&scholarSearch,
+				},
+			},
+			{
 				Name:     "logs",
 				Category: "API RESOURCE",
 				Suggest:  true,
