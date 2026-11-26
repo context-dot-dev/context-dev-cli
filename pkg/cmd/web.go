@@ -26,6 +26,11 @@ var webAnswers = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "task",
 		},
 		&requestflag.Flag[map[string]any]{
+			Name:     "controls",
+			Usage:    "Limits what the research may use.",
+			BodyPath: "controls",
+		},
+		&requestflag.Flag[map[string]any]{
 			Name:     "json-format",
 			Usage:    "Example answer object, not JSON Schema. Up to 8 levels, 500 values, and 16000 characters; unknowns may be null.",
 			BodyPath: "json_format",
@@ -59,6 +64,18 @@ var webAnswers = requestflag.WithInnerFlags(cli.Command{
 	Action:          handleWebAnswers,
 	HideHelpCommand: true,
 }, map[string][]requestflag.HasOuterFlag{
+	"controls": {
+		&requestflag.InnerFlag[[]string]{
+			Name:       "controls.exclude-sources",
+			Usage:      "Never search, read or cite these sites, sections or pages. Same format as `sources`. Up to 100 entries.",
+			InnerField: "excludeSources",
+		},
+		&requestflag.InnerFlag[[]string]{
+			Name:       "controls.sources",
+			Usage:      `Only search, read and cite these sites, sections or pages. Each entry is a URL prefix: "example.com" covers the site and its subdomains, "example.com/docs" covers that section, and "example.com/docs/setup.html" is one page. Up to 20 entries.`,
+			InnerField: "sources",
+		},
+	},
 	"timeout-opts": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "timeout-opts.milliseconds",

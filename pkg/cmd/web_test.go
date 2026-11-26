@@ -17,6 +17,7 @@ func TestWebAnswers(t *testing.T) {
 			"--api-key", "string",
 			"web", "answers",
 			"--task", "Find the pricing page URL and plan names for context.dev.",
+			"--controls", "{excludeSources: [string], sources: [string]}",
 			"--json-format", "{pricing_page_url: bar, plans: bar}",
 			"--mode", "fast",
 			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
@@ -37,6 +38,8 @@ func TestWebAnswers(t *testing.T) {
 			"--api-key", "string",
 			"web", "answers",
 			"--task", "Find the pricing page URL and plan names for context.dev.",
+			"--controls.exclude-sources", "[string]",
+			"--controls.sources", "[string]",
 			"--json-format", "{pricing_page_url: bar, plans: bar}",
 			"--mode", "fast",
 			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
@@ -52,6 +55,11 @@ func TestWebAnswers(t *testing.T) {
 		// Test piping YAML data over stdin
 		pipeData := []byte("" +
 			"task: Find the pricing page URL and plan names for context.dev.\n" +
+			"controls:\n" +
+			"  excludeSources:\n" +
+			"    - string\n" +
+			"  sources:\n" +
+			"    - string\n" +
 			"json_format:\n" +
 			"  pricing_page_url: bar\n" +
 			"  plans: bar\n" +
