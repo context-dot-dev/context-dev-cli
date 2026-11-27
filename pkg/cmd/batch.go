@@ -56,12 +56,6 @@ var batchList = cli.Command{
 			Usage:     "`prefix` for as-you-type prefix matching (default), `exact` for full-token matching.",
 			QueryPath: "search_type",
 		},
-		&requestflag.Flag[bool]{
-			Name:      "should-include-unified",
-			Usage:     "Include batches submitted with Scrape Anything formats. Defaults to false.",
-			Default:   false,
-			QueryPath: "shouldIncludeUnified",
-		},
 		&requestflag.Flag[string]{
 			Name:      "status",
 			Usage:     "Filter by status.",
