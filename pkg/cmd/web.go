@@ -390,11 +390,6 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "Access policy IDs to apply. A URL must pass every policy. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
-		&requestflag.Flag[bool]{
-			Name:     "query-fanout",
-			Usage:    "Currently has no effect.",
-			BodyPath: "queryFanout",
-		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
 			Usage:    "Labels for filtering usage in the dashboard.",

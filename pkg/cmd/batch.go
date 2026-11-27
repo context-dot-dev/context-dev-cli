@@ -157,11 +157,6 @@ var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "webhook",
 		},
 		&requestflag.Flag[string]{
-			Name:     "webhook-url",
-			Usage:    "Legacy URL notified when the batch finishes. Preserves one best-effort attempt. Cannot be combined with webhook.",
-			BodyPath: "webhookUrl",
-		},
-		&requestflag.Flag[string]{
 			Name:       "idempotency-key",
 			Usage:      "Unique key per submission. Retrying with the same key and body returns the original batch; a different body returns `409`.",
 			HeaderPath: "Idempotency-Key",

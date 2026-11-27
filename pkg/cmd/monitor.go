@@ -258,11 +258,6 @@ var monitorsList = cli.Command{
 			Usage:     "Filter monitors by lifecycle status.",
 			QueryPath: "status",
 		},
-		&requestflag.Flag[string]{
-			Name:      "tag",
-			Usage:     "Filter to items that have this tag.",
-			QueryPath: "tag",
-		},
 		&requestflag.Flag[any]{
 			Name:      "tag",
 			Usage:     "Comma-separated list of tags to filter by (matches monitors having any of them).",

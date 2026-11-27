@@ -232,7 +232,6 @@ func TestMonitorsList(t *testing.T) {
 			"--search-by", "[name]",
 			"--search-type", "exact",
 			"--status", "active",
-			"--tag", "pricing",
 			"--tag", "[x]",
 			"--target-type", "page",
 		)

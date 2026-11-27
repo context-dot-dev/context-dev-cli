@@ -236,7 +236,6 @@ func TestWebSearch(t *testing.T) {
 			"--markdown-options", "{enabled: true, includeFrames: auto, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutOpts: {milliseconds: 1, behavior: fail}, useMainContentOnly: true, waitForMs: 0}",
 			"--num-results", "10",
 			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
-			"--query-fanout=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts", "{milliseconds: 1000, behavior: fail}",
@@ -274,7 +273,6 @@ func TestWebSearch(t *testing.T) {
 			"--markdown-options.wait-for-ms", "0",
 			"--num-results", "10",
 			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
-			"--query-fanout=true",
 			"--tag", "production",
 			"--tag", "team-alpha",
 			"--timeout-opts.milliseconds", "1000",
@@ -317,7 +315,6 @@ func TestWebSearch(t *testing.T) {
 			"numResults: 10\n" +
 			"policies:\n" +
 			"  - pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e\n" +
-			"queryFanout: true\n" +
 			"tags:\n" +
 			"  - production\n" +
 			"  - team-alpha\n" +

@@ -88,7 +88,6 @@ func TestBatchSubmit(t *testing.T) {
 			"--tag", "docs",
 			"--tag", "competitor",
 			"--webhook", "{url: https://example.com, retry: {delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}}",
-			"--webhook-url", "https://example.com",
 			"--idempotency-key", "Idempotency-Key",
 		)
 	})
@@ -108,7 +107,6 @@ func TestBatchSubmit(t *testing.T) {
 			"--tag", "competitor",
 			"--webhook.url", "https://example.com",
 			"--webhook.retry", "{delays_seconds: [10, 60, 300, 1800, 7200, 21600, 57600]}",
-			"--webhook-url", "https://example.com",
 			"--idempotency-key", "Idempotency-Key",
 		)
 	})
@@ -225,8 +223,7 @@ func TestBatchSubmit(t *testing.T) {
 			"      - 1800\n" +
 			"      - 7200\n" +
 			"      - 21600\n" +
-			"      - 57600\n" +
-			"webhookUrl: https://example.com\n")
+			"      - 57600\n")
 		mocktest.TestRunMockTestWithPipeAndFlags(
 			t, pipeData,
 			"--api-key", "string",
