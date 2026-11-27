@@ -433,9 +433,9 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Scrape each result to Markdown. Adds 1 credit per result with Markdown.",
 			InnerField: "enabled",
 		},
-		&requestflag.InnerFlag[bool]{
+		&requestflag.InnerFlag[any]{
 			Name:       "markdown-options.include-frames",
-			Usage:      "Render iframe contents into the Markdown.",
+			Usage:      "Which iframe contents to render into the Markdown. `auto` (default) inlines only iframes that hold page content, such as same-site documents, framesets, job boards, forms and embedded documents, and skips ads and widgets. `true` inlines every iframe. `false` inlines none.",
 			InnerField: "includeFrames",
 		},
 		&requestflag.InnerFlag[bool]{
@@ -525,10 +525,10 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 			Default:  false,
 			BodyPath: "followSubdomains",
 		},
-		&requestflag.Flag[bool]{
+		&requestflag.Flag[any]{
 			Name:     "include-frames",
-			Usage:    "When true, the contents of iframes are rendered to Markdown for each crawled page.",
-			Default:  false,
+			Usage:    "Which iframe contents to render to Markdown for each crawled page. `auto` (default) inlines only iframes that hold page content, such as same-site documents, framesets, job boards, forms and embedded documents, and skips ads and widgets. `true` inlines every iframe. `false` inlines none.",
+			Default:  "auto",
 			BodyPath: "includeFrames",
 		},
 		&requestflag.Flag[bool]{

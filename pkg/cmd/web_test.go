@@ -233,7 +233,7 @@ func TestWebSearch(t *testing.T) {
 			"--highlights-options", "{enabled: true, maxCharacters: 100}",
 			"--include-domain", "xxx",
 			"--languages", "all",
-			"--markdown-options", "{enabled: true, includeFrames: true, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutOpts: {milliseconds: 1, behavior: fail}, useMainContentOnly: true, waitForMs: 0}",
+			"--markdown-options", "{enabled: true, includeFrames: auto, includeImages: true, includeLinks: true, maxAgeMs: 0, pdf: {end: 1, shouldParse: true, start: 1}, shortenBase64Images: true, timeoutOpts: {milliseconds: 1, behavior: fail}, useMainContentOnly: true, waitForMs: 0}",
 			"--num-results", "10",
 			"--policy", "pol_3f9c2a7e5b8d4c1f9a6e0b2d7c4f8a1e",
 			"--query-fanout=true",
@@ -263,7 +263,7 @@ func TestWebSearch(t *testing.T) {
 			"--include-domain", "xxx",
 			"--languages", "all",
 			"--markdown-options.enabled=true",
-			"--markdown-options.include-frames=true",
+			"--markdown-options.include-frames", "auto",
 			"--markdown-options.include-images=true",
 			"--markdown-options.include-links=true",
 			"--markdown-options.max-age-ms", "0",
@@ -300,7 +300,7 @@ func TestWebSearch(t *testing.T) {
 			"languages: all\n" +
 			"markdownOptions:\n" +
 			"  enabled: true\n" +
-			"  includeFrames: true\n" +
+			"  includeFrames: auto\n" +
 			"  includeImages: true\n" +
 			"  includeLinks: true\n" +
 			"  maxAgeMs: 0\n" +
@@ -345,7 +345,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--exclude-selector", "[x]",
 			"--exclude-url-regex", "/tag/|/author/",
 			"--follow-subdomains=true",
-			"--include-frames=true",
+			"--include-frames", "auto",
 			"--include-images=true",
 			"--include-links=true",
 			"--include-selector", "[x]",
@@ -382,7 +382,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"--exclude-selector", "[x]",
 			"--exclude-url-regex", "/tag/|/author/",
 			"--follow-subdomains=true",
-			"--include-frames=true",
+			"--include-frames", "auto",
 			"--include-images=true",
 			"--include-links=true",
 			"--include-selector", "[x]",
@@ -418,7 +418,7 @@ func TestWebWebCrawlMd(t *testing.T) {
 			"  - x\n" +
 			"excludeUrlRegex: /tag/|/author/\n" +
 			"followSubdomains: true\n" +
-			"includeFrames: true\n" +
+			"includeFrames: auto\n" +
 			"includeImages: true\n" +
 			"includeLinks: true\n" +
 			"includeSelectors:\n" +
