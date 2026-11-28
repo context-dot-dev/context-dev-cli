@@ -16,12 +16,12 @@ import (
 
 var batchRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Get batch progress and result download links. Result files are deleted 180 days\nafter the batch finishes.",
+	Usage:   "Retrieve a batch's status, progress, and credit usage, plus links to download\nits results once it finishes. Result files are deleted 180 days after the batch\nfinishes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "batch-id",
-			Usage:     "Batch ID.",
+			Usage:     "ID of the batch.",
 			Required:  true,
 			PathParam: "batch_id",
 		},
@@ -32,38 +32,38 @@ var batchRetrieve = cli.Command{
 
 var batchList = cli.Command{
 	Name:    "list",
-	Usage:   "List your batches, newest first, with optional filters.",
+	Usage:   "List your batches, newest first. Filter by status or tags, or search by batch\nID, crawl source, or tag.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "cursor",
-			Usage:     "Cursor from the previous page.",
+			Usage:     "Cursor from the previous page's `next_cursor`. Omit for the first page.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Usage:     "Batches per page. Defaults to 25.",
+			Usage:     "Maximum number of batches to return per page.",
 			Default:   25,
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[string]{
 			Name:      "q",
-			Usage:     "Free-text search term, matched against the batch id, crawl source (start URL or sitemap domain), and tags.",
+			Usage:     "Search term matched against batch IDs, crawl sources (start URL or sitemap domain), and tags.",
 			QueryPath: "q",
 		},
 		&requestflag.Flag[string]{
 			Name:      "search-type",
-			Usage:     "`prefix` for as-you-type prefix matching (default), `exact` for full-token matching.",
+			Usage:     "How `q` matches: `prefix` matches the start of a term, for search-as-you-type, and `exact` matches whole terms. Defaults to `prefix`.",
 			QueryPath: "search_type",
 		},
 		&requestflag.Flag[string]{
 			Name:      "status",
-			Usage:     "Filter by status.",
+			Usage:     "Filter by batch status.",
 			QueryPath: "status",
 		},
 		&requestflag.Flag[any]{
 			Name:      "tags",
-			Usage:     "Tags to filter by (matches batches having any of them). Pass repeated `tags` params or one comma-separated list, e.g. `tags=docs,competitor`.",
+			Usage:     "Comma-separated tags. Returns batches that have any of them. You can also repeat the `tags` parameter.",
 			QueryPath: "tags",
 		},
 	},
@@ -78,7 +78,7 @@ var batchDelete = cli.Command{
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "batch-id",
-			Usage:     "Batch ID.",
+			Usage:     "ID of the batch.",
 			Required:  true,
 			PathParam: "batch_id",
 		},
@@ -89,12 +89,12 @@ var batchDelete = cli.Command{
 
 var batchCancel = cli.Command{
 	Name:    "cancel",
-	Usage:   "Stop a batch from starting new pages. Pages already in progress finish before\nthe batch becomes cancelled.",
+	Usage:   "Stop a batch from starting new pages. Pages already in progress finish, then the\nbatch becomes `cancelled` and unused credits are refunded.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "batch-id",
-			Usage:     "Batch ID.",
+			Usage:     "ID of the batch.",
 			Required:  true,
 			PathParam: "batch_id",
 		},
@@ -105,23 +105,23 @@ var batchCancel = cli.Command{
 
 var batchGetResults = cli.Command{
 	Name:    "get-results",
-	Usage:   "Page through a finished batch’s results as JSON. Each record contains result\nwith the same outputs and per-format errors as POST /web/scrape. Results remain\navailable for 180 days.",
+	Usage:   "Page through a finished batch's results as JSON. Each record's `result` has the\nsame outputs and per-format errors as `POST /web/scrape`. Results are kept for\n180 days after the batch finishes.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "batch-id",
-			Usage:     "Batch ID.",
+			Usage:     "ID of the batch.",
 			Required:  true,
 			PathParam: "batch_id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
-			Usage:     "next_cursor from the previous page.",
+			Usage:     "Cursor from the previous page's `next_cursor`. Omit for the first page.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Usage:     "Records per page. Defaults to 25. A page can close early so its payload stays under ~8 MB; rely on next_cursor rather than counting records.",
+			Usage:     "Maximum number of results to return per page. A page can hold fewer to stay under about 8 MB, so page with `next_cursor` instead of counting records.",
 			Default:   25,
 			QueryPath: "limit",
 		},
@@ -132,33 +132,33 @@ var batchGetResults = cli.Command{
 
 var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 	Name:    "submit",
-	Usage:   "Scrape up to 100,000 URLs, or crawl a site, asynchronously using the same\nformats and scrape parameters as POST /web/scrape. Choose Markdown, HTML,\nscreenshots, images, bytes, parsed fields, products, highlights, and JSON.\nSubmission persists the input and returns immediately with status pending.\nOrganizations with fewer than 10 available credits and no overage are rejected\nwith 402 up front. Each organization can submit up to 2,500 batches per minute,\nindependently of its polling budget. Batches wait pending when execution\ncapacity is full. Validation, sitemap discovery, the full credit quote, and\nshard scheduling happen afterward. Poll the batch ID or receive a webhook when\nit finishes. Deferred rejections appear as status failed with a failure code and\nmessage.",
+	Usage:   "Scrape up to 100,000 URLs, or crawl a site, asynchronously with every Scrape\nAnything format and option from `POST /web/scrape`. Poll `GET /batch/{batch_id}`\nor pass `webhook` to be notified when the batch finishes. URLs and credits are\nchecked after the batch is accepted, so a batch that fails those checks ends as\n`failed` with a `failure` code instead of returning an error.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "input",
-			Usage:    "Choose a URL list or a site crawl.",
+			Usage:    "What to scrape: a list of URLs (`scrape`) or a site crawl (`crawl`).",
 			Required: true,
 			BodyPath: "input",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "policy",
-			Usage:    "Access policy IDs to apply to every page. A URL must pass every policy. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
+			Usage:    "Access policy IDs to apply to every page; each URL must pass all of them. Requires access policies enabled for your organization; otherwise returns `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Tags stored on the batch. Filter the batch list by them later.",
+			Usage:    "Tags to store on the batch. Filter `GET /batch/list` by them later.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "webhook",
-			Usage:    "Where to send the batch's final-status event. Omit `retry` for one attempt; `{}` uses the default retry schedule.",
+			Usage:    "Webhook to notify when the batch finishes. Omit `retry` for a single attempt, or pass `retry: {}` for the default retry schedule.",
 			BodyPath: "webhook",
 		},
 		&requestflag.Flag[string]{
 			Name:       "idempotency-key",
-			Usage:      "Unique key per submission. Retrying with the same key and body returns the original batch; a different body returns `409`.",
+			Usage:      "Unique key for this submission. Retrying with the same key and body returns the original batch instead of creating another; a different body returns `409`.",
 			HeaderPath: "Idempotency-Key",
 		},
 	},
@@ -168,12 +168,12 @@ var batchSubmit = requestflag.WithInnerFlags(cli.Command{
 	"webhook": {
 		&requestflag.InnerFlag[string]{
 			Name:       "webhook.url",
-			Usage:      "Public HTTP(S) URL that receives batch completion, failure, or cancellation events.",
+			Usage:      "Public HTTP or HTTPS URL that receives the `batch.completed`, `batch.failed`, or `batch.cancelled` event.",
 			InnerField: "url",
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "webhook.retry",
-			Usage:      "Webhook retry settings. Use {} for the default schedule.",
+			Usage:      "Automatic retry settings. Pass `{}` for the default schedule.",
 			InnerField: "retry",
 		},
 	},

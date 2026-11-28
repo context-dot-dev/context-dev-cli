@@ -16,12 +16,12 @@ import (
 
 var peopleEnrich = requestflag.WithInnerFlags(cli.Command{
 	Name:    "enrich",
-	Usage:   "Find a person from identity clues and return their profile with a match score.\nAvailable on all plans; free or disposable email addresses return 422.",
+	Usage:   "Match a person from a work email, a profile URL, or a name with company,\neducation, or location context, and get their profile with an identity-match\nscore from 0 to 100. The best candidate is returned even when the match is weak,\nso set a score threshold for your workflow. `not_found` results are free.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "company",
-			Usage:    "Company context to help identify the person. Provide a name or domain.",
+			Usage:    "Company associated with the person. Send a `name`, a `domain`, or both.",
 			BodyPath: "company",
 		},
 		&requestflag.Flag[[]map[string]any]{
@@ -31,27 +31,27 @@ var peopleEnrich = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "email",
-			Usage:    "Email address of the person to find.",
+			Usage:    "Work email address of the person. Free and disposable email providers return 422.",
 			BodyPath: "email",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "location",
-			Usage:    "Location context to help identify the person. Provide a city, region, or country.",
+			Usage:    "Location associated with the person. Send at least one of `city`, `region`, or `country`.",
 			BodyPath: "location",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "name",
-			Usage:    "Person name. Without an email or person-profile URL, provide both first and last name plus company, education, or location.",
+			Usage:    "Name of the person. Without an email or profile URL, send both `first` and `last` plus `company`, `education`, or `location`.",
 			BodyPath: "name",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "social-url",
-			Usage:    "Public profile URLs for the person. A person-profile URL can identify the person without a name.",
+			Usage:    "Public profile URLs for the person. A person-profile URL is enough to identify them without a name.",
 			BodyPath: "social_urls",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -139,7 +139,7 @@ var peopleEnrich = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
+			Usage:      "`fail` returns 408 at the deadline. `return-partial` returns the results collected so far and marks the response as partial.",
 			InnerField: "behavior",
 		},
 	},
@@ -147,34 +147,34 @@ var peopleEnrich = requestflag.WithInnerFlags(cli.Command{
 
 var peopleSearch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "search",
-	Usage:   "Find people with a natural-language query.",
+	Usage:   "Find people from a plain-language description, such as\n`VPs of sales at solar companies in California`. Each result includes the\ncurrent role and employer, location, years of experience, skills, schools, and\npublic profile URLs. Pages with no matches are free.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "query",
-			Usage:    "Describe the people to find. Up to 500 characters in `fast` mode and 5000 in `ultra` mode.",
+			Usage:    "Plain-language description of the people to find. Up to 500 characters in `fast` mode and 5000 in `ultra` mode.",
 			Required: true,
 			BodyPath: "query",
 		},
 		&requestflag.Flag[string]{
 			Name:     "cursor",
-			Usage:    "Use next_cursor with the same query, mode and filters to fetch the next page.",
+			Usage:    "Cursor from the previous page's `next_cursor`. Omit for the first page. Send the same `query`, `mode`, and `filters` with it.",
 			BodyPath: "cursor",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "filters",
-			Usage:    "Additional constraints every result must match.",
+			Usage:    "Constraints every result must match, in addition to `query`.",
 			BodyPath: "filters",
 		},
 		&requestflag.Flag[string]{
 			Name:     "mode",
-			Usage:    "`fast` matches people on basic criteria (e.g. their role, location or background); `ultra` plans a deeper search, judges each candidate against every criterion in the query. Complex `ultra` searches can take up to 30 seconds to complete, so allow for that in your client timeout.",
+			Usage:    "`fast` matches people on basic criteria such as role, location, or background; `ultra` runs a deeper search, checks every candidate against each criterion in your query, and adds a `match` score. Complex `ultra` searches can take up to 30 seconds, so set your client timeout to match.",
 			Default:  "fast",
 			BodyPath: "mode",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[string]{
@@ -189,7 +189,7 @@ var peopleSearch = requestflag.WithInnerFlags(cli.Command{
 	"filters": {
 		&requestflag.InnerFlag[[]string]{
 			Name:       "filters.countries",
-			Usage:      "Countries people live in as two-letter codes, such as US or GB.",
+			Usage:      "Only return people who live in these countries, as ISO 3166-1 alpha-2 codes such as `US`.",
 			InnerField: "countries",
 		},
 		&requestflag.InnerFlag[int64]{

@@ -16,12 +16,12 @@ import (
 
 var logsRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Retrieve a request’s metadata, retained input, and response. An entry becomes\nretrievable a few seconds after its request completes, so a 404 NOT_FOUND for a\nrequest that just finished means ingestion has not caught up yet; retry after a\nfew seconds.",
+	Usage:   "Retrieve a request's metadata, retained input, and response. A request that just\nfinished can return 404 `NOT_FOUND` for a few seconds, so retry shortly.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "request-id",
-			Usage:     "The request ID of the logged API call.",
+			Usage:     "ID of the request, from its response's `request_id` or `X-Request-Id` header.",
 			Required:  true,
 			PathParam: "request_id",
 		},
@@ -32,7 +32,7 @@ var logsRetrieve = cli.Command{
 
 var logsList = cli.Command{
 	Name:    "list",
-	Usage:   "List your organization’s request logs with filters and pagination. Logs also\ninclude batch settlements and monitor runs.",
+	Usage:   "List your organization's API requests, newest first. Filter by time, endpoint,\nAPI key, status, error code, tags, or text. Includes batch settlements and\nmonitor runs.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -42,23 +42,23 @@ var logsList = cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:      "errors-only",
-			Usage:     "Only include requests that returned a 4xx or 5xx status.",
+			Usage:     "Return only requests that failed with a 4xx or 5xx status.",
 			Default:   false,
 			QueryPath: "errors_only",
 		},
 		&requestflag.Flag[any]{
 			Name:      "from",
-			Usage:     "Only include requests at or after this ISO 8601 timestamp. Defaults to 24 hours before `to`.",
+			Usage:     "Return requests at or after this time. Defaults to 24 hours before `to`.",
 			QueryPath: "from",
 		},
 		&requestflag.Flag[string]{
 			Name:      "key-id",
-			Usage:     "Filter by the API key that made the request.",
+			Usage:     "Filter by the ID of the API key that made the request.",
 			QueryPath: "key_id",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Usage:     "Number of log entries per page.",
+			Usage:     "Maximum number of log entries to return per page.",
 			Default:   50,
 			QueryPath: "limit",
 		},
@@ -70,12 +70,12 @@ var logsList = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "path",
-			Usage:     "Filter by endpoint path, with or without the /v1 prefix.",
+			Usage:     "Filter by endpoint path, with or without the `/v1` prefix.",
 			QueryPath: "path",
 		},
 		&requestflag.Flag[string]{
 			Name:      "search",
-			Usage:     "Case-insensitive substring match against the request query and body, e.g. a domain.",
+			Usage:     "Case-insensitive text to find in the request query or body, such as a domain.",
 			QueryPath: "search",
 		},
 		&requestflag.Flag[int64]{
@@ -85,12 +85,12 @@ var logsList = cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "tags",
-			Usage:     "Comma-separated request tags. Matches requests carrying any of them. Up to 20 tags, each 1-50 characters.",
+			Usage:     "Comma-separated tags. Returns log entries that have any of them. Up to 20 tags of 1 to 50 characters each.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[any]{
 			Name:      "to",
-			Usage:     "Only include requests at or before this ISO 8601 timestamp. Defaults to now.",
+			Usage:     "Return requests at or before this time. Defaults to now.",
 			QueryPath: "to",
 		},
 	},

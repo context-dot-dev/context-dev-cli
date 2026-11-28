@@ -16,38 +16,38 @@ import (
 
 var webAnswers = requestflag.WithInnerFlags(cli.Command{
 	Name:    "answers",
-	Usage:   "Research the web and return a sourced answer in your JSON shape. Choose `fast`\nfor a short task or `ultra` for deeper research.",
+	Usage:   "Research a task across the live web and Context.dev's company and people data,\nand get the answer in the JSON shape you provide, with the URLs it used. `fast`\n(10 credits) suits short lookups; `ultra` (100 credits, the default) reads more\nsources for deeper research.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "task",
-			Usage:    "Research task, up to 2000 characters. The agent selects company/profile lookups, web searches, or page reads. Include domains or URLs to focus the research.",
+			Usage:    "What to research, in plain language, up to 2000 characters. Include domains or URLs to focus the research.",
 			Required: true,
 			BodyPath: "task",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "controls",
-			Usage:    "Limits what the research may use.",
+			Usage:    "Limit which sites the research can search, read, and cite.",
 			BodyPath: "controls",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "json-format",
-			Usage:    "Example answer object, not JSON Schema. Up to 8 levels, 500 values, and 16000 characters; unknowns may be null.",
+			Usage:    "Example of the answer object to return, not a JSON Schema. Up to 8 levels deep, 500 values, and 16,000 characters. Values that cannot be found come back as `null`. Defaults to `{ \"result\": \"\" }`.",
 			BodyPath: "json_format",
 		},
 		&requestflag.Flag[string]{
 			Name:     "mode",
-			Usage:    "`fast` prioritizes speed, with extra verification for people and companies; `ultra` supports deeper research (default).",
+			Usage:    "`fast` prioritizes speed and adds extra verification for people and companies; `ultra` searches and reads more sources for deeper research. Defaults to `ultra`.",
 			BodyPath: "mode",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "policy",
-			Usage:    "Access policy IDs to apply. A URL must pass every policy. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
+			Usage:    "Access policy IDs to apply; each URL must pass all of them. Requires access policies enabled for your organization; otherwise returns `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -67,12 +67,12 @@ var webAnswers = requestflag.WithInnerFlags(cli.Command{
 	"controls": {
 		&requestflag.InnerFlag[[]string]{
 			Name:       "controls.exclude-sources",
-			Usage:      "Never search, read or cite these sites, sections or pages. Same format as `sources`. Up to 100 entries.",
+			Usage:      "Never search, read, or cite these sites, sections, or pages. Same format as `sources`.",
 			InnerField: "excludeSources",
 		},
 		&requestflag.InnerFlag[[]string]{
 			Name:       "controls.sources",
-			Usage:      `Only search, read and cite these sites, sections or pages. Each entry is a URL prefix: "example.com" covers the site and its subdomains, "example.com/docs" covers that section, and "example.com/docs/setup.html" is one page. Up to 20 entries.`,
+			Usage:      "Only search, read, and cite these sites, sections, or pages. Each entry is a URL prefix: `example.com` covers the site and its subdomains, `example.com/docs` covers that section, and `example.com/docs/setup.html` is one page.",
 			InnerField: "sources",
 		},
 	},
@@ -84,7 +84,7 @@ var webAnswers = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
+			Usage:      "`fail` returns 408 at the deadline. `return-partial` returns the results collected so far and marks the response as partial.",
 			InnerField: "behavior",
 		},
 	},
@@ -92,24 +92,24 @@ var webAnswers = requestflag.WithInnerFlags(cli.Command{
 
 var webExtractCompetitors = requestflag.WithInnerFlags(cli.Command{
 	Name:    "extract-competitors",
-	Usage:   "Analyze a company's landing page and web search evidence to return direct\ncompetitors for the same product or market.",
+	Usage:   "Find a company's direct competitors from its website and web search results.\nEach competitor comes with a confidence level and the search results behind it.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "domain",
-			Usage:     "Company domain to analyze, such as `stripe.com`. Full http(s) URLs are accepted and normalized to their domain.",
+			Usage:     "Company domain, such as `stripe.com`. Full URLs are reduced to their domain.",
 			Required:  true,
 			QueryPath: "domain",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "num-competitors",
-			Usage:     "Exact number of direct competitors to return. Defaults to 5.",
+			Usage:     "Exact number of direct competitors to return.",
 			Default:   5,
 			QueryPath: "numCompetitors",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
+			Usage:     "Comma-separated labels for this request, such as `production,team-alpha`. Filter usage and request logs by them.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -135,7 +135,7 @@ var webExtractCompetitors = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
+			Usage:      "`fail` returns 408 at the deadline. `return-partial` returns the results collected so far and marks the response as partial.",
 			InnerField: "behavior",
 		},
 	},
@@ -143,38 +143,38 @@ var webExtractCompetitors = requestflag.WithInnerFlags(cli.Command{
 
 var webExtractStyleguide = requestflag.WithInnerFlags(cli.Command{
 	Name:    "extract-styleguide",
-	Usage:   "Extract colors, typography, spacing, and component styles from a website.",
+	Usage:   "Extract a website's design system: colors, typography, spacing, shadows, button\nand card styles, and downloadable font files. Every component style includes\nready-to-use CSS.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "color-scheme",
-			Usage:     "Optional browser color scheme to emulate for websites that respond to prefers-color-scheme. This value is part of the styleguide cache key.",
+			Usage:     "Emulate a light or dark color scheme. Each scheme is cached separately.",
 			QueryPath: "colorScheme",
 		},
 		&requestflag.Flag[string]{
 			Name:      "direct-url",
-			Usage:     "Exact URL to inspect. Provide either `domain` or `directUrl`, not both.",
+			Usage:     "Exact page URL to analyze. Provide either `domain` or `directUrl`, not both.",
 			QueryPath: "directUrl",
 		},
 		&requestflag.Flag[string]{
 			Name:      "domain",
-			Usage:     "Domain name to extract styleguide from (e.g., 'example.com', 'google.com'). The domain will be automatically normalized and validated. You must provide either 'domain' or 'directUrl', but not both.",
+			Usage:     "Domain to analyze, such as `stripe.com`. Provide either `domain` or `directUrl`, not both.",
 			QueryPath: "domain",
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
-			Usage:     "Maximum age of cached brand data in ms. Defaults to 3 months; clamped to 0–1 year. `0` refreshes.",
+			Usage:     "Maximum age of a cached result, in milliseconds. `0` always fetches fresh. Defaults to 90 days (7776000000 ms). Values above 1 year (31536000000 ms) are capped at 1 year.",
 			Default:   requestflag.Ptr[int64](7776000000),
 			QueryPath: "maxAgeMs",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "policy",
-			Usage:     "Comma-separated access policy IDs to apply. A URL must pass every policy. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
+			Usage:     "Comma-separated access policy IDs to apply; each URL must pass all of them. Requires access policies enabled for your organization; otherwise returns `ACCESS_POLICIES_NOT_ENABLED`.",
 			QueryPath: "policies",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
+			Usage:     "Comma-separated labels for this request, such as `production,team-alpha`. Filter usage and request logs by them.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -184,7 +184,7 @@ var webExtractStyleguide = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "zdr",
-			Usage:     "`enabled` disables request logs and traces and omits request and response content from usage logs. Brand data and hosted assets may still be stored. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
+			Usage:     "`enabled` turns off request logs and traces and keeps request and response content out of usage logs. Brand data and hosted assets may still be stored. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			QueryPath: "zdr",
 		},
 	},
@@ -199,7 +199,7 @@ var webExtractStyleguide = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag. "return-partial" requires at least 5000 ms. On POST /web/scrape, an output that is not ready in time fails with error_code REQUEST_TIMEOUT inside a 200 response under either behavior; 408 is returned only when the whole request cannot respond by the deadline.`,
+			Usage:      "`fail` returns 408 at the deadline. `return-partial` returns the results collected so far and marks the response as partial. `return-partial` requires at least 5000 ms. On `POST /web/scrape`, an output that is not ready in time fails with `REQUEST_TIMEOUT` inside a 200 response under either behavior; 408 means the whole request could not respond by the deadline.",
 			InnerField: "behavior",
 		},
 	},
@@ -207,70 +207,70 @@ var webExtractStyleguide = requestflag.WithInnerFlags(cli.Command{
 
 var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 	Name:    "screenshot",
-	Usage:   "Capture a screenshot of a website.",
+	Usage:   "Capture a screenshot of a website's home page, a page type such as pricing, or\nan exact URL. Returns the visible viewport, a scroll slice, or the full page.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[bool]{
 			Name:      "clear-popups",
-			Usage:     "Optional parameter for comprehensive popup cleanup. If 'true', the browser dismisses detected cookie/consent UI and clears other detected obstructive popups and overlays before capture. If 'false' or not provided, this parameter requests no cleanup; handleCookiePopup can still request cookie/consent handling independently.",
+			Usage:     "Dismiss cookie banners and close other popups and overlays before capture.",
 			Default:   false,
 			QueryPath: "clearPopups",
 		},
 		&requestflag.Flag[string]{
 			Name:      "color-scheme",
-			Usage:     "Optional parameter to choose the site's visual theme in the screenshot. Use 'light' or 'dark' when the site offers both appearances.",
+			Usage:     "Emulate a light or dark color scheme.",
 			QueryPath: "colorScheme",
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
-			Usage:     "Fetch from this country (ISO 3166-1 alpha-2).",
+			Usage:     "Country to fetch from, as an ISO 3166-1 alpha-2 code.",
 			QueryPath: "country",
 		},
 		&requestflag.Flag[string]{
 			Name:      "direct-url",
-			Usage:     "A specific URL to screenshot directly, bypassing domain resolution (e.g., 'https://example.com/pricing'). When provided, the screenshot is taken of this exact URL. You must provide either 'domain' or 'directUrl', but not both.",
+			Usage:     "Exact URL to capture, such as `https://example.com/pricing`. Provide either `domain` or `directUrl`, not both.",
 			QueryPath: "directUrl",
 		},
 		&requestflag.Flag[string]{
 			Name:      "domain",
-			Usage:     "Domain name to take screenshot of (e.g., 'example.com', 'google.com'). The domain will be automatically normalized and validated. You must provide either 'domain' or 'directUrl', but not both.",
+			Usage:     "Domain to capture, such as `stripe.com`. Provide either `domain` or `directUrl`, not both.",
 			QueryPath: "domain",
 		},
 		&requestflag.Flag[string]{
 			Name:      "full-screenshot",
-			Usage:     "Optional parameter to determine screenshot type. If 'true', takes a full page screenshot capturing all content. If 'false' or not provided, takes a viewport screenshot (standard browser view).",
+			Usage:     "Capture the full scrollable page instead of only the viewport.",
 			QueryPath: "fullScreenshot",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "handle-cookie-popup",
-			Usage:     "Optional parameter to control cookie/consent popup handling. If 'true', we dismiss cookie banner before capture. If 'false' or not provided, captures the page without that step.",
+			Usage:     "Dismiss cookie consent banners before capture.",
 			Default:   false,
 			QueryPath: "handleCookiePopup",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "headers",
-			Usage:     "Optional outbound HTTP headers, using the same JSON object or deep-object query format as other scrape endpoints (for example headers[Authorization]=Bearer token). Headers are scoped to the target origin during capture. For domain/page requests, discovery receives no custom headers and only pages on the resolved origin are eligible. Non-empty headers bypass screenshot caching and return an in-memory data URL; no screenshot is uploaded. Empty objects behave like omitted headers.",
+			Usage:     "HTTP headers to send to the target origin, such as `headers[Authorization]=Bearer token`. Requests with headers skip the cache and return the image as a data URL.",
 			QueryPath: "headers",
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "max-age-ms",
-			Usage:     "Return a cached screenshot if a prior screenshot for the same parameters exists and is younger than this many milliseconds. Defaults to 1 day (86400000 ms) when omitted. Max is 30 days (2592000000 ms). Set to 0 to always capture fresh.",
+			Usage:     "Maximum age of a cached result, in milliseconds. `0` always fetches fresh. Defaults to 1 day (86400000 ms). Maximum: 30 days (2592000000 ms).",
 			Default:   requestflag.Ptr[int64](86400000),
 			QueryPath: "maxAgeMs",
 		},
 		&requestflag.Flag[string]{
 			Name:      "page",
-			Usage:     "Optional parameter to specify which page type to screenshot. If provided, the system will scrape the domain's links and use heuristics to find the most appropriate URL for the specified page type (30 supported languages). If not provided, screenshots the main domain landing page. Only applicable when using 'domain', not 'directUrl'.",
+			Usage:     "Capture this type of page instead of the home page. Context.dev finds it among the domain's links, in 30 languages. Only with `domain`.",
 			QueryPath: "page",
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "scroll-offset",
-			Usage:     "Optional vertical scroll offset in pixels for capturing a long page in viewport-sized chunks. When provided, the full page is captured once and the returned image is the viewport-sized slice that begins at this Y offset (e.g. request scrollOffset=0, then 1080, then 2160 to walk a 1920x1080 landing page top to bottom). The final slice may be shorter than the viewport height. Takes precedence over fullScreenshot. Max: 100000.",
+			Usage:     "Return the viewport-sized slice of the full page that starts this many pixels from the top. Step by the viewport height, such as `0`, `1080`, `2160`, to walk a long page. The last slice can be shorter. Overrides `fullScreenshot`.",
 			QueryPath: "scrollOffset",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
+			Usage:     "Comma-separated labels for this request, such as `production,team-alpha`. Filter usage and request logs by them.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -280,13 +280,13 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "viewport",
-			Usage:     "Optional browser viewport dimensions for the screenshot. Defaults to 1920x1080.",
+			Usage:     "Browser viewport size in pixels.",
 			Default:   map[string]any{"width": 1920, "height": 1080},
 			QueryPath: "viewport",
 		},
 		&requestflag.Flag[*int64]{
 			Name:      "wait-for-ms",
-			Usage:     "Optional browser wait time in milliseconds after initial page load before taking the screenshot. Min: 0. Max: 30000 (30 seconds). Defaults to 3000 ms when omitted. When combined with timeoutOpts, timeoutOpts.milliseconds must be at least waitForMs + 10000 ms; a shorter deadline is rejected with 400 TIMEOUT_TOO_SHORT_FOR_WAIT.",
+			Usage:     "Time to wait after the page loads before capturing, in milliseconds. `0` waits 500 ms. `timeoutOpts.milliseconds` must be at least `waitForMs` plus 10000 ms, or the request fails with `TIMEOUT_TOO_SHORT_FOR_WAIT`.",
 			Default:   requestflag.Ptr[int64](3000),
 			QueryPath: "waitForMs",
 		},
@@ -308,7 +308,7 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag. "return-partial" requires at least 5000 ms. On POST /web/scrape, an output that is not ready in time fails with error_code REQUEST_TIMEOUT inside a 200 response under either behavior; 408 is returned only when the whole request cannot respond by the deadline.`,
+			Usage:      "`fail` returns 408 at the deadline. `return-partial` returns the results collected so far and marks the response as partial. `return-partial` requires at least 5000 ms. On `POST /web/scrape`, an output that is not ready in time fails with `REQUEST_TIMEOUT` inside a 200 response under either behavior; 408 means the whole request could not respond by the deadline.",
 			InnerField: "behavior",
 		},
 	},
@@ -328,18 +328,18 @@ var webScreenshot = requestflag.WithInnerFlags(cli.Command{
 
 var webSearch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "search",
-	Usage:   "Search the web and optionally return page content or relevant passages with each\nresult.",
+	Usage:   "Search the web and get ranked results, with optional page Markdown or\nquery-relevant passages for each one. Supports search operators and filters for\ndomain, freshness, country, and language.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "query",
-			Usage:    "Search query. Accepts natural language as well as Google-style search operators such as `site:`, `-site:`, `inurl:`, `intitle:`, quoted phrases, and `OR`.",
+			Usage:    "Search query. Accepts natural language and search operators such as `site:`, `-site:`, `inurl:`, `intitle:`, quoted phrases, and `OR`.",
 			Required: true,
 			BodyPath: "query",
 		},
 		&requestflag.Flag[string]{
 			Name:     "country",
-			Usage:    "Two-letter ISO 3166-1 alpha-2 country code to localize results to a specific country (maps to Google's `gl` parameter). Example: \"us\", \"gb\", \"de\".",
+			Usage:    "Localize results to this country, as an ISO 3166-1 alpha-2 code such as `us` or `de`.",
 			BodyPath: "country",
 		},
 		&requestflag.Flag[*int64]{
@@ -350,7 +350,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "exclude-domain",
-			Usage:    `Blocklist — drop results from these domains. Up to 100 domains. Example: ["pinterest.com", "reddit.com"].`,
+			Usage:    "Leave out results from these domains, such as `pinterest.com`.",
 			BodyPath: "excludeDomains",
 		},
 		&requestflag.Flag[string]{
@@ -360,39 +360,39 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "highlights-options",
-			Usage:    "Passages from each result page that are relevant to the query. Pages are read with the `markdownOptions` settings.",
+			Usage:    "Return passages from each result page that are relevant to the query. Pages are read with the `markdownOptions` settings.",
 			BodyPath: "highlightsOptions",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "include-domain",
-			Usage:    `Allowlist — only return results from these domains. Up to 100 domains. Example: ["arxiv.org", "github.com"].`,
+			Usage:    "Only return results from these domains, such as `arxiv.org`.",
 			BodyPath: "includeDomains",
 		},
 		&requestflag.Flag[any]{
 			Name:     "languages",
-			Usage:    "Languages to return results in, as BCP 47 language codes such as `en` or `de`, or \"all\" for any language. Defaults to \"all\". Example: [\"en\", \"de\"].",
+			Usage:    "Languages to return results in, as BCP 47 codes such as `en` or `de`, or `all` for any language.",
 			Default:  "all",
 			BodyPath: "languages",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "markdown-options",
-			Usage:    "Inline Markdown scraping for each result. Set `enabled: true` to activate.",
+			Usage:    "Scrape each result page to Markdown. Set `enabled` to `true` to turn it on.",
 			BodyPath: "markdownOptions",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "num-results",
-			Usage:    "Number of results to request and return (1–100). Defaults to 10.",
+			Usage:    "Number of results to return.",
 			Default:  10,
 			BodyPath: "numResults",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "policy",
-			Usage:    "Access policy IDs to apply. A URL must pass every policy. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
+			Usage:    "Access policy IDs to apply; each URL must pass all of them. Requires access policies enabled for your organization; otherwise returns `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -418,44 +418,44 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[int64]{
 			Name:       "highlights-options.max-characters",
-			Usage:      "Maximum combined length of passages per result.",
+			Usage:      "Maximum combined length of passages per result, in characters.",
 			InnerField: "maxCharacters",
 		},
 	},
 	"markdown-options": {
 		&requestflag.InnerFlag[bool]{
 			Name:       "markdown-options.enabled",
-			Usage:      "Scrape each result to Markdown. Adds 1 credit per result with Markdown.",
+			Usage:      "Scrape each result page to Markdown. Adds 1 credit per result that returns Markdown.",
 			InnerField: "enabled",
 		},
 		&requestflag.InnerFlag[any]{
 			Name:       "markdown-options.include-frames",
-			Usage:      "Which iframe contents to render into the Markdown. `auto` (default) inlines only iframes that hold page content, such as same-site documents, framesets, job boards, forms and embedded documents, and skips ads and widgets. `true` inlines every iframe. `false` inlines none.",
+			Usage:      "Which iframe contents to include in the Markdown. `auto` inlines only iframes that hold page content, such as same-site documents, framesets, job boards, forms, and embedded documents, and skips ads and widgets. `true` inlines every iframe; `false` inlines none.",
 			InnerField: "includeFrames",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "markdown-options.include-images",
-			Usage:      "Emit image references in the Markdown.",
+			Usage:      "Include image references in the Markdown.",
 			InnerField: "includeImages",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "markdown-options.include-links",
-			Usage:      "Keep hyperlinks in the Markdown.",
+			Usage:      "Keep link URLs in the Markdown.",
 			InnerField: "includeLinks",
 		},
 		&requestflag.InnerFlag[*int64]{
 			Name:       "markdown-options.max-age-ms",
-			Usage:      "Maximum cache age in milliseconds for result page content. Defaults to 180 days (15552000000 ms) when Markdown is requested, or 365 days (31536000000 ms) when only highlights are requested. Explicit values override either default. Maximum: 365 days. Set to 0 to force a fresh scrape.",
+			Usage:      "Maximum age of a cached result, in milliseconds. `0` always fetches fresh. Defaults to 180 days (15552000000 ms) with Markdown, or 365 days (31536000000 ms) with highlights only.",
 			InnerField: "maxAgeMs",
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "markdown-options.pdf",
-			Usage:      "PDF handling. `start`/`end` limit parsing to an inclusive, 1-based page range.",
+			Usage:      "Whether to parse PDFs and which pages to read.",
 			InnerField: "pdf",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "markdown-options.shorten-base64-images",
-			Usage:      "Truncate inline base64 image payloads to keep responses small.",
+			Usage:      "Shorten inline base64 image data.",
 			InnerField: "shortenBase64Images",
 		},
 		&requestflag.InnerFlag[map[string]any]{
@@ -465,12 +465,12 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "markdown-options.use-main-content-only",
-			Usage:      "Strip nav, header, footer, and sidebar — keep only the primary article content.",
+			Usage:      "Keep only the main content, without navigation, headers, footers, or sidebars.",
 			InnerField: "useMainContentOnly",
 		},
 		&requestflag.InnerFlag[*int64]{
 			Name:       "markdown-options.wait-for-ms",
-			Usage:      "Extra wait after page load before rendering, in ms (0–30000). Useful for JS-heavy pages.",
+			Usage:      "Time to wait after each result page loads before reading it, in milliseconds. `0` waits 500 ms. Helps with JavaScript-heavy pages.",
 			InnerField: "waitForMs",
 		},
 	},
@@ -482,7 +482,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
+			Usage:      "`fail` returns 408 at the deadline. `return-partial` returns the results collected so far and marks the response as partial.",
 			InnerField: "behavior",
 		},
 	},
@@ -490,7 +490,7 @@ var webSearch = requestflag.WithInnerFlags(cli.Command{
 
 var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 	Name:    "web-crawl-md",
-	Usage:   "Crawl a website and return page content as Markdown. Use a batch for crawls\nbeyond 500 pages.",
+	Usage:   "Crawl up to 500 pages from a start URL and get each page back as Markdown with\nmetadata. Control scope with depth limits, regex patterns, and subdomain rules.\nFor larger crawls, use a batch.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -501,74 +501,74 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "country",
-			Usage:    "Fetch from this country (ISO 3166-1 alpha-2).",
+			Usage:    "Country to fetch from, as an ISO 3166-1 alpha-2 code.",
 			BodyPath: "country",
 		},
 		&requestflag.Flag[any]{
 			Name:     "exclude-selector",
-			Usage:    "Remove matching elements after inclusions. Exclusions take precedence.",
+			Usage:    "Remove elements matching these CSS selectors. Overrides `includeSelectors`.",
 			BodyPath: "excludeSelectors",
 		},
 		&requestflag.Flag[string]{
 			Name:     "exclude-url-regex",
-			Usage:    "Regex pattern. URLs matching this pattern are never followed or scraped, even when they match urlRegex. The starting URL is always scraped.",
+			Usage:    "Never follow or scrape URLs matching this regex, even when they match `urlRegex`. The start URL is always scraped.",
 			BodyPath: "excludeUrlRegex",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "follow-subdomains",
-			Usage:    "When true, follow links on subdomains of the starting URL's domain (e.g. docs.example.com when starting from example.com). www and apex are always treated as equivalent.",
+			Usage:    "Follow links to subdomains of the start URL's domain, such as `docs.example.com` from `example.com`. `www` and the apex domain always count as the same site.",
 			Default:  false,
 			BodyPath: "followSubdomains",
 		},
 		&requestflag.Flag[any]{
 			Name:     "include-frames",
-			Usage:    "Which iframe contents to render to Markdown for each crawled page. `auto` (default) inlines only iframes that hold page content, such as same-site documents, framesets, job boards, forms and embedded documents, and skips ads and widgets. `true` inlines every iframe. `false` inlines none.",
+			Usage:    "Which iframe contents to include in each page's Markdown. `auto` inlines only iframes that hold page content, such as same-site documents, framesets, job boards, forms, and embedded documents, and skips ads and widgets. `true` inlines every iframe; `false` inlines none.",
 			Default:  "auto",
 			BodyPath: "includeFrames",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "include-images",
-			Usage:    "Include image references in the Markdown output (`html-conversion` only).",
+			Usage:    "Include image references in the Markdown (`html-conversion` only).",
 			Default:  false,
 			BodyPath: "includeImages",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "include-links",
-			Usage:    "Preserve hyperlinks in the Markdown output (`html-conversion` only).",
+			Usage:    "Keep link URLs in the Markdown (`html-conversion` only).",
 			Default:  true,
 			BodyPath: "includeLinks",
 		},
 		&requestflag.Flag[any]{
 			Name:     "include-selector",
-			Usage:    "Keep matching HTML subtrees before converting each page to Markdown.",
+			Usage:    "Keep only elements matching these CSS selectors.",
 			BodyPath: "includeSelectors",
 		},
 		&requestflag.Flag[*int64]{
 			Name:     "max-age-ms",
-			Usage:    "Maximum cache age in milliseconds. Defaults to 1 day; `0` fetches fresh.",
+			Usage:    "Maximum age of a cached result, in milliseconds. `0` always fetches fresh. Defaults to 1 day (86400000 ms). Maximum: 30 days (2592000000 ms).",
 			Default:  requestflag.Ptr[int64](86400000),
 			BodyPath: "maxAgeMs",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "max-depth",
-			Usage:    "Maximum link depth from the starting URL (0 = only the starting page)",
+			Usage:    "Maximum link depth from the start URL. `0` crawls only the start URL. Omit for no depth limit.",
 			BodyPath: "maxDepth",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "max-pages",
-			Usage:    "Maximum pages to crawl.",
+			Usage:    "Maximum number of pages to crawl.",
 			Default:  100,
 			BodyPath: "maxPages",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "pdf",
-			Usage:    "PDF handling. `start`/`end` limit parsing to an inclusive, 1-based page range.",
+			Usage:    "Whether to parse PDFs and which pages to read.",
 			Default:  map[string]any{"shouldParse": true, "ocr": false},
 			BodyPath: "pdf",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "policy",
-			Usage:    "Access policy IDs to apply. A URL must pass every policy. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
+			Usage:    "Access policy IDs to apply; each URL must pass all of them. Requires access policies enabled for your organization; otherwise returns `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
 		&requestflag.Flag[bool]{
@@ -579,7 +579,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[bool]{
 			Name:     "shorten-base64-images",
-			Usage:    "Truncate base64-encoded image data in the Markdown output (`html-conversion` only).",
+			Usage:    "Shorten inline base64 image data (`html-conversion` only).",
 			Default:  true,
 			BodyPath: "shortenBase64Images",
 		},
@@ -591,13 +591,13 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "stop-after-ms",
-			Usage:    "Soft crawl deadline in milliseconds. Returns pages collected before the next deadline check.",
+			Usage:    "Soft time budget for the crawl, in milliseconds. When it runs out, the crawl returns the pages collected so far. Larger values are capped at 110 seconds.",
 			Default:  80000,
 			BodyPath: "stopAfterMs",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -607,18 +607,18 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "url-regex",
-			Usage:    "Regex pattern. Only URLs matching this pattern will be followed and scraped. An automatic prefix scope in the form ^<starting URL> follows a redirect of the starting page.",
+			Usage:    "Only follow and scrape URLs matching this regex. A prefix pattern of the form `^<start URL>` also follows a redirect of the start page.",
 			BodyPath: "urlRegex",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "use-main-content-only",
-			Usage:    "Extract only the main content, stripping headers, footers, sidebars, and navigation",
+			Usage:    "Keep only the main content, without navigation, headers, footers, or sidebars.",
 			Default:  false,
 			BodyPath: "useMainContentOnly",
 		},
 		&requestflag.Flag[*int64]{
 			Name:     "wait-for-ms",
-			Usage:    "Browser wait time in milliseconds after initial page load for each crawled page. Defaults to 3500 (3.5 seconds). Min: 0. Max: 30000 (30 seconds).",
+			Usage:    "Time to wait after each page loads before reading it, in milliseconds. `0` waits 500 ms. `timeoutOpts.milliseconds` must be at least `waitForMs` plus 10000 ms, or the request fails with `TIMEOUT_TOO_SHORT_FOR_WAIT`.",
 			Default:  requestflag.Ptr[int64](3500),
 			BodyPath: "waitForMs",
 		},
@@ -635,22 +635,22 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 	"pdf": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "pdf.end",
-			Usage:      "Last PDF page to parse (1-based, inclusive). Defaults to the final page. Must be >= start.",
+			Usage:      "Last page to parse. Defaults to the last page. Must be at least `start`.",
 			InnerField: "end",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.ocr",
-			Usage:      "Read scanned PDF pages with OCR; preserve pages that already have text.",
+			Usage:      "Read scanned PDF pages with OCR. Pages that already have text are kept as is.",
 			InnerField: "ocr",
 		},
 		&requestflag.InnerFlag[bool]{
 			Name:       "pdf.should-parse",
-			Usage:      "When true, PDF pages are fetched and parsed. When false, PDF pages are skipped entirely (not included in results and not counted as failures).",
+			Usage:      "Parse PDF pages. When `false`, PDFs are left out of the results and not counted as failures.",
 			InnerField: "shouldParse",
 		},
 		&requestflag.InnerFlag[int64]{
 			Name:       "pdf.start",
-			Usage:      "First 1-based PDF page to parse.",
+			Usage:      "First page to parse, starting at 1.",
 			InnerField: "start",
 		},
 	},
@@ -662,7 +662,7 @@ var webWebCrawlMd = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
+			Usage:      "`fail` returns 408 at the deadline. `return-partial` returns the results collected so far and marks the response as partial.",
 			InnerField: "behavior",
 		},
 	},

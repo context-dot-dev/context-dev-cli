@@ -16,18 +16,18 @@ import (
 
 var webhooksDeliveriesRetrieve = cli.Command{
 	Name:    "retrieve",
-	Usage:   "Retrieve a webhook delivery’s status and original payload.",
+	Usage:   "Retrieve a webhook delivery's status, retry settings, and most recent attempt.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "delivery-id",
-			Usage:     "Delivery ID.",
+			Usage:     "ID of the delivery.",
 			Required:  true,
 			PathParam: "delivery_id",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
+			Usage:     "Comma-separated labels for this request, such as `production,team-alpha`. Filter usage and request logs by them.",
 			QueryPath: "tags",
 		},
 	},
@@ -37,12 +37,12 @@ var webhooksDeliveriesRetrieve = cli.Command{
 
 var webhooksDeliveriesList = cli.Command{
 	Name:    "list",
-	Usage:   "List batch and monitor webhook deliveries from the last 30 days.",
+	Usage:   "List webhook deliveries for your batches or monitors from the last 30 days,\nnewest first. Filter by source, status, or creation time.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "type",
-			Usage:    "Delivery source.",
+			Usage:    "List batch webhook deliveries.",
 			Required: true,
 			BodyPath: "type",
 		},
@@ -53,17 +53,17 @@ var webhooksDeliveriesList = cli.Command{
 		},
 		&requestflag.Flag[any]{
 			Name:     "created-after",
-			Usage:    "Only include events created after this ISO 8601 timestamp.",
+			Usage:    "Only include deliveries created after this time.",
 			BodyPath: "created_after",
 		},
 		&requestflag.Flag[string]{
 			Name:     "cursor",
-			Usage:    "The next_cursor from the previous response.",
+			Usage:    "Cursor from the previous page's `next_cursor`. Omit for the first page.",
 			BodyPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "limit",
-			Usage:    "Number of deliveries to return.",
+			Usage:    "Maximum number of deliveries to return per page.",
 			Default:  25,
 			BodyPath: "limit",
 		},
@@ -74,7 +74,7 @@ var webhooksDeliveriesList = cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[string]{
@@ -94,29 +94,29 @@ var webhooksDeliveriesList = cli.Command{
 
 var webhooksDeliveriesListAttempts = cli.Command{
 	Name:    "list-attempts",
-	Usage:   "List a delivery’s attempts, newest first.",
+	Usage:   "List a webhook delivery's attempts, newest first.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "delivery-id",
-			Usage:     "Delivery ID.",
+			Usage:     "ID of the delivery.",
 			Required:  true,
 			PathParam: "delivery_id",
 		},
 		&requestflag.Flag[string]{
 			Name:      "cursor",
-			Usage:     "The next_cursor from the previous response.",
+			Usage:     "Cursor from the previous page's `next_cursor`. Omit for the first page.",
 			QueryPath: "cursor",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "limit",
-			Usage:     "Number of attempts to return.",
+			Usage:     "Maximum number of attempts to return per page.",
 			Default:   25,
 			QueryPath: "limit",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
+			Usage:     "Comma-separated labels for this request, such as `production,team-alpha`. Filter usage and request logs by them.",
 			QueryPath: "tags",
 		},
 	},
@@ -126,29 +126,29 @@ var webhooksDeliveriesListAttempts = cli.Command{
 
 var webhooksDeliveriesRetry = cli.Command{
 	Name:    "retry",
-	Usage:   "Resend the original payload using the source’s current URL and secret. Available\nfor 7 days after the event.",
+	Usage:   "Resend a delivery's original payload to the source's current webhook URL, signed\nwith its current secret. Available for 7 days after the event.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "delivery-id",
-			Usage:     "Delivery ID.",
+			Usage:     "ID of the delivery.",
 			Required:  true,
 			PathParam: "delivery_id",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "force",
-			Usage:    "Resend even if the delivery already succeeded. Defaults to false.",
+			Usage:    "Resend even if the delivery already succeeded.",
 			Default:  false,
 			BodyPath: "force",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[string]{
 			Name:       "idempotency-key",
-			Usage:      "Unique key to prevent duplicate retry requests.",
+			Usage:      "Unique key for this retry. Repeating the request with the same key does not send the payload again.",
 			HeaderPath: "Idempotency-Key",
 		},
 	},

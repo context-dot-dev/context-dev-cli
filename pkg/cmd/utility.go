@@ -16,12 +16,12 @@ import (
 
 var utilityPrefetch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "prefetch",
-	Usage:   "Queue brand or styleguide data so a later lookup can return sooner.",
+	Usage:   "Start fetching a domain's brand or styleguide data in the background so a later\nlookup returns faster. Accepts a domain or a work email.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "identifier",
-			Usage:    "Identifier of the target to prefetch. Provide exactly one of domain or email.",
+			Usage:    "Domain or work email to prefetch. Provide exactly one.",
 			Required: true,
 			BodyPath: "identifier",
 		},
@@ -33,17 +33,17 @@ var utilityPrefetch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "policy",
-			Usage:    "Access policy IDs to apply. A URL must pass every policy. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
+			Usage:    "Access policy IDs to apply; each URL must pass all of them. Requires access policies enabled for your organization; otherwise returns `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "timeout-opts",
-			Usage:    "Request deadline and what to return when it passes.",
+			Usage:    "Request deadline. The request fails with 408 when it passes.",
 			BodyPath: "timeoutOpts",
 		},
 	},
@@ -58,7 +58,7 @@ var utilityPrefetch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `Only "fail" is supported: return 408 at the deadline.`,
+			Usage:      "Only `fail` is supported: the request returns 408 at the deadline.",
 			InnerField: "behavior",
 		},
 	},

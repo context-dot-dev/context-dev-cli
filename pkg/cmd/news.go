@@ -16,44 +16,44 @@ import (
 
 var newsSearch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "search",
-	Usage:   "Find news about a company by name, domain, ticker, or ISIN, or search all news\nwith a natural-language query. Filter articles and continue through results with\na cursor.",
+	Usage:   "Find news about a company by name, domain, ticker, or ISIN, or search all news\nwith a natural-language query. Each article includes its publisher, type of\ncoverage, and, for company searches, whether the company is the main subject.\nNarrow results by publisher, country, language, article type, or publish date.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "search-by",
-			Usage:    "What to search for: a specific company, or a natural-language query across all news.",
+			Usage:    "What to search for: news about a specific company, or a natural-language query across all news.",
 			Required: true,
 			BodyPath: "searchBy",
 		},
 		&requestflag.Flag[*string]{
 			Name:     "cursor",
-			Usage:    "Opaque next_cursor from the previous response, or null for the first page.",
+			Usage:    "Cursor from the previous page's `next_cursor`. Omit for the first page.",
 			BodyPath: "cursor",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "filter-by",
-			Usage:    "Optional result filters. Use at most one of sourceDomain, sourceCountry, articleLanguage, or articleType. A date range may accompany that category; date.from must not exceed date.to.",
+			Usage:    "Filters for the results. Use at most one of `sourceDomain`, `sourceCountry`, `articleLanguage`, or `articleType`, optionally combined with `date`.",
 			BodyPath: "filterBy",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "limit",
-			Usage:    "Maximum results to return. Defaults to 10.",
+			Usage:    "Maximum number of articles to return per page.",
 			Default:  10,
 			BodyPath: "limit",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "policy",
-			Usage:    "Access policy IDs to apply. A URL must pass every policy. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
+			Usage:    "Access policy IDs to apply; each URL must pass all of them. Requires access policies enabled for your organization; otherwise returns `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "sort-by",
-			Usage:    "Result ordering. Defaults to newest for entity searches. Natural-language searches are always ordered by relevance.",
+			Usage:    "How to order results. Company searches default to `newest`; natural-language searches always use `relevance`.",
 			BodyPath: "sortBy",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 	},
@@ -63,34 +63,34 @@ var newsSearch = requestflag.WithInnerFlags(cli.Command{
 	"filter-by": {
 		&requestflag.InnerFlag[[]string]{
 			Name:       "filter-by.article-language",
-			Usage:      "Article languages to include. Up to 3.",
+			Usage:      "Only return articles in these languages, as ISO 639 codes such as `en`.",
 			InnerField: "articleLanguage",
 		},
 		&requestflag.InnerFlag[[]string]{
 			Name:       "filter-by.article-type",
-			Usage:      "Article types to include. Up to 3.",
+			Usage:      "Only return these types of coverage, such as `press_release`.",
 			InnerField: "articleType",
 		},
 		&requestflag.InnerFlag[map[string]any]{
 			Name:       "filter-by.date",
-			Usage:      "Published-at window in epoch milliseconds. from must be before or equal to to.",
+			Usage:      "Publish date range, in epoch milliseconds. `from` must not be later than `to`.",
 			InnerField: "date",
 		},
 		&requestflag.InnerFlag[[]string]{
 			Name:       "filter-by.source-country",
-			Usage:      "Publisher countries to include, as lowercase ISO 3166-1 alpha-2 codes. Up to 3.",
+			Usage:      "Only return articles from publishers in these countries, as ISO 3166-1 alpha-2 codes such as `us`.",
 			InnerField: "sourceCountry",
 		},
 		&requestflag.InnerFlag[[]string]{
 			Name:       "filter-by.source-domain",
-			Usage:      "Publisher domains to include. Up to 3.",
+			Usage:      "Only return articles from these publisher domains, such as `reuters.com`.",
 			InnerField: "sourceDomain",
 		},
 	},
 	"sort-by": {
 		&requestflag.InnerFlag[string]{
 			Name:       "sort-by.type",
-			Usage:      "Result ordering.",
+			Usage:      "`newest` puts the most recently published articles first; `relevance` puts the closest matches first.",
 			InnerField: "type",
 		},
 	},

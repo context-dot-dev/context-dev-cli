@@ -16,43 +16,43 @@ import (
 
 var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 	Name:    "retrieve",
-	Usage:   "Retrieve logos, colors, company details, and social links using one lookup\nidentifier. A direct URL limits extraction to that page.",
+	Usage:   "Look up a brand by domain, company name, work email, stock ticker, page URL, or\ncard transaction descriptor. Returns logos, colors, backdrops, description,\nindustries, address, stock listing, and social links. A `by_direct_url` lookup\nreads only that page.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "domain",
-			Usage:    "Domain name to retrieve brand data for (e.g., 'stripe.com').",
+			Usage:    "Domain of the brand, such as `stripe.com`.",
 			BodyPath: "domain",
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
-			Usage:    "Discriminator for domain-based brand retrieval.",
+			Usage:    "Set to `by_domain` to look up a brand by domain.",
 			Required: true,
 			BodyPath: "type",
 		},
 		&requestflag.Flag[*string]{
 			Name:     "force-language",
-			Usage:    `Allowed values: "afrikaans", "albanian", "amharic", "arabic", "armenian", "assamese", "aymara", "azeri", "basque", "belarusian", "bengali", "bosnian", "bulgarian", "burmese", "cantonese", "catalan", "cebuano", "chinese", "corsican", "croatian", "czech", "danish", "dutch", "english", "esperanto", "estonian", "farsi", "fijian", "finnish", "french", "galician", "georgian", "german", "greek", "guarani", "gujarati", "haitian-creole", "hausa", "hawaiian", "hebrew", "hindi", "hmong", "hungarian", "icelandic", "igbo", "indonesian", "irish", "italian", "japanese", "javanese", "kannada", "kazakh", "khmer", "kinyarwanda", "korean", "kurdish", "kyrgyz", "lao", "latin", "latvian", "lingala", "lithuanian", "luxembourgish", "macedonian", "malagasy", "malay", "malayalam", "maltese", "maori", "marathi", "mongolian", "nepali", "norwegian", "odia", "oromo", "pashto", "pidgin", "polish", "portuguese", "punjabi", "quechua", "romanian", "russian", "samoan", "scottish-gaelic", "serbian", "sesotho", "shona", "sindhi", "sinhala", "slovak", "slovene", "somali", "spanish", "sundanese", "swahili", "swedish", "tagalog", "tajik", "tamil", "tatar", "telugu", "thai", "tibetan", "tigrinya", "tongan", "tswana", "turkish", "turkmen", "ukrainian", "urdu", "uyghur", "uzbek", "vietnamese", "welsh", "wolof", "xhosa", "yiddish", "yoruba", "zulu".`,
+			Usage:    "Translate the brand's `title`, `description`, and `slogan` into this language.",
 			BodyPath: "force_language",
 		},
 		&requestflag.Flag[int64]{
 			Name:     "max-age-ms",
-			Usage:    "Maximum age of cached brand data in ms. Defaults to 3 months; clamped to 0–1 year. `0` refreshes.",
+			Usage:    "Maximum age of cached brand data, in milliseconds. `0` always fetches fresh. Defaults to 90 days (7776000000 ms). Values above 1 year (31536000000 ms) are capped at 1 year.",
 			BodyPath: "maxAgeMs",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "max-speed",
-			Usage:    "Optional parameter to optimize the API call for maximum speed. When set to true, the API will skip time-consuming operations for faster response at the cost of less comprehensive data.",
+			Usage:    "Skip slower enrichment steps for a faster, less detailed response.",
 			BodyPath: "maxSpeed",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "policy",
-			Usage:    "Access policy IDs to apply. A URL must pass every policy. Leave it out unless access policies are enabled for your organization; otherwise the request fails with `ACCESS_POLICIES_NOT_ENABLED`.",
+			Usage:    "Access policy IDs to apply; each URL must pass all of them. Requires access policies enabled for your organization; otherwise returns `ACCESS_POLICIES_NOT_ENABLED`.",
 			BodyPath: "policies",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -62,12 +62,12 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "zdr",
-			Usage:    "`enabled` disables request logs and traces and omits request and response content from usage logs. Brand data and hosted assets may still be stored. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
+			Usage:    "`enabled` turns off request logs and traces and keeps request and response content out of usage logs. Brand data and hosted assets may still be stored. Returns 403 `ZDR_NOT_ENABLED` unless your organization has ZDR.",
 			BodyPath: "zdr",
 		},
 		&requestflag.Flag[string]{
 			Name:     "name",
-			Usage:    "Company name to retrieve brand data for (e.g., 'Apple Inc').",
+			Usage:    "Company name, such as `Apple Inc`.",
 			BodyPath: "name",
 		},
 		&requestflag.Flag[string]{
@@ -77,47 +77,47 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:     "email",
-			Usage:    "Email address to retrieve brand data for (e.g., 'jane@stripe.com').",
+			Usage:    "Work email address, such as `jane@stripe.com`. The brand is looked up from its domain.",
 			BodyPath: "email",
 		},
 		&requestflag.Flag[string]{
 			Name:     "ticker",
-			Usage:    "Stock ticker symbol to retrieve brand data for (e.g., 'AAPL').",
+			Usage:    "Stock ticker symbol, such as `AAPL`.",
 			BodyPath: "ticker",
 		},
 		&requestflag.Flag[string]{
 			Name:     "ticker-exchange",
-			Usage:    "Stock exchange code.",
+			Usage:    "Stock exchange code, such as `NASDAQ` or `LSE`.",
 			BodyPath: "ticker_exchange",
 		},
 		&requestflag.Flag[string]{
 			Name:     "direct-url",
-			Usage:    "Full http(s) URL to fetch brand data from (e.g., 'https://stripe.com/enterprise'). Only this URL is fetched — not the entire internet.",
+			Usage:    "Full `http` or `https` URL of the page to read, such as `https://stripe.com/enterprise`. Only this page is fetched.",
 			BodyPath: "direct_url",
 		},
 		&requestflag.Flag[string]{
 			Name:     "transaction-info",
-			Usage:    "Transaction information to identify the brand.",
+			Usage:    "Transaction descriptor from a card or bank statement, such as `SQ *COFFEE SHOP`.",
 			BodyPath: "transaction_info",
 		},
 		&requestflag.Flag[string]{
 			Name:     "city",
-			Usage:    "Optional city name to prioritize when searching for the brand.",
+			Usage:    "City where the transaction took place. Brands in this city are preferred.",
 			BodyPath: "city",
 		},
 		&requestflag.Flag[bool]{
 			Name:     "high-confidence-only",
-			Usage:    "When set to true, the API performs additional verification to ensure the identified brand matches the transaction with high confidence.",
+			Usage:    "Run extra verification so the returned brand matches the transaction with high confidence.",
 			BodyPath: "high_confidence_only",
 		},
 		&requestflag.Flag[any]{
 			Name:     "mcc",
-			Usage:    "Optional Merchant Category Code (MCC) to help identify the business category or industry.",
+			Usage:    "Merchant Category Code (MCC) from the transaction. Helps identify the type of business.",
 			BodyPath: "mcc",
 		},
 		&requestflag.Flag[any]{
 			Name:     "phone",
-			Usage:    "Optional phone number from the transaction to help verify brand match.",
+			Usage:    "Merchant phone number from the transaction. Helps confirm the match.",
 			BodyPath: "phone",
 		},
 	},
@@ -132,7 +132,7 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
+			Usage:      "`fail` returns 408 at the deadline. `return-partial` returns the results collected so far and marks the response as partial.",
 			InnerField: "behavior",
 		},
 	},
@@ -140,45 +140,45 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 
 var brandSearch = cli.Command{
 	Name:    "search",
-	Usage:   "Find up to 10 brands by name or domain, ordered by popularity. Optionally filter\nby country and primary language; both filters must match when provided together.\nResults include description, country, and language when available. Use the\nreturned domain to retrieve a full brand profile.",
+	Usage:   "Autocomplete brand names and domains as a user types, with up to 10 brands\nranked by popularity and a ready-to-use logo URL for each. Filter by country and\nprimary language. Pass a returned `domain` to `POST /brand/retrieve` for the\nfull brand profile.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "query",
-			Usage:     "Search term, matched against the fields selected by queryBy (e.g. 'nike', 'nike.com', 'nik').",
+			Usage:     "Search term, matched against the fields in `queryBy`, such as `nike`, `nike.com`, or `nik`.",
 			Required:  true,
 			QueryPath: "query",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "autocomplete",
-			Usage:     "Whether the search term matches by prefix, so partial words match as they are typed (e.g. 'nik' matches Nike). Set to false to match whole words only.",
+			Usage:     "Match the search term as a prefix, so `nik` matches Nike while the user is still typing. Set to `false` to match whole words only.",
 			Default:   true,
 			QueryPath: "autocomplete",
 		},
 		&requestflag.Flag[string]{
 			Name:      "country",
-			Usage:     "Only return brands in this country, as an uppercase ISO 3166-1 alpha-2 code such as US or GB.",
+			Usage:     "Only return brands in this country, as an uppercase ISO 3166-1 alpha-2 code such as `US` or `GB`.",
 			QueryPath: "country",
 		},
 		&requestflag.Flag[string]{
 			Name:      "language",
-			Usage:     "Only return brands with this primary language, such as english or french.",
+			Usage:     "Only return brands with this primary language, such as `english` or `french`.",
 			QueryPath: "language",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "query-by",
-			Usage:     "Fields to match the search term against, as a comma-separated list or repeated parameter: 'name', 'domain', or both. Defaults to both.",
+			Usage:     "Fields to match the search term against: `name`, `domain`, or both. Send a comma-separated list or repeat the parameter.",
 			Default:   []string{"name", "domain"},
 			QueryPath: "queryBy",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
+			Usage:     "Comma-separated labels for this request, such as `production,team-alpha`. Filter usage and request logs by them.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[int64]{
 			Name:      "typo-tolerance",
-			Usage:     "Maximum number of typos tolerated when matching, from 0 to 2. Defaults to 0 (no typo tolerance).",
+			Usage:     "Maximum number of typos to tolerate when matching. `0` requires exact spelling.",
 			Default:   0,
 			QueryPath: "typoTolerance",
 		},

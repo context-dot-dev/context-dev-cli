@@ -39,7 +39,7 @@ var industryRetrieveNaics = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
+			Usage:     "Comma-separated labels for this request, such as `production,team-alpha`. Filter usage and request logs by them.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -65,7 +65,7 @@ var industryRetrieveNaics = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
+			Usage:      "`fail` returns 408 at the deadline. `return-partial` returns the results collected so far and marks the response as partial.",
 			InnerField: "behavior",
 		},
 	},
@@ -96,7 +96,7 @@ var industryRetrieveSic = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
+			Usage:     "Comma-separated labels for this request, such as `production,team-alpha`. Filter usage and request logs by them.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -128,7 +128,7 @@ var industryRetrieveSic = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.InnerFlag[string]{
 			Name:       "timeout-opts.behavior",
-			Usage:      `"fail" returns 408 at the deadline. "return-partial" returns available results; inspect the response’s partial flag.`,
+			Usage:      "`fail` returns 408 at the deadline. `return-partial` returns the results collected so far and marks the response as partial.",
 			InnerField: "behavior",
 		},
 	},

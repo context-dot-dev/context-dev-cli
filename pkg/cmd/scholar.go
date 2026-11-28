@@ -16,18 +16,18 @@ import (
 
 var scholarSearch = requestflag.WithInnerFlags(cli.Command{
 	Name:    "search",
-	Usage:   "Search full-text papers from arXiv and Europe PMC. Returns up to 250 relevant\npapers with matching passages and full-text links.",
+	Usage:   "Search the full text of papers from arXiv and Europe PMC by topic or question.\nEach result includes the matching passage and a direct link to the full text.\nPage through up to 250 matches, ranked by relevance or newest first.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "query",
-			Usage:    "A topic or question. Append one arxiv:, pmcid:, pmid:, or doi: ID to search within an indexed paper.",
+			Usage:    "Topic or question to search for. Append one `arxiv:`, `pmcid:`, `pmid:`, or `doi:` ID to search within that paper, such as `protein folding pmid:34265844`, or send the ID on its own.",
 			Required: true,
 			BodyPath: "query",
 		},
 		&requestflag.Flag[*string]{
 			Name:     "cursor",
-			Usage:    "Use next_cursor to fetch the next page.",
+			Usage:    "Cursor from the previous page's `next_cursor`. Omit for the first page.",
 			BodyPath: "cursor",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -37,19 +37,19 @@ var scholarSearch = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[int64]{
 			Name:     "limit",
-			Usage:    "Papers per page.",
+			Usage:    "Maximum number of papers to return per page.",
 			Default:  10,
 			BodyPath: "limit",
 		},
 		&requestflag.Flag[string]{
 			Name:     "sort",
-			Usage:    "Order the top 250 matches. date_desc puts newest first, with undated papers last.",
+			Usage:    "`relevance` puts the closest matches first; `date_desc` puts the newest papers first, with undated papers last. Both orders apply to the top 250 matches.",
 			Default:  "relevance",
 			BodyPath: "sort",
 		},
 		&requestflag.Flag[[]string]{
 			Name:     "tag",
-			Usage:    "Labels for filtering usage in the dashboard.",
+			Usage:    "Labels for this request. Filter usage and request logs by them in the dashboard or with `GET /org/logs`.",
 			BodyPath: "tags",
 		},
 	},

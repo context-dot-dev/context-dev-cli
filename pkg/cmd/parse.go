@@ -18,7 +18,7 @@ import (
 
 var parseHandle = requestflag.WithInnerFlags(cli.Command{
 	Name:    "handle",
-	Usage:   "Convert uploaded file bytes into Markdown and optional HTML. WARC and WARC.GZ\narchives combine HTTP response, resource, and conversion records in archive\norder. Revisit and segmented records are skipped. Decoded WARC content is\nlimited to 50 MiB.",
+	Usage:   "Convert a file to Markdown. Handles PDF, Word, Excel, PowerPoint, HTML, XML,\nCSV, JSON, YAML, source code, subtitles, images, and WARC archives. Send the raw\nbytes as the request body; set `ocr=true` to read scanned pages and images.",
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
@@ -29,57 +29,57 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[string]{
 			Name:      "client",
-			Usage:     "Optional client identifier used for usage attribution.",
+			Usage:     "Client identifier for usage attribution.",
 			QueryPath: "client",
 		},
 		&requestflag.Flag[string]{
 			Name:      "extension",
-			Usage:     "Optional file extension hint, such as pdf, docx, xlsx, pptx, html, json, csv, md, py, rtf, jpg, png, txt, warc, or warc.gz.",
+			Usage:     "File type hint, such as `pdf`, `docx`, `xlsx`, `pptx`, `html`, `json`, `csv`, `md`, `py`, `rtf`, `jpg`, `png`, `txt`, `warc`, or `warc.gz`. Use it when the `Content-Type` header is missing or generic.",
 			QueryPath: "extension",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "include-images",
-			Usage:     "Include image references in Markdown output",
+			Usage:     "Include image references in the Markdown.",
 			Default:   false,
 			QueryPath: "includeImages",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "include-links",
-			Usage:     "Preserve hyperlinks in Markdown output",
+			Usage:     "Keep link URLs in the Markdown.",
 			Default:   true,
 			QueryPath: "includeLinks",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "include-numbered-pages",
-			Usage:     "Start each PDF page in the Markdown with a `<!-- page N -->` line, where N is the original 1-based page number.",
+			Usage:     "Start each PDF page in the Markdown with a `<!-- page N -->` line, where `N` is the original 1-based page number.",
 			Default:   false,
 			QueryPath: "includeNumberedPages",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "ocr",
-			Usage:     "Read text from images and scanned PDF pages. PDF page ranges still apply.",
+			Usage:     "Read text from images and scanned PDF pages with OCR, within the `pdf` page range. Adds 1 credit per page read.",
 			Default:   false,
 			QueryPath: "ocr",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:      "pdf",
-			Usage:     `PDF page-range options as a JSON object, e.g. {"start": 2, "end": 5}.`,
+			Usage:     "PDF page range as a JSON object, such as `{\"start\": 2, \"end\": 5}`.",
 			QueryPath: "pdf",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "shorten-base64-images",
-			Usage:     "Shorten base64-encoded image data in the Markdown output",
+			Usage:     "Shorten inline base64 image data.",
 			Default:   true,
 			QueryPath: "shortenBase64Images",
 		},
 		&requestflag.Flag[[]string]{
 			Name:      "tag",
-			Usage:     "Comma-separated labels for filtering usage, e.g. `production,team-alpha`.",
+			Usage:     "Comma-separated labels for this request, such as `production,team-alpha`. Filter usage and request logs by them.",
 			QueryPath: "tags",
 		},
 		&requestflag.Flag[bool]{
 			Name:      "use-main-content-only",
-			Usage:     "Extract only the main content from HTML-like inputs",
+			Usage:     "Keep only the main content, without navigation, headers, footers, or sidebars. Applies to HTML-like inputs.",
 			Default:   false,
 			QueryPath: "useMainContentOnly",
 		},
@@ -96,12 +96,12 @@ var parseHandle = requestflag.WithInnerFlags(cli.Command{
 	"pdf": {
 		&requestflag.InnerFlag[int64]{
 			Name:       "pdf.end",
-			Usage:      "Last PDF page to parse (1-based, inclusive). Defaults to the final page. Must be >= start.",
+			Usage:      "Last page to parse. Defaults to the last page. Must be at least `start`.",
 			InnerField: "end",
 		},
 		&requestflag.InnerFlag[int64]{
 			Name:       "pdf.start",
-			Usage:      "First 1-based PDF page to parse.",
+			Usage:      "First page to parse, starting at 1.",
 			InnerField: "start",
 		},
 	},
