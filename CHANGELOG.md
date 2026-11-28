@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.29.0](https://github.com/context-dot-dev/context-dev-cli/compare/v1.28.1...v1.29.0) (2026-11-28)
+
+
+### Features
+
+* **answers:** limit research to listed sources with controls ([#3252](https://github.com/context-dot-dev/context-dev-cli/issues/3252)) ([93c0ce3](https://github.com/context-dot-dev/context-dev-cli/commit/93c0ce37a228a77ab46a7a1da5773d19ffe3f8ad))
+* **feedback:** add bad_brand feedback category ([#3136](https://github.com/context-dot-dev/context-dev-cli/issues/3136)) ([9978818](https://github.com/context-dot-dev/context-dev-cli/commit/9978818e6dfcdd55c06261b37d5d8182343f8edb))
+* **monitors:** filter monitor credit usage by tag ([#3077](https://github.com/context-dot-dev/context-dev-cli/issues/3077)) ([7d65914](https://github.com/context-dot-dev/context-dev-cli/commit/7d65914d94831c7da700115d187fc9d426916c5c))
+* **scholar:** add POST /scholar/search endpoint ([#2997](https://github.com/context-dot-dev/context-dev-cli/issues/2997)) ([b5ca466](https://github.com/context-dot-dev/context-dev-cli/commit/b5ca466b1045358ce393062766c4a05b19325785))
+* **scrape:** accept includeFrames auto and make it the default ([#3280](https://github.com/context-dot-dev/context-dev-cli/issues/3280)) ([9ba11a6](https://github.com/context-dot-dev/context-dev-cli/commit/9ba11a68e8bbf6d34114bcf558ca3f750ed8fefb))
+
+
+### Bug Fixes
+
+* **access-policies:** tell callers to drop `policies` when the feature is off ([#3090](https://github.com/context-dot-dev/context-dev-cli/issues/3090)) ([241be81](https://github.com/context-dot-dev/context-dev-cli/commit/241be810aab6fd53ed1eb43f1c18d9828f3bfcea))
+* **batch:** list every batch and remove shouldIncludeUnified ([#3322](https://github.com/context-dot-dev/context-dev-cli/issues/3322)) ([8e03362](https://github.com/context-dot-dev/context-dev-cli/commit/8e03362faaf35d4146eda50a3923c2a674dc1a2c))
+* **brand:** rename country_gl to country and CountryGL to LowercaseCountryCode ([#3326](https://github.com/context-dot-dev/context-dev-cli/issues/3326)) ([e53d9f0](https://github.com/context-dot-dev/context-dev-cli/commit/e53d9f0fb24fb7e06011770534ca0f2bd0221aec))
+* **scrape:** read google play ratings from the storefront that offers the app ([#3084](https://github.com/context-dot-dev/context-dev-cli/issues/3084)) ([7d65914](https://github.com/context-dot-dev/context-dev-cli/commit/7d65914d94831c7da700115d187fc9d426916c5c))
+
+
+### Documentation
+
+* **answers:** state the 2000-character task limit in its description ([#3137](https://github.com/context-dot-dev/context-dev-cli/issues/3137)) ([9978818](https://github.com/context-dot-dev/context-dev-cli/commit/9978818e6dfcdd55c06261b37d5d8182343f8edb))
+* **openapi:** hide superseded inputs and document missing 403 and 402 responses ([#3323](https://github.com/context-dot-dev/context-dev-cli/issues/3323)) ([9dd0bb2](https://github.com/context-dot-dev/context-dev-cli/commit/9dd0bb291637418ea3b1e760c1711ef83ce48b86))
+* **openapi:** rewrite public reference copy and normalize field order ([#3325](https://github.com/context-dot-dev/context-dev-cli/issues/3325)) ([ad99d61](https://github.com/context-dot-dev/context-dev-cli/commit/ad99d61bce742236cd7e5326f69c5dc1e60d049c))
+* **scrape:** describe late scrape outputs as per-output REQUEST_TIMEOUT in a 200 ([#3080](https://github.com/context-dot-dev/context-dev-cli/issues/3080)) ([fe03e8b](https://github.com/context-dot-dev/context-dev-cli/commit/fe03e8bde4c624dea344ebd839c4f39fb190e5e2))
+
 ## [1.28.1](https://github.com/context-dot-dev/context-dev-cli/compare/v1.28.0...v1.28.1) (2026-11-18)
 
 
