@@ -71,9 +71,9 @@ var brandRetrieve = requestflag.WithInnerFlags(cli.Command{
 			BodyPath: "name",
 		},
 		&requestflag.Flag[string]{
-			Name:     "country-gl",
-			Usage:    "Two-letter ISO 3166-1 alpha-2 country code (GL parameter) used to localize search.",
-			BodyPath: "country_gl",
+			Name:     "country",
+			Usage:    "Lowercase ISO 3166-1 alpha-2 country code, such as `us`.",
+			BodyPath: "country",
 		},
 		&requestflag.Flag[string]{
 			Name:     "email",
